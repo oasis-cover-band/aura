@@ -21,7 +21,7 @@
 <section class="balance" id="bnb">
     <div id="address">
         <span>
-            BNB
+            {{project.networkCurrency}}
         </span>
     </div>
     <div id="balance">
@@ -33,7 +33,7 @@
 <section class="balance" id="aura">
     <div id="address">
         <span>
-            AURA
+            {{project.tokenName}}
         </span>
     </div>
     <div id="balance">
@@ -45,12 +45,24 @@
 <section class="balance" id="flipwbnb">
     <div id="address">
         <span>
-            FLIP
+            {{project.lpTokenName}}
         </span>
     </div>
     <div id="balance">
         <span>
-            {{(((user.flipBalance | async) / 1e18) | number:'1.2-2')}}
+            {{(((user.lpBalance | async) / 1e18) | number:'1.2-2')}}
+        </span>
+    </div>
+</section>
+<section class="balance" id="wflipwbnb">
+    <div id="address">
+        <span>
+            w{{project.lpTokenName}}
+        </span>
+    </div>
+    <div id="balance">
+        <span>
+            {{(((user.wLPBalance | async) / 1e18) | number:'1.2-2')}}
         </span>
     </div>
 </section>

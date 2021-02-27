@@ -1,1 +1,25 @@
-<app-farm></app-farm>
+<section class="top-bar">
+    <div class="norm-container split small" id="misc-0">
+        <span class="norm-header small">
+            <label class="title">Rewards Since Start:</label>
+            <label class="value">{{(vault.cumulativeRewardsSinceStart | async) /1e18 | number}} {{project.tokenName}}</label>
+        </span>
+        <span class="norm-header small">
+            <label class="title"># of Pools:</label>
+            <label class="value">{{(vault.poolLength | async) / 1e18 | number}}</label>
+        </span>
+    </div>
+    <div class="norm-container split small" id="misc-1">
+        <span class="norm-header small">
+            <label class="title">Average Fees Per Block Since Start:</label>
+            <label class="value">{{(vault.averageFeesPerBlockSinceStart | async) /1e18 | number}} {{project.tokenName}}</label>
+        </span>
+        <span class="norm-header small">
+            <label class="title">Average Fees Per Block This Epoch:</label>
+            <label class="value">{{(vault.averageFeesPerBlockEpoch | async) / 1e18 | number}}  {{project.tokenName}}</label>
+        </span>
+    </div>
+</section>
+    <section class="wrapper">
+        <app-farm *ngFor="let farm of farms; let index = index" [data]="farm" [pid]="index"></app-farm>
+    </section>

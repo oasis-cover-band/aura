@@ -14,11 +14,11 @@
     <div class="small-container" id="misc">
         <span class="small-header value">
             <label class="title">Balance</label>
-            <label class="value small"><b>{{(data.userBalance | async) / 1e18 | number}}</b> <small>{{data.name}} {{project.LPToken}}</small></label>
+            <label class="value small"><b>{{(data.userBalance | async) / 1e18 | number}}</b> <small>{{data.name}} {{project.lpTokenName}}</small></label>
         </span>
         <span class="small-header value">
             <label class="title">Deposits</label>
-            <label class="value small"><b>{{(data.userPoolInfo | async).amount / 1e18 | number}}</b> <small>{{data.name}} {{project.LPToken}}</small></label>
+            <label class="value small"><b>{{(data.userPoolInfo | async).amount / 1e18 | number}}</b> <small>{{data.name}} {{project.lpTokenName}}</small></label>
         </span>
         <span class="small-header value">
             <label class="title">Rewards</label>

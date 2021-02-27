@@ -1,4 +1,5 @@
-<section class="wrapper" [routerLink]="data.link">
+<section class="wrapper" [routerLink]="data.link" routerLinkActive="active" skipLocationChange="true" [routerLinkActiveOptions]="{exact:
+    true}">
     <i class="material-icons">{{data.icon}}</i>
     <label>{{data.name}}</label>
 </section>

@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 export class ProjectService {
 
   tokenName = 'AURA';
-  LPToken = 'FLIP';
+  lpTokenName = 'FLIP';
   networkCurrency = 'BNB';
   constructor() { }
 }

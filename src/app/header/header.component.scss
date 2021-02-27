@@ -1,17 +1,14 @@
 @import '../theme.scss';
-$material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
-
-@import '~material-design-icons-iconfont/src/material-design-icons';
 :host {
     grid-area:header;
-    background:$primary;
+    background:$black;
     display:grid;
     grid-template-areas:
     '. . .'
     '. content .'
     '. . .';
-    grid-template-columns: 2.5px 1fr 2.5px;
-    grid-template-rows: 2.5px 1fr 2.5px;
+    grid-template-columns: 10px 1fr 10px;
+    grid-template-rows: 10px 1fr 10px;
     section.wrapper {
         grid-area:content;
         display:grid;
@@ -32,7 +29,8 @@ $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dis
                     display:grid;
                     i {
                         font-size:3rem;
-                        color:$black;
+                        color:$primary;
+                        transition:0.4s;
                     }
                     * {
                         pointer-events:none;

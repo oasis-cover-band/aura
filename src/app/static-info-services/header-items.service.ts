@@ -14,12 +14,17 @@ export class HeaderItemsService {
     {
       link: 'farms',
       name: 'Farming & Staking',
-      icon: 'flip_camera_android'
+      icon: 'agriculture'
     },
     {
       link: 'lge',
       name: 'LGE',
-      icon: 'point_of_sale'
+      icon: 'card_giftcard'
+    },
+    {
+      link: 'dashboard',
+      name: 'Dashboard',
+      icon: 'info'
     },
   ];
   constructor() { }

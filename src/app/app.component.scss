@@ -1,26 +1,5 @@
 @import '../app/theme.scss';
 :host {
-    
-  scrollbar-width: thin;          /* "auto" or "thin" */
-  scrollbar-color: $primary $black;   /* scroll thumb and track */
-  ::-webkit-scrollbar {
-    width: 12px;               /* width of the entire scrollbar */
-  }
-  
-  ::-webkit-scrollbar-track {
-    background: $black;        /* color of the tracking area */
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background-color: $primary;    /* color of the scroll thumb */
-    border-radius: 20px;       /* roundness of the scroll thumb */
-    border: 3px solid $black;  /* creates padding around scroll thumb */
-  }
-  
-  ::selection {
-    color: $primary;
-    background: $black;
-  }
   display:grid;
   grid-area:angular-content;
   max-height:100vh;
@@ -57,7 +36,6 @@
           router-outlet, router-outlet + *{
               grid-area:router-outlet;
           }
-      overflow-y:scroll;
   }
   app-header {
       grid-area:header;

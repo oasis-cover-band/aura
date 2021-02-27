@@ -18,6 +18,19 @@
               justify-self:end;
           }
       }
+      @media (max-width:1300px) {
+          &.split.small {
+            grid-template-rows:1fr 1fr;
+            grid-template-columns:1fr;
+            row-gap:10px;
+            :nth-child(1) {
+                justify-self:center;
+            }
+            :nth-child(2) {
+                justify-self:center;
+            }
+        }
+      }
     }
     span {
         &.big-header, &.norm-header {
@@ -30,7 +43,7 @@
                 }
             }
             h3, h4 {
-                font-size:4rem;
+                font-size:3.4rem;
                 color:$primary;
                 text-decoration:underline solid $white;
                 margin:5px 0px;
@@ -63,6 +76,11 @@
                 }
                 :nth-child(2) {
                     justify-self:end;
+                }
+            }
+            &.small {
+                label {
+                    font-size:1rem;
                 }
             }
         }

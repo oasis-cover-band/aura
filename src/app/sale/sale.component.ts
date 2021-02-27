@@ -12,9 +12,10 @@ import { NowService } from '../dynamic-info-services/now.service';
 export class SaleComponent implements OnInit {
 
   @Input() data = this.web3.lge;
+  @Input() token = this.web3.token;
 
   @ViewChild('inputEle', {static: false}) inputEle: ElementRef;
-  
+
   inputPlaceholder = 'Enter an amount to contribute.';
   claimButton = this.web3.lge.claimButton;
   depositButton = this.web3.lge.depositButton;
@@ -25,6 +26,7 @@ export class SaleComponent implements OnInit {
     private nowService: NowService
   ) {
     this.data = this.web3.lge;
+    this.token = this.web3.token;
   }
 
   ngOnInit(): void {
@@ -37,6 +39,10 @@ export class SaleComponent implements OnInit {
 
   claim(): void {
     this.web3.claimLGE();
+  }
+
+  createLiquidity(): void {
+    this.web3.createLiquidity();
   }
 
 }

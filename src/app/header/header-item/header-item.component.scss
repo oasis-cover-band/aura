@@ -1,7 +1,4 @@
 @import '../../theme.scss';
-$material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
-
-@import '~material-design-icons-iconfont/src/material-design-icons';
 :host {
     background:rgba(0,0,0,0.5);
     display:grid;
@@ -25,10 +22,14 @@ $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dis
         align-content: center;
         text-align:center;
         cursor:pointer;
+        transition:0.4s;
         * {
             pointer-events:none;
         }
         outline:none!important;
+        &.active {
+            color:$primary;
+        }
     }
     
 }

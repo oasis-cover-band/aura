@@ -1,7 +1,25 @@
+@import '../containers.scss';
 :host {
     grid-area:router-outlet;
     display:grid;
-    justify-content: space-around;
-    align-content: center;
-    grid-template-columns:1fr 1fr;
+    justify-content: stretch;
+    align-content: start;
+    
+    @include containers;
+    grid-template-rows:max-content 1fr;
+    row-gap:10px;
+    overflow:hidden;
+    section.wrapper, section.top-bar {
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        column-gap:10px;
+        @media (max-width:900px) {
+            grid-template-rows:1fr;
+            grid-template-columns:1fr;
+            column-gap:10px;
+        } 
+    }
+    section.wrapper {
+        overflow-y:scroll;
+    }
 }

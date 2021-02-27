@@ -1,7 +1,4 @@
 @import '../theme.scss';
-$material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
-
-@import '~material-design-icons-iconfont/src/material-design-icons';
 :host {
     display:grid;
     grid-template-areas:
@@ -10,9 +7,10 @@ $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dis
     '. bnb .'
     '. aura .'
     '. flipwbnb .'
+    '. wflipwbnb .'
     '. . .';
     grid-template-columns: 2.5px 1fr 2.5px;
-    grid-template-rows: 5px max-content max-content max-content max-content 5px;
+    grid-template-rows: 5px max-content max-content max-content max-content max-content 5px;
     row-gap:10px;
     section.balance {
         display:grid;
@@ -20,13 +18,13 @@ $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dis
         '. . . .'
         '. address balance .'
         '. . . .';
-        grid-template-columns: 5px 40px 1fr 5px;
+        grid-template-columns: 5px 45px 1fr 5px;
         grid-template-rows: 10px 1fr 10px;
         column-gap:2px;
         cursor:pointer;
         align-content:center;
         align-items:center;
-        background:$black;
+        background:$dark;
         border-radius:4px;
         * {
             pointer-events: none;
@@ -57,6 +55,9 @@ $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dis
         }
         &#flipwbnb {
             grid-area:flipwbnb;
+        }
+        &#wflipwbnb {
+            grid-area:wflipwbnb;
         }
     }
     @media (max-width:600px) {
