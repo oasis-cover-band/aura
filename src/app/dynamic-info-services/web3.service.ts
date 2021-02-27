@@ -280,7 +280,6 @@ export class Web3Service {
   getInfo(): void {
     this.getTokenInfo();
     this.getUserInfo();
-    this.getAllPoolInfo();
     this.getLGEInfo();
     this.getLPTokensInfo();
   }
@@ -780,7 +779,7 @@ export class Web3Service {
       this.setVaultContract().then(setVaultResult => {
         this.getPoolLength().then(getPoolLengthResult => {
           this.setPoolContracts().then(setPoolContractsResult => {
-
+            this.getAllPoolInfo();
           });
         });
         this.getLPContracts().then(getLPResult => {
@@ -811,10 +810,10 @@ export class Web3Service {
   }
 
   async setPoolContracts(): Promise<any> {
-    this.poolInfo.length = this.vault.length;
+    this.poolInfo.length = this.vault.length.getValue();
     await this.poolInfo.forEach((element, index) => {
             this.poolInfo[index].token.address.next(this.poolInfo[index].poolInfo.getValue().stakedToken);
-            this.poolInfo[index].token.contract = new this.web3.eth.Contract(auraAbi, this.poolInfo[index].tokenAddress.getValue());
+            this.poolInfo[index].token.contract = new this.web3.eth.Contract(auraAbi, this.poolInfo[index].token.address.getValue());
         });
   }
 
