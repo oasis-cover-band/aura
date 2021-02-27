@@ -1,0 +1,71 @@
+@import '../theme.scss';
+$material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
+
+@import '~material-design-icons-iconfont/src/material-design-icons';
+:host {
+    display:grid;
+    grid-template-areas:
+    '. . .'
+    '. wallet .'
+    '. bnb .'
+    '. aura .'
+    '. flipwbnb .'
+    '. . .';
+    grid-template-columns: 2.5px 1fr 2.5px;
+    grid-template-rows: 5px max-content max-content max-content max-content 5px;
+    row-gap:10px;
+    section.balance {
+        display:grid;
+        grid-template-areas:
+        '. . . .'
+        '. address balance .'
+        '. . . .';
+        grid-template-columns: 5px 40px 1fr 5px;
+        grid-template-rows: 10px 1fr 10px;
+        column-gap:2px;
+        cursor:pointer;
+        align-content:center;
+        align-items:center;
+        background:$black;
+        border-radius:4px;
+        * {
+            pointer-events: none;
+        }
+        div {
+            &#address {
+                grid-area:address;
+            }
+            &#balance {
+                display:grid;
+                align-items: center;
+                min-height:100%;
+                grid-area:balance;
+                background:$primary;
+                color:$black;
+                border-radius:4px;
+                text-align:center;
+            }
+        }
+        &#wallet {
+            grid-area:wallet;
+        }
+        &#bnb {
+            grid-area:bnb;
+        }
+        &#aura {
+            grid-area:aura;
+        }
+        &#flipwbnb {
+            grid-area:flipwbnb;
+        }
+    }
+    @media (max-width:600px) {
+        max-height:80px;
+        section.balance {
+         display:none!important;   
+        }
+        section#wallet {
+            display:grid!important;
+        }
+    }
+}

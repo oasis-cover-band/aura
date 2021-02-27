@@ -1,0 +1,60 @@
+@import '../theme.scss';
+$material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
+
+@import '~material-design-icons-iconfont/src/material-design-icons';
+:host {
+    grid-area:header;
+    background:$primary;
+    display:grid;
+    grid-template-areas:
+    '. . .'
+    '. content .'
+    '. . .';
+    grid-template-columns: 2.5px 1fr 2.5px;
+    grid-template-rows: 2.5px 1fr 2.5px;
+    section.wrapper {
+        grid-area:content;
+        display:grid;
+        justify-content: stretch;
+        align-content: space-between;
+        row-gap:5px;
+        div.header-items-wrapper {
+            display:grid;
+            row-gap:10px;
+            &.button {
+                display:none;
+            }
+            @media (max-width:600px) {
+                &.menu {
+                    display:none;
+                }
+                &.button{
+                    display:grid;
+                    i {
+                        font-size:3rem;
+                        color:$black;
+                    }
+                    * {
+                        pointer-events:none;
+                    }
+                    cursor:pointer;
+                    &:hover {
+                        i {
+                            color:$white;
+                        }
+                    }
+                }
+            }
+        }
+        app-wallet {
+            align-self:end;
+        }
+        @media (max-width:600px) {
+            grid-auto-flow: column;
+            grid-auto-columns: 1fr;
+            column-gap:5px;
+            max-height:100px;
+        }
+    }
+    
+}

@@ -1,0 +1,48 @@
+@import '../../containers.scss';
+:host {
+    display:grid;
+    grid-template-areas:
+    '. . .'
+    '. wrapper .'
+    '. . .';
+    grid-template-columns: 10px 1fr 10px;
+    grid-template-rows:10px 1fr 10px;
+    section.wrapper {
+        border-radius:20px;
+        background:rgba(0,0,0,0.3);
+        grid-area:wrapper;
+        display:grid;
+        grid-template-areas:
+        '. . .'
+        '. apy .'
+        '. name .'
+        '. misc .'
+        '. buttons .'
+        '. input .'
+        '. . .';
+        grid-template-columns:20px 1fr 20px;
+        grid-template-rows: 10px max-content max-content max-content max-content max-content 10px;
+        row-gap:10px;
+        justify-content:center;
+        @include containers;
+        span {
+            &#name {
+                grid-area:name;
+            }
+            &#input {
+                grid-area:input;
+            }
+        }
+        div {
+            &#apy {
+                grid-area:apy;
+            }
+            &#misc {
+                grid-area:misc;
+            }
+            &#buttons {
+                grid-area:buttons;
+            }
+        }
+    }
+}

@@ -1,0 +1,59 @@
+<section class="wrapper">
+    <span class="big-header" id="name">
+        <h3>{{data.name}}</h3>
+    </span>
+    <div class="norm-container split" id="apy">
+        <span class="norm-header">
+            <label class="title">APY:</label>
+            <label class="value">{{(data.apy | async) | number}}%</label>
+        </span>
+        <span class="norm-header">
+            <label class="value">{{(data.multiplier | async) | number}}x</label>
+        </span>
+    </div>
+    <div class="small-container" id="misc">
+        <span class="small-header value">
+            <label class="title">Balance</label>
+            <label class="value small"><b>{{(data.userBalance | async) / 1e18 | number}}</b> <small>{{data.name}} {{project.LPToken}}</small></label>
+        </span>
+        <span class="small-header value">
+            <label class="title">Deposits</label>
+            <label class="value small"><b>{{(data.userPoolInfo | async).amount / 1e18 | number}}</b> <small>{{data.name}} {{project.LPToken}}</small></label>
+        </span>
+        <span class="small-header value">
+            <label class="title">Rewards</label>
+            <label class="value"><b>{{(data.pendingAura | async) / 1e18 | number}}</b> <small>{{project.tokenName}}</small></label>
+        </span>
+    </div>
+    <span class="input" id="input">
+        <input [placeholder]="inputPlaceholder" #inputEle/>
+    </span>
+    <div class="small-container" id="buttons">
+        <span class="button" id="deposit">
+            <button (click)="deposit()">
+                <label *ngIf="(data.depositButton | async) === 0">Deposit</label>
+                <label *ngIf="(data.depositButton | async) === 1">Depositing</label>
+                <label *ngIf="(data.depositButton | async) === 2">Deposited</label>
+                <label *ngIf="(data.depositButton | async) === 3">Failed</label>
+                <label *ngIf="(data.depositButton | async) === 4">Approving</label>
+                <label *ngIf="(data.depositButton | async) === 5">Approved</label>
+            </button>
+        </span>
+        <span class="button" id="withdraw">
+            <button (click)="withdraw()">
+                <label *ngIf="(data.withdrawButton | async) === 0">Withdraw</label>
+                <label *ngIf="(data.withdrawButton | async) === 1">Withdrawing</label>
+                <label *ngIf="(data.withdrawButton | async) === 2">Withdrawn</label>
+                <label *ngIf="(data.withdrawButton | async) === 3">Failed</label>
+            </button>
+        </span>
+        <span class="button" id="claim">
+            <button (click)="claim()">
+                <label *ngIf="(data.claimButton | async) === 0">Claim</label>
+                <label *ngIf="(data.claimButton | async) === 1">Claiming</label>
+                <label *ngIf="(data.claimButton | async) === 2">Claimed</label>
+                <label *ngIf="(data.claimButton | async) === 3">Failed</label>
+            </button>
+        </span>
+    </div>
+</section>

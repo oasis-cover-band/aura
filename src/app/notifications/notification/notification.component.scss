@@ -1,0 +1,51 @@
+@import '../../containers.scss';
+$material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
+
+@import '~material-design-icons-iconfont/src/material-design-icons';
+:host {
+    grid-area:notification;
+    display:grid;
+    grid-template-areas:
+    '. . .'
+    '. wrapper .'
+    '. . .';
+    grid-template-columns: 10px 1fr 10px;
+    grid-template-rows:10px 1fr 10px;
+    section.wrapper {
+        cursor:pointer;
+        * {
+            pointer-events:none;
+        }
+        border-radius:20px;
+        background:$black;
+        grid-area:wrapper;
+        display:grid;
+        grid-template-areas:
+        '. . .'
+        '. title .'
+        '. text .'
+        '. date .'
+        '. . .';
+        grid-template-columns:20px 1fr 20px;
+        grid-template-rows: 10px max-content max-content max-content 10px;
+        row-gap:10px;
+        justify-content:center;
+        @include containers;
+        h3 {
+         margin:0px;
+        }
+        span {
+            overflow:hidden;
+            text-overflow: ellipsis;
+            &#title {
+                grid-area:title;
+            }
+            &#text {
+                grid-area:text;
+            }
+            &#date {
+                grid-area:date;
+            }
+        }
+    }
+}

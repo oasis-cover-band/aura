@@ -1,0 +1,87 @@
+@import '../containers.scss';
+:host {
+    grid-area:router-outlet;
+    display:grid;
+    grid-template-areas:
+    '. . . .'
+    '. wrapper misc .'
+    '. . . .';
+    grid-template-columns: 10px 0.6fr 0.4fr 10px;
+    grid-template-rows:10px max-content 10px;
+    justify-content: space-around;
+    align-content: space-around;
+    justify-items:center;
+    @media (max-width:1200px) {
+        grid-template-areas:
+        '. . .'
+        '. misc .'
+        '. wrapper .'
+        '. . .';
+        grid-template-columns: 10px 1fr 10px;
+        grid-template-rows:10px max-content max-content 10px;
+    }
+    section.wrapper {
+        max-height:100%;
+        height:auto;
+        max-width:600px;
+        border-radius:20px;
+        background:rgba(0,0,0,0.3);
+        grid-area:wrapper;
+        display:grid;
+        grid-template-areas:
+        '. . .'
+        '. price .'
+        '. name .'
+        '. time .'
+        '. global .'
+        '. your .'
+        '. input .'
+        '. buttons .'
+        '. . .';
+        grid-template-columns:20px 1fr 20px;
+        grid-template-rows: 10px max-content max-content max-content max-content max-content max-content max-content 10px;
+        row-gap:10px;
+        justify-content:center;
+        @include containers;
+        span {
+            &#price {
+                grid-area:price;
+            }
+            &#input {
+                grid-area:input;
+            }
+        }
+        div {
+            &#name {
+                grid-area:name;
+                app-logo {
+                    max-height:100px;
+                }
+            }
+            &#time {
+                grid-area:time;
+            }
+            &#global {
+                grid-area:global;
+            }
+            &#your {
+                grid-area:your;
+            }
+            &#buttons {
+                grid-area:buttons;
+            }
+        }
+    }
+    section.misc {
+        grid-area:misc;
+        display:grid;
+        justify-content: space-around;
+        align-content:space-around;
+        justify-items:center;
+        p {
+            max-width:80%;
+            font-size:2rem;
+            margin:0px;
+        }
+    }
+}

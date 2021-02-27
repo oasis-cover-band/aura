@@ -1,0 +1,56 @@
+<section class="balance" id="wallet" *ngIf="(user.address | async) !== ''">
+    <div id="address">
+        <i class="material-icons">account_balance_wallet</i>
+    </div>
+    <div id="balance">
+        <span>
+            {{(user.address | async) | slice:0:5}}...{{(user.address | async) | slice:35:40}}
+        </span>
+    </div>
+</section>
+<section class="balance" id="wallet" *ngIf="(user.address | async) === ''" (click)="connectWallet()">
+    <div id="address">
+        <i class="material-icons">account_balance_wallet</i>
+    </div>
+    <div id="balance">
+        <span>
+            Connect
+        </span>
+    </div>
+</section>
+<section class="balance" id="bnb">
+    <div id="address">
+        <span>
+            BNB
+        </span>
+    </div>
+    <div id="balance">
+        <span>
+            {{(((user.bnbBalance | async) / 1e18) | number:'1.2-2')}}
+        </span>
+    </div>
+</section>
+<section class="balance" id="aura">
+    <div id="address">
+        <span>
+            AURA
+        </span>
+    </div>
+    <div id="balance">
+        <span>
+            {{(((user.auraBalance | async) / 1e18) | number:'1.2-2')}}
+        </span>
+    </div>
+</section>
+<section class="balance" id="flipwbnb">
+    <div id="address">
+        <span>
+            FLIP
+        </span>
+    </div>
+    <div id="balance">
+        <span>
+            {{(((user.flipBalance | async) / 1e18) | number:'1.2-2')}}
+        </span>
+    </div>
+</section>

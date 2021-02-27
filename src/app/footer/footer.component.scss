@@ -1,0 +1,23 @@
+@import '../theme.scss';
+$material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
+
+@import '~material-design-icons-iconfont/src/material-design-icons';
+:host {
+    grid-area:footer;
+    background:$primary;
+    display:grid;
+    grid-template-areas:
+    '. . .'
+    '. content .'
+    '. . .';
+    grid-template-columns: 2.5px 1fr 2.5px;
+    grid-template-rows: 2.5px 1fr 2.5px;
+    section.wrapper {
+        grid-area:content;
+        display:grid;
+        justify-content: space-around;
+        align-content: center;
+        text-align:center;
+    }
+    
+}

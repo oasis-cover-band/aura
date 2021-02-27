@@ -1,0 +1,115 @@
+@import './theme.scss';
+@mixin containers{
+    div.small-container {
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      column-gap:10px;
+    }
+    div.norm-container {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      column-gap:10px;
+      &.split {
+          grid-template-columns:1fr 1fr;
+          :nth-child(1) {
+              justify-self:start;
+          }
+          :nth-child(2) {
+              justify-self:end;
+          }
+      }
+    }
+    span {
+        &.big-header, &.norm-header {
+            label {
+                &.value {
+                    background:$primary;
+                    border-radius:30px;
+                    padding:5px 10px;
+                    color:$black;
+                }
+            }
+            h3, h4 {
+                font-size:4rem;
+                color:$primary;
+                text-decoration:underline solid $white;
+                margin:5px 0px;
+            }
+            h4 {
+                font-size:2rem;
+            }
+        }
+        &.big-header {
+            text-align:right;
+            justify-self:end;
+
+        }
+        &.norm-header {
+            display:grid;
+            grid-template-columns:max-content max-content;
+            column-gap:10px;
+            align-content:center;
+            align-items:center;
+            label {
+                font-size:2rem;
+                &.title {
+                    color:$primary;
+                }
+            }
+            &.split {
+                grid-template-columns:1fr 1fr;
+                :nth-child(1) {
+                    justify-self:start;
+                }
+                :nth-child(2) {
+                    justify-self:end;
+                }
+            }
+        }
+        &.small-header {
+            display:grid;
+            grid-template-columns:1fr;
+            grid-template-rows: max-content max-content;
+            column-gap:5x;
+            label {
+                font-size:1rem;
+                &.title {
+                    border-bottom:2px solid $primary;
+                    text-align:left;
+                    justify-self:stretch;
+                }
+                &.value {
+                    text-align:right;
+                    justify-self:end;
+                }
+            }
+            &.value {
+                label {
+                    &.value {
+                        display:grid;
+                        grid-template-columns: 1fr 40px;
+                        text-align:right;
+                        justify-self:stretch;
+                        column-gap:5px;
+                        text-overflow:ellipsis;
+                        overflow:hidden;
+                        &.small {
+                            font-size:0.5rem;
+                            b {
+                                font-size:1rem;
+                            }
+                        }
+                        small {
+                            // background:$primary;
+                            // color:$black;
+                            border-radius:4px;
+                            text-align:center;
+                            // transform:scale(0.8);
+                            // text-decoration:underline solid $primary;
+                        }
+                    }
+                }
+            }
+        }
+    }
+  }

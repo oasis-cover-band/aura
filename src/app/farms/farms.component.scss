@@ -1,0 +1,7 @@
+:host {
+    grid-area:router-outlet;
+    display:grid;
+    justify-content: space-around;
+    align-content: center;
+    grid-template-columns:1fr 1fr;
+}

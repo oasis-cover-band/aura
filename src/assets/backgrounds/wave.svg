@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;background:rgba(255, 255, 255, 0);display:block;z-index:1;position:relative" width="2645" height="685" preserveAspectRatio="xMidYMid" viewBox="0 0 2645 685">
+<g transform="translate(1322.5,342.5) scale(1,1) translate(-1322.5,-342.5)"><g transform="translate(1347.4244373284948,-450.60845565020816) scale(100)" opacity="0.13">
+  <path d="M7.935000000000001 0 C7.935000000000001 4.126200000000001 4.126200000000002 7.935000000000001 4.858786175617125e-16 7.935000000000001 S-7.9350000000000005 4.126200000000002 -7.935000000000001 9.71757235123425e-16 S-4.1262000000000025 -7.9350000000000005 -1.4576358526851373e-15 -7.935000000000001 S7.9350000000000005 -4.1262000000000025 7.935000000000001 -1.94351447024685e-15" fill="#89DAFF" stroke-width="0">
+    <animateTransform attributeName="transform" type="rotate" dur="10s" repeatCount="indefinite" values="0;180"></animateTransform>
+  </path>
+</g><g transform="translate(1352.409324794194,-609.2301467802497) scale(100)" opacity="0.13">
+  <path d="M9.522 0 C9.522 4.951440000000001 4.951440000000002 9.522 5.830543410740549e-16 9.522 S-9.522 4.951440000000002 -9.522 1.1661086821481098e-15 S-4.9514400000000025 -9.521999999999998 -1.7491630232221645e-15 -9.522 S9.521999999999998 -4.951440000000003 9.522 -2.3322173642962197e-15" fill="#89DAFF" stroke-width="0">
+    <animateTransform attributeName="transform" type="rotate" dur="5s" repeatCount="indefinite" values="0;180"></animateTransform>
+  </path>
+</g></g>
+</svg>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Web3Service } from './dynamic-info-services/web3.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'aura';
+
+  constructor(
+    private web3: Web3Service
+  ) {
+  }
 }

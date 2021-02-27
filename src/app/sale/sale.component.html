@@ -1,0 +1,142 @@
+<section class="wrapper">
+    <div class="norm-container" id="name">
+        <app-logo></app-logo>
+        <span class="big-header">
+            <h3>{{(data.name | async)}} LGE</h3>
+        </span>
+    </div>
+    <span class="big-header" id="price">
+        <label class="value">{{(data.FLIPperBNBUnit | async) / 1e18 | number}} {{project.networkCurrency}} per 1 {{project.LPToken}}</label>
+    </span>
+    <div class="small-container" id="time">
+        <span class="small-header">
+            <label class="title">Start Date</label>
+            <label class="value">{{((data.started | async) * 1000)  | date:'dd/MM/yyyy'}}</label>
+        </span>
+        <span class="small-header">
+            <label class="title">End Date</label>
+            <label class="value">{{((data.ended | async) * 1000) | date:'dd/MM/yyyy'}}</label>
+        </span>
+        <span class="small-header value">
+            <label class="title">Individual Cap</label>
+            <label class="value"><b>{{(data.individualCap | async) / 1e18 | number}}</b> <small>{{project.networkCurrency}}</small></label>
+        </span>
+    </div>
+    <div class="norm-container" id="global">
+        <span class="small-header value">
+            <label class="title">Global Tokens</label>
+            <label class="value"><b>{{((data.totalBNBContributed | async) * (data.FLIPperBNBUnit | async) / 1e18) | number}}</b> <small>{{project.LPToken}}</small></label>
+        </span>
+        <span class="small-header value">
+            <label class="title">Global Contributions</label>
+            <label class="value"><b>{{(data.totalBNBContributed | async) / 1e18 | number}}</b> <small>{{project.networkCurrency}}</small></label>
+        </span>
+    </div>
+    <div class="norm-container" id="your">
+        <span class="small-header value">
+            <label class="title">Your Contribution</label>
+            <label class="value"><b>{{(data.user.contribution | async) / 1e18 | number}}</b> <small>{{project.networkCurrency}}</small></label>
+        </span>
+        <span class="small-header value">
+            <label class="title">Your Tokens</label>
+            <label class="value"><b>{{((data.user.contribution | async) * (data.FLIPperBNBUnit | async) / 1e18) | number}}</b> <small>{{project.LPToken}}</small></label>
+        </span>
+    </div>
+    <span class="input" id="input">
+        <input [placeholder]="inputPlaceholder" #inputEle/>
+    </span>
+    <div class="norm-container" id="buttons">
+        <span class="button" id="deposit">
+            <button (click)="deposit()">
+                <label *ngIf="(data.depositButton | async) === 0">Deposit</label>
+                <label *ngIf="(data.depositButton | async) === 1">Depositing</label>
+                <label *ngIf="(data.depositButton | async) === 2">Deposited</label>
+                <label *ngIf="(data.depositButton | async) === 3">Failed</label>
+                <label *ngIf="(data.depositButton | async) === 4">Approving</label>
+                <label *ngIf="(data.depositButton | async) === 5">Approved</label>
+            </button>
+        </span>
+        <span class="button" id="claim">
+            <button (click)="claim()">
+                <label *ngIf="(data.claimButton | async) === 0">Claim</label>
+                <label *ngIf="(data.claimButton | async) === 1">Claiming</label>
+                <label *ngIf="(data.claimButton | async) === 2">Claimed</label>
+                <label *ngIf="(data.claimButton | async) === 3">Failed</label>
+            </button>
+        </span>
+    </div>
+</section>
+<section class="misc">
+    <!-- STARTS GREATER THAN A DAY -->
+    <p *ngIf="(((data.started | async) * 1000) - (now | async)) > 86400">
+        The LGE starts in {{(((data.started | async) * 1000) - (now | async)) / 86400}} days, and ends in 
+        {{((data.ended | async) * 1000) - (now | async) / 86400}} days.
+        <br><br>
+    </p>
+    <!-- STARTS GREATER THAN AN HOUR -->
+    <p *ngIf="(((data.started | async) * 1000) - (now | async)) > 3600 &&
+        (((data.started | async) * 1000) - (now | async)) < 86399">
+        The LGE starts in {{(((data.started | async) * 1000) - (now | async)) / 3600}} hours, and ends in 
+        {{((data.ended | async) * 1000) - (now | async) / 86400}} days.
+        <br><br>
+    </p>
+    <!-- STARTS GREATER THAN A MINUTE -->
+    <p *ngIf="(((data.started | async) * 1000) - (now | async)) > 60 &&
+        (((data.started | async) * 1000) - (now | async)) < 3599">
+        The LGE starts in {{(((data.started | async) * 1000) - (now | async)) / 60}} minutes, and ends in 
+        {{((data.ended | async) * 1000) - (now | async) / 86400}} days.
+        <br><br>
+    </p>
+    
+    <!-- STARTS WITHIN A MINUTE -->
+    <p *ngIf="(((data.started | async) * 1000) - (now | async)) > 0 &&
+        (((data.started | async) * 1000) - (now | async)) < 59">
+        The LGE starts in {{(((data.started | async) * 1000) - (now | async))}} seconds, and ends in 
+        {{((data.ended | async) * 1000) - (now | async) / 86400}} days.
+        <br><br>
+    </p>
+    <!-- ENDS WITHIN 60 SECONDS -->
+    <p *ngIf="(((data.started | async) * 1000) - (now | async)) < 0 &&
+    (((data.ended | async) * 1000) - (now | async)) < 60">
+        The LGE started on {{(((data.started | async) * 1000) | date)}}, and ends in 
+        {{((data.ended | async) * 1000) - (now | async)}} seconds.
+        <br><br>
+        So far, the LGE has raised {{((data.totalBNBContributed | async) / 1e18) | number}} {{project.networkCurrency}}
+    </p>
+    <!-- ENDS WITHIN 1 HOUR -->
+    <p *ngIf="(((data.started | async) * 1000) - (now | async)) < 0 &&
+    (((data.ended | async) * 1000) - (now | async)) > 61 &&
+    (((data.ended | async) * 1000) - (now | async)) < 3600">
+        The LGE started on {{(((data.started | async) * 1000) | date)}}, and ends in 
+        {{((data.ended | async) * 1000) - (now | async) / 3600}} minutes.
+        <br><br>
+        So far, the LGE has raised {{((data.totalBNBContributed | async) / 1e18) | number}} {{project.networkCurrency}}
+    </p>
+    <!-- ENDS WITHIN 1 DAY -->
+    <p *ngIf="(((data.started | async) * 1000) - (now | async)) < 0 &&
+    (((data.ended | async) * 1000) - (now | async)) > 3601 &&
+    (((data.ended | async) * 1000) - (now | async)) < 86400">
+        The LGE started on {{(((data.started | async) * 1000) | date)}}, and ends in 
+        {{((data.ended | async) * 1000) - (now | async) / 3600}} hours.
+        <br><br>
+        So far, the LGE has raised {{((data.totalBNBContributed | async) / 1e18) | number}} {{project.networkCurrency}}
+    </p>
+    <!-- ENDS GREATER THAN 1 DAY -->
+    <p *ngIf="(((data.started | async) * 1000) - (now | async)) < 0 &&
+    (((data.ended | async) * 1000) - (now | async)) > 86401">
+        The LGE started on {{(((data.started | async) * 1000) | date)}}, and ends in 
+        {{((data.ended | async) * 1000) - (now | async) / 86400}} days.
+        <br><br>
+        So far, the LGE has raised {{((data.totalBNBContributed | async) / 1e18) | number}} {{project.networkCurrency}}
+    </p>
+    <!-- <div class="norm-container" id="timers">
+        <span class="small-header">
+            <label class="title">End Time</label>
+            <label class="value">{{((data.ended | async) * 1000) - (now | async)}}</label>
+        </span>
+        <span class="small-header">
+            <label class="title">End Time</label>
+            <label class="value">{{((data.ended | async) * 1000) - (now | async)}}</label>
+        </span>
+    </div> -->
+</section>
