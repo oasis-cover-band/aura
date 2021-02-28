@@ -3,7 +3,7 @@
     grid-area:router-outlet;
     display:grid;
     justify-content: stretch;
-    align-content: start;
+    align-content:start;
     
     @include containers;
     grid-template-rows:max-content 1fr;
@@ -11,6 +11,7 @@
     overflow:hidden;
     section.wrapper, section.top-bar {
         display:grid;
+        align-content:start;
         grid-template-columns:1fr 1fr;
         column-gap:10px;
         @media (max-width:900px) {

@@ -19,12 +19,6 @@ export class Web3Service {
   auraContract;
   auraContractAddress = '0xD900cBDf3C8D7bB5ACEF39C3218E8B93A4429C50';
 
-  auraLPContract;
-  auraLPContractAddress = '0xa87411340B60ca59452bd47bbDA393Ac20a68829';
-
-  auraWLPContract;
-  auraWLPContractAddress = '0xa87411340B60ca59452bd47bbDA393Ac20a68829';
-
   auraVaultContractAddress = '0x9A79c9637d91aB4653cD24451F1b1773D8765Ffa';
   auraVaultContract;
 
@@ -45,6 +39,8 @@ export class Web3Service {
     sellFee: new BehaviorSubject(0),
   };
   liquidityToken = {
+    wLPContract: undefined,
+    lpContract: undefined,
     wLPAddress: new BehaviorSubject(''),
     lpAddress: new BehaviorSubject(''),
     wLPName: new BehaviorSubject(''),
@@ -115,152 +111,7 @@ export class Web3Service {
       }),
       userBalance: new BehaviorSubject(0),
       multiplier: new BehaviorSubject(30)
-    },
-    {
-      name: 'WBNB-AURA', // MAKE IT GET FROM token.name()
-      token: {
-        name: new BehaviorSubject(''),
-        address: new BehaviorSubject(''),
-        contract: undefined,
-        decimals: new BehaviorSubject(0),
-        symbol: new BehaviorSubject(''),
-      },
-      apy: new BehaviorSubject(0),
-      claimButton: new BehaviorSubject(0),
-      depositButton: new BehaviorSubject(0),
-      withdrawButton: new BehaviorSubject(0),
-      tokenApproval: new BehaviorSubject(0),
-      tokenRewards: new BehaviorSubject(0),
-      pendingAura: new BehaviorSubject(0),
-      userPoolInfo: new BehaviorSubject({
-        amount: 0,
-        rewardPaid: 0
-      }),
-      poolInfo: new BehaviorSubject({
-        stakedToken: '',
-        allocPoint: 0,
-        accAURAPerShare: 0,
-        withdrawable: false
-      }),
-      userBalance: new BehaviorSubject(0),
-      multiplier: new BehaviorSubject(30)
-    },
-    {
-      name: 'WBNB-AURA', // MAKE IT GET FROM token.name()
-      token: {
-        name: new BehaviorSubject(''),
-        address: new BehaviorSubject(''),
-        contract: undefined,
-        decimals: new BehaviorSubject(0),
-        symbol: new BehaviorSubject(''),
-      },
-      apy: new BehaviorSubject(0),
-      claimButton: new BehaviorSubject(0),
-      depositButton: new BehaviorSubject(0),
-      withdrawButton: new BehaviorSubject(0),
-      tokenApproval: new BehaviorSubject(0),
-      tokenRewards: new BehaviorSubject(0),
-      pendingAura: new BehaviorSubject(0),
-      userPoolInfo: new BehaviorSubject({
-        amount: 0,
-        rewardPaid: 0
-      }),
-      poolInfo: new BehaviorSubject({
-        stakedToken: '',
-        allocPoint: 0,
-        accAURAPerShare: 0,
-        withdrawable: false
-      }),
-      userBalance: new BehaviorSubject(0),
-      multiplier: new BehaviorSubject(30)
-    },
-    {
-      name: 'WBNB-AURA', // MAKE IT GET FROM token.name()
-      token: {
-        name: new BehaviorSubject(''),
-        address: new BehaviorSubject(''),
-        contract: undefined,
-        decimals: new BehaviorSubject(0),
-        symbol: new BehaviorSubject(''),
-      },
-      apy: new BehaviorSubject(0),
-      claimButton: new BehaviorSubject(0),
-      depositButton: new BehaviorSubject(0),
-      withdrawButton: new BehaviorSubject(0),
-      tokenApproval: new BehaviorSubject(0),
-      tokenRewards: new BehaviorSubject(0),
-      pendingAura: new BehaviorSubject(0),
-      userPoolInfo: new BehaviorSubject({
-        amount: 0,
-        rewardPaid: 0
-      }),
-      poolInfo: new BehaviorSubject({
-        stakedToken: '',
-        allocPoint: 0,
-        accAURAPerShare: 0,
-        withdrawable: false
-      }),
-      userBalance: new BehaviorSubject(0),
-      multiplier: new BehaviorSubject(30)
-    },
-    {
-      name: 'WBNB-AURA', // MAKE IT GET FROM token.name()
-      token: {
-        name: new BehaviorSubject(''),
-        address: new BehaviorSubject(''),
-        contract: undefined,
-        decimals: new BehaviorSubject(0),
-        symbol: new BehaviorSubject(''),
-      },
-      apy: new BehaviorSubject(0),
-      claimButton: new BehaviorSubject(0),
-      depositButton: new BehaviorSubject(0),
-      withdrawButton: new BehaviorSubject(0),
-      tokenApproval: new BehaviorSubject(0),
-      tokenRewards: new BehaviorSubject(0),
-      pendingAura: new BehaviorSubject(0),
-      userPoolInfo: new BehaviorSubject({
-        amount: 0,
-        rewardPaid: 0
-      }),
-      poolInfo: new BehaviorSubject({
-        stakedToken: '',
-        allocPoint: 0,
-        accAURAPerShare: 0,
-        withdrawable: false
-      }),
-      userBalance: new BehaviorSubject(0),
-      multiplier: new BehaviorSubject(30)
-    },
-    {
-      name: 'WBNB-AURA', // MAKE IT GET FROM token.name()
-      token: {
-        name: new BehaviorSubject(''),
-        address: new BehaviorSubject(''),
-        contract: undefined,
-        decimals: new BehaviorSubject(0),
-        symbol: new BehaviorSubject(''),
-      },
-      apy: new BehaviorSubject(0),
-      claimButton: new BehaviorSubject(0),
-      depositButton: new BehaviorSubject(0),
-      withdrawButton: new BehaviorSubject(0),
-      tokenApproval: new BehaviorSubject(0),
-      tokenRewards: new BehaviorSubject(0),
-      pendingAura: new BehaviorSubject(0),
-      userPoolInfo: new BehaviorSubject({
-        amount: 0,
-        rewardPaid: 0
-      }),
-      poolInfo: new BehaviorSubject({
-        stakedToken: '',
-        allocPoint: 0,
-        accAURAPerShare: 0,
-        withdrawable: false
-      }),
-      userBalance: new BehaviorSubject(0),
-      multiplier: new BehaviorSubject(30)
-    },
+    }
   ];
 
   // BUTTONS
@@ -273,7 +124,7 @@ export class Web3Service {
       this.connectWallet();
       setInterval(() => {
         this.getInfo();
-      }, 10000);
+      }, 1000);
     });
   }
 
@@ -329,6 +180,8 @@ export class Web3Service {
 
   async approve(poolId: number): Promise<any> {
     this.poolInfo[poolId].depositButton.next(4);
+    console.dir(this.poolInfo[poolId].token.contract);
+    console.dir(this.poolInfo[poolId].token.address);
     return await this.poolInfo[poolId].token.contract.methods.approve(this.auraVaultContractAddress, BigInt(999999999999999999999999)).send({ from: this.user.address.getValue() })
       .on('transactionHash', (transactionHash) => {
       })
@@ -534,8 +387,8 @@ export class Web3Service {
     await this.getCumulativeRewardsSinceStart();
     await this.getAverageFeesPerBlockSinceStart();
     await this.getAverageFeesPerBlockEpoch();
-    await this.poolInfo.forEach((element, index) => {
-      this.getAllUserPoolInfo(index);
+    await this.poolInfo.forEach(async (element, index) => {
+      await this.getAllUserPoolInfo(index);
     });
   }
 
@@ -775,45 +628,32 @@ export class Web3Service {
   }
 
   async setContracts(): Promise<any> {
-    await this.setAuraContract().then(setAuraResult => {
-      this.setVaultContract().then(setVaultResult => {
-        this.getPoolLength().then(getPoolLengthResult => {
-          this.setPoolContracts().then(setPoolContractsResult => {
-            this.getAllPoolInfo();
-          });
-        });
-        this.getLPContracts().then(getLPResult => {
-          this.setLPContracts().then(setLPResult => {
-
+    return await this.setAuraContract().then(async setAuraResult => {
+      await this.setVaultContract().then(async setVaultResult => {
+        await this.getPoolLength().then(async getPoolLengthResult => {
+          await this.getAllPoolInfo().then(async getAllPoolInfoResult => {
+            await this.setPoolTokenContracts().then(async setPoolTokenContractsResult => {
+              await this.getLPContracts().then(async getLPResult => {
+                await this.setLPContracts().then(setLPResult => {
+      
+                });
+              });
+            });
           });
         });
       });
     });
-    // this.getVaultContract().then(result => {
-    //   this.getAllPoolInfo().then(result2 => {
-    //     this.poolInfo.length = this.vault.length.getValue();
-    //     console.dir(this.poolInfo);
-    //     this.poolInfo.forEach((element, index) => {
-    //       this.poolInfo[index].tokenAddress = this.poolInfo[index].poolInfo.getValue().stakedToken;
-    //       this.poolInfo[index].token.contract = new this.web3.eth.Contract(auraAbi, this.poolInfo[index].tokenAddress);
-    //     });
-    //   });
-    // });
-    this.poolInfo[0].token.address.next(this.auraLPContractAddress);
-    this.poolInfo[0].token.contract = new this.web3.eth.Contract(auraAbi, this.auraLPContractAddress);
-    this.poolInfo.forEach((element, index) => {
-      // this.poolInfo[index].tokenAddress = this.poolInfo[index].poolInfo.getValue().stakedToken;
-      // console.dir(this.poolInfo[index].poolInfo.getValue().stakedToken);
-      this.poolInfo[index].token.address.next(this.auraLPContractAddress);
-      this.poolInfo[index].token.contract = new this.web3.eth.Contract(auraAbi, this.poolInfo[index].token.address.getValue());
-    });
   }
 
-  async setPoolContracts(): Promise<any> {
+  async setPoolTokenContracts(): Promise<any> {
     this.poolInfo.length = this.vault.length.getValue();
-    await this.poolInfo.forEach((element, index) => {
+    await this.poolInfo.forEach(async (element, index) => {
+            console.dir(index);
             this.poolInfo[index].token.address.next(this.poolInfo[index].poolInfo.getValue().stakedToken);
-            this.poolInfo[index].token.contract = new this.web3.eth.Contract(auraAbi, this.poolInfo[index].token.address.getValue());
+            console.dir(index);
+            console.dir(this.poolInfo[index].poolInfo.getValue().stakedToken);
+            console.dir(this.poolInfo[index].token.address.getValue());
+            this.poolInfo[index].token.contract = await new this.web3.eth.Contract(auraAbi, this.poolInfo[index].poolInfo.getValue().stakedToken);
         });
   }
 
@@ -827,7 +667,7 @@ export class Web3Service {
     await this.setWLPContract();
   }
   async setAuraContract(): Promise<any> {
-    this.auraContract = new this.web3.eth.Contract(auraAbi, this.auraContractAddress);
+    this.auraContract = await new this.web3.eth.Contract(auraAbi, this.auraContractAddress);
   }
 
   async setVaultContract(): Promise<any> {
@@ -835,23 +675,24 @@ export class Web3Service {
   }
 
   async getLPContract(): Promise<any> {
-    await this.auraContract.methods.viewFLIP().call().then(result => {
+    return await this.auraContract.methods.viewFLIP().call().then(result => {
       this.liquidityToken.lpAddress.next(result);
     });
   }
 
   async setLPContract(): Promise<any> {
-    this.auraLPContract = await new this.web3.eth.Contract(auraLPAbi, this.auraLPContractAddress);
+    this.liquidityToken.lpContract = await new this.web3.eth.Contract(auraLPAbi, this.liquidityToken.lpAddress.getValue());
   }
 
   async getWLPContract(): Promise<any> {
-    await this.auraContract.methods.wFLIP().call().then(result => {
+    return await this.auraContract.methods.wFLIP().call().then(result => {
       this.liquidityToken.wLPAddress.next(result);
     });
   }
 
   async setWLPContract(): Promise<any> {
-    this.auraWLPContract = await new this.web3.eth.Contract(auraWLPAbi, this.auraWLPContractAddress);
+    this.liquidityToken.wLPContract = await new this.web3.eth.Contract(auraWLPAbi, this.liquidityToken.wLPAddress.getValue());
+
   }
 
   // ================== //
@@ -866,24 +707,6 @@ export class Web3Service {
   async getUserAuraBalance(): Promise<any> {
     this.auraContract.methods.balanceOf(this.user.address.getValue()).call().then(async result => {
       this.user.auraBalance.next(result);
-    });
-  }
-
-// THIS IS CALLED LATER DUE TO THE LP TOKENS' INFORMATION BEING PULLED FROM TOKEN CONTRACT ITSELF
-  async getUserLPTokenBalances(): Promise<any> {
-    this.getUserLPBalance();
-    this.getUserWLPBalance();
-  }
-
-  async getUserLPBalance(): Promise<any> {
-    this.auraLPContract.methods.balanceOf(this.user.address.getValue()).call().then(async result => {
-      this.user.lpBalance.next(result);
-    });
-  }
-
-  async getUserWLPBalance(): Promise<any> {
-    this.auraWLPContract.methods.balanceOf(this.user.address.getValue()).call().then(async result => {
-      this.user.wLPBalance.next(result);
     });
   }
 
@@ -951,43 +774,59 @@ export class Web3Service {
     this.getWLPTokenSymbol();
   }
 
+  async getUserLPTokenBalances(): Promise<any> {
+    this.getUserLPBalance();
+    this.getUserWLPBalance();
+  }
+
+  async getUserLPBalance(): Promise<any> {
+    return await this.liquidityToken.lpContract.methods.balanceOf(this.user.address.getValue()).call().then(async result => {
+      this.user.lpBalance.next(result);
+    });
+  }
   async getLPTokenName(): Promise<any> {
-    this.auraLPContract.methods.name().call().then(async result => {
+    return await this.liquidityToken.lpContract.methods.name().call().then(async result => {
       this.liquidityToken.lpName.next(result);
     });
   }
   async getLPTokenSymbol(): Promise<any> {
-    this.auraLPContract.methods.symbol().call().then(async result => {
+    return await this.liquidityToken.lpContract.methods.symbol().call().then(async result => {
       this.liquidityToken.lpSymbol.next(result);
     });
   }
   async getLPTokenDecimals(): Promise<any> {
-    this.auraLPContract.methods.decimals().call().then(async result => {
+    return await this.liquidityToken.lpContract.methods.decimals().call().then(async result => {
       this.liquidityToken.lpDecimals.next(result);
     });
   }
   async getLPTokenTotalSupply(): Promise<any> {
-    this.auraLPContract.methods.totalSupply().call().then(async result => {
+    return await this.liquidityToken.lpContract.methods.totalSupply().call().then(async result => {
       this.liquidityToken.lpTotalSupply.next(result);
     });
   }
+
+  async getUserWLPBalance(): Promise<any> {
+    return await this.liquidityToken.wLPContract.methods.balanceOf(this.user.address.getValue()).call().then(async result => {
+      this.user.wLPBalance.next(result);
+    });
+  }
   async getWLPTokenName(): Promise<any> {
-    this.auraWLPContract.methods.name().call().then(async result => {
+    return await this.liquidityToken.wLPContract.methods.name().call().then(async result => {
       this.liquidityToken.wLPName.next(result);
     });
   }
   async getWLPTokenSymbol(): Promise<any> {
-    this.auraWLPContract.methods.symbol().call().then(async result => {
+    return await this.liquidityToken.wLPContract.methods.symbol().call().then(async result => {
       this.liquidityToken.wLPSymbol.next(result);
     });
   }
   async getWLPTokenDecimals(): Promise<any> {
-    this.auraWLPContract.methods.decimals().call().then(async result => {
+    return await this.liquidityToken.wLPContract.methods.decimals().call().then(async result => {
       this.liquidityToken.wLPDecimals.next(result);
     });
   }
   async getWLPTokenTotalSupply(): Promise<any> {
-    this.auraWLPContract.methods.totalSupply().call().then(async result => {
+    return await this.liquidityToken.wLPContract.methods.totalSupply().call().then(async result => {
       this.liquidityToken.wLPTotalSupply.next(result);
     });
   }

@@ -10,12 +10,17 @@
     grid-template-columns: 2.5px 1fr 2.5px;
     grid-template-rows: 2.5px 1fr 2.5px;
     color:$black;
+    max-height:100%;
     section.wrapper {
         grid-area:content;
         display:grid;
         justify-content: space-around;
-        align-content: center;
+        align-content: space-around;
+        align-items: center;
         text-align:center;
+        @media (max-height:600px) {
+            grid-auto-flow: column;
+        }
     }
     
 }

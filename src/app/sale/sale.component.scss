@@ -9,21 +9,14 @@
     grid-template-columns: 10px 0.6fr 0.4fr 10px;
     grid-template-rows:10px max-content 10px;
     justify-content: space-around;
-    align-content: space-around;
+    align-content:start;
     justify-items:center;
-    @media (max-width:1200px) {
-        grid-template-areas:
-        '. . .'
-        '. misc .'
-        '. wrapper .'
-        '. . .';
-        grid-template-columns: 10px 1fr 10px;
-        grid-template-rows:10px max-content max-content 10px;
-    }
+    row-gap:10px;
     section.wrapper {
-        max-height:100%;
+        max-height:fit-content;
+        max-width:min-content;
+        min-width:100%;
         height:auto;
-        max-width:600px;
         border-radius:20px;
         background:rgba(0,0,0,0.3);
         grid-area:wrapper;
@@ -80,8 +73,50 @@
         justify-items:center;
         p {
             max-width:80%;
-            font-size:2rem;
+            font-size:1.4rem;
             margin:0px;
+        }
+    }
+    overflow-y:scroll;
+    @media (max-width:700px) and (min-height:700px), (max-width:400px) {
+        grid-template-areas:
+        '. . .'
+        '. misc .'
+        '. wrapper .'
+        '. . .';
+        grid-template-columns: 10px 1fr 10px;
+        grid-template-rows:10px max-content max-content 10px;
+    }
+    overflow-y:scroll;
+    
+    @media (min-width:1200px) and (max-height:300px) {
+        section.wrapper {
+            column-gap:10px;
+            grid-template-areas:
+            '. . . .'
+            '. price name .'
+            '. time global .'
+            '. input your .'
+            '. buttons buttons .'
+            '. . . .';
+            grid-template-columns:20px 1fr max-content 20px;
+            grid-template-rows: 10px max-content max-content max-content max-content 10px;
+        }
+    }
+    @media (min-width:1200px) and (max-height:500px) {
+        section.wrapper {
+            column-gap:10px;
+            grid-template-areas:
+            '. . . . . . .'
+            '. price name time global your .'
+            '. input input input buttons buttons .'
+            '. . . . . . .';
+            grid-template-columns:20px max-content max-content max-content max-content 1fr 20px;
+            grid-template-rows: 10px max-content max-content 10px;
+            font-size:200%;
+            label {
+                font-size:1.2rem!important;
+            }
         }
     }
 }

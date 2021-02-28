@@ -20,6 +20,22 @@
     grid-template-columns:1fr;
     grid-template-rows: 100px 1fr 100px
   }
+  @media (max-height:800px) {
+    grid-template-areas:
+    'header'
+    'main'
+    'footer';
+    grid-template-columns:1fr;
+    grid-template-rows: 50px 1fr 100px
+  }
+  @media (max-height:600px) {
+    grid-template-areas:
+    'header'
+    'main'
+    'footer';
+    grid-template-columns:1fr;
+    grid-template-rows: 50px 1fr 50px
+  }
   main {
       grid-area:main;
       display:grid;
@@ -43,7 +59,4 @@
   app-footer {
       grid-area:footer;
   }
-  background: url('../assets/backgrounds/wave.svg');
-  background-position:50% -50%;
-  background-repeat:no-repeat;
 }

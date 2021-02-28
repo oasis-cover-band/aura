@@ -26,6 +26,9 @@
         align-items:center;
         background:$dark;
         border-radius:4px;
+        @media (max-height:800px) {
+            grid-template-rows: 2px 1fr 2px;
+        }
         * {
             pointer-events: none;
         }
@@ -46,6 +49,9 @@
         }
         &#wallet {
             grid-area:wallet;
+            i {
+                font-size:1rem;
+            }
         }
         &#bnb {
             grid-area:bnb;
@@ -60,7 +66,7 @@
             grid-area:wflipwbnb;
         }
     }
-    @media (max-width:600px) {
+    @media (max-width:600px), (max-height:800px) {
         max-height:80px;
         section.balance {
          display:none!important;   
