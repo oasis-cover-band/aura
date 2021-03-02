@@ -11,10 +11,11 @@ export class WalletComponent implements OnInit {
 
   user = this.web3.user;
   opened = true;
-
+  project = this.projectService.project;
+  
   constructor(
     private web3: Web3Service,
-    public project: ProjectService
+    private projectService: ProjectService
   ) { }
 
   ngOnInit(): void {

@@ -39,6 +39,9 @@
             }
             &#text {
                 grid-area:text;
+                p.break-spaces {
+                    white-space: break-spaces;
+                }
             }
             &#date {
                 grid-area:date;

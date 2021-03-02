@@ -6,7 +6,7 @@
         </span>
     </div>
     <span class="big-header" id="price">
-        <label class="value">{{(data.FLIPperBNBUnit | async) / 1e18 | number}} {{project.lpTokenName}} per 1 {{project.networkCurrency}}</label>
+        <label class="value" *ngIf="(data.FLIPperBNBUnit | async) !== 0">{{(data.FLIPperBNBUnit | async) / 1e18 | number}} {{project.lpTokenName}} per 1 {{project.networkCurrency}}</label>
     </span>
     <div class="small-container" id="time">
         <span class="small-header">
@@ -46,12 +46,17 @@
             <label class="value"><b>{{(((data.user.contribution | async) / 1e18) * ((data.FLIPperBNBUnit | async) / 1e18)) | number}}</b> <small>{{project.lpTokenName}}</small></label>
         </span>
     </div>
-    <span class="input" id="input">
+    <span class="input" id="input" *ngIf="(data.FLIPperBNBUnit | async) < 1">
         <input [placeholder]="inputPlaceholder" #inputEle/>
     </span>
     <div class="norm-container" id="buttons">
         <span class="button" id="deposit">
-            <button (click)="deposit()" *ngIf="(((data.started | async) * 1000) - (now | async)) < 0">
+            <button [ngClass]="{
+                'working' : (data.depositButton | async) === 1 || (data.withdrawButton | async) === 2,
+                'failed' : (data.depositButton | async) === 3
+            }"
+            (click)="deposit()"
+            *ngIf="(((data.started | async) * 1000) - (now | async)) < 0 && (data.FLIPperBNBUnit | async) < 1">
                 <label *ngIf="(data.depositButton | async) === 0">Deposit</label>
                 <label *ngIf="(data.depositButton | async) === 1">Depositing</label>
                 <label *ngIf="(data.depositButton | async) === 2">Deposited</label>
@@ -59,94 +64,116 @@
                 <label *ngIf="(data.depositButton | async) === 4">Approving</label>
                 <label *ngIf="(data.depositButton | async) === 5">Approved</label>
             </button>
-            <button *ngIf="(((data.started | async) * 1000) - (now | async)) > 0">
+            <button *ngIf="(((data.started | async) * 1000) - (now | async)) > 0 && (data.FLIPperBNBUnit | async) < 1">
                 <label>Starts in {{(((data.started | async) * 1000) - (now | async)) | number}} seconds.</label>
+                <label *ngIf="(data.FLIPperBNBUnit | async) > 1">LGE Ended.</label>
             </button>
         </span>
         <span class="button" id="claim">
-            <button (click)="claim()" *ngIf="(((data.calculatedEnd | async) * 1000) - (now | async)) < 0">
+            <button [ngClass]="{
+                'working' : (data.claimButton | async) === 1 || (data.claimButton | async) === 2,
+                'failed' : (data.claimButton | async) === 3
+            }"
+            (click)="claim()"
+            *ngIf="(((data.calculatedEnd | async) * 1000) - (now | async)) < 0 && (data.FLIPperBNBUnit | async) > 1">
                 <label *ngIf="(data.claimButton | async) === 0">Claim</label>
                 <label *ngIf="(data.claimButton | async) === 1">Claiming</label>
                 <label *ngIf="(data.claimButton | async) === 2">Claimed</label>
                 <label *ngIf="(data.claimButton | async) === 3">Failed</label>
             </button>
-            <button *ngIf="(((data.calculatedEnd | async) * 1000) - (now | async)) > 0">
-                <label>Ends in {{(((data.calculatedEnd | async) * 1000) - (now | async)) | number}} seconds.</label>
+            <button *ngIf="(((data.calculatedEnd | async) * 1000) - (now | async)) > 0 && (data.FLIPperBNBUnit | async) > 1">
+                <label *ngIf="((((data.calculatedEnd | async) * 1000) - (now | async)) / 1000) / 60 <= 1">Ends in {{((((data.calculatedEnd | async) * 1000) - (now | async)) / 1000) | number:'1.2-2'}} seconds.</label>
+                <label *ngIf="((((data.calculatedEnd | async) * 1000) - (now | async)) / 1000) / 60 > 1 &&
+                    ((((data.calculatedEnd | async) * 1000) - (now | async)) / 1000) / 3600 <= 1 ">Ends in {{((((data.calculatedEnd | async) * 1000) - (now | async)) / 1000) / 60 | number:'1.2-2'}} minutes.</label>
+                <label *ngIf="((((data.calculatedEnd | async) * 1000) - (now | async)) / 1000) / 3600 > 1 &&
+                ((((data.calculatedEnd | async) * 1000) - (now | async)) / 1000) / 86400 <= 1">Ends in {{((((data.calculatedEnd | async) * 1000) - (now | async)) / 1000) / 3600 | number:'1.2-2'}} hours.</label>
+                <label *ngIf="((((data.calculatedEnd | async) * 1000) - (now | async)) / 1000) / 86400 > 1">Ends in {{((((data.calculatedEnd | async) * 1000) - (now | async)) / 1000) / 86400 | number:'1.2-2'}} days.</label>
             </button>
         </span>
     </div>
 </section>
 <section class="misc">
+    <i class="material-icons">alarm</i>
     <!-- STARTS GREATER THAN A DAY -->
-    <p *ngIf="(((data.started | async) * 1000) - (now | async)) > 86400">
-        The LGE starts in {{(((data.started | async) * 1000) - (now | async)) / 86400}} days, and ends in 
-        {{((data.calculatedEnd | async) * 1000) - (now | async) / 86400}} days.
+    <p *ngIf="(((data.started | async) * 1000) - (now | async)) / 1000 > 86400">
+        The LGE starts in {{(((data.started | async) * 1000) - (now | async)) / 1000 / 86400 | number:'1.2-2'}} days, and ends in 
+        {{(((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 / 86400 | number:'1.2-2'}} days.
         <br><br>
     </p>
     <!-- STARTS GREATER THAN AN HOUR -->
-    <p *ngIf="(((data.started | async) * 1000) - (now | async)) > 3600 &&
-        (((data.started | async) * 1000) - (now | async)) < 86399">
-        The LGE starts in {{(((data.started | async) * 1000) - (now | async)) / 3600}} hours, and ends in 
-        {{((data.calculatedEnd | async) * 1000) - (now | async) / 86400}} days.
+    <p *ngIf="(((data.started | async) * 1000) - (now | async)) / 1000 > 3600 &&
+        (((data.started | async) * 1000) - (now | async)) / 1000 < 86399">
+        The LGE starts in {{(((data.started | async) * 1000) - (now | async)) / 1000 / 3600 | number:'1.2-2'}} hours, and ends in 
+        {{(((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 / 86400 | number:'1.2-2'}} days.
         <br><br>
     </p>
     <!-- STARTS GREATER THAN A MINUTE -->
-    <p *ngIf="(((data.started | async) * 1000) - (now | async)) > 60 &&
-        (((data.started | async) * 1000) - (now | async)) < 3599">
-        The LGE starts in {{(((data.started | async) * 1000) - (now | async)) / 60}} minutes, and ends in 
-        {{((data.calculatedEnd | async) * 1000) - (now | async) / 86400}} days.
+    <p *ngIf="(((data.started | async) * 1000) - (now | async)) / 1000 > 60 &&
+        (((data.started | async) * 1000) - (now | async)) / 1000 < 3599">
+        The LGE starts in {{(((data.started | async) * 1000) - (now | async)) / 1000 / 60 | number:'1.2-2'}} minutes, and ends in 
+        {{(((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 / 86400 | number:'1.2-2'}} days.
         <br><br>
     </p>
     
     <!-- STARTS WITHIN A MINUTE -->
-    <p *ngIf="(((data.started | async) * 1000) - (now | async)) > 0 &&
-        (((data.started | async) * 1000) - (now | async)) < 59">
-        The LGE starts in {{(((data.started | async) * 1000) - (now | async))}} seconds, and ends in 
-        {{((data.calculatedEnd | async) * 1000) - (now | async) / 86400}} days.
+    <p *ngIf="(((data.started | async) * 1000) - (now | async)) / 1000 > 0 &&
+        (((data.started | async) * 1000) - (now | async)) / 1000 < 59">
+        The LGE starts in {{(((data.started | async) * 1000) - (now | async)) / 1000 | number:'1.2-2'}} seconds, and ends in 
+        {{(((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 / 86400 | number:'1.2-2'}} days.
         <br><br>
     </p>
     <!-- ENDED -->
-    <p *ngIf="(((data.calculatedEnd | async) * 1000) - (now | async)) < 0">
+    <p *ngIf="(((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 < 0">
         The LGE started on {{(((data.started | async) * 1000) | date)}}, and ended on 
         {{((data.ended | async) * 1000) | date}}.
         <br><br>
-        The LGE has raised {{((data.totalBNBContributed | async) / 1e18) | number}} {{project.networkCurrency}}.
-        <button (click)="createLiquidity()" *ngIf="(data.FLIPperBNBUnit | async) < 1">End LGE</button>
+        The LGE has raised {{((data.totalBNBContributed | async) / 1e18) | number:'1.2-2'}} {{project.networkCurrency}}.
+        <button class="inverse" [ngClass]="{
+            'working' : (data.createLiquidityButton | async) === 1 || (data.createLiquidityButton | async) === 2,
+            'failed' : (data.createLiquidityButton | async) === 3
+        }"
+        (click)="createLiquidity()"
+        *ngIf="(data.FLIPperBNBUnit | async) < 1">
+        <label *ngIf="(createLiquidityButton | async) === 0">End LGE</label>
+        <label *ngIf="(createLiquidityButton | async) === 1">Ending</label>
+        <label *ngIf="(createLiquidityButton | async) === 2">Ended</label>
+        <label *ngIf="(createLiquidityButton | async) === 3">Failed</label>
+    </button>
     </p>
     <!-- ENDS WITHIN 60 SECONDS -->
-    <p *ngIf="(((data.started | async) * 1000) - (now | async)) < 0 &&
-    (((data.calculatedEnd | async) * 1000) - (now | async)) < 60 &&
-    (((data.calculatedEnd | async) * 1000) - (now | async)) > 0">
+    <p *ngIf="(((data.started | async) * 1000) - (now | async)) / 1000 < 0 &&
+    (((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 < 60 &&
+    (((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 > 0">
         The LGE started on {{(((data.started | async) * 1000) | date)}}, and ends in 
-        {{((data.calculatedEnd | async) * 1000) - (now | async)}} seconds.
+        {{(((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 | number:'1.2-2'}} seconds.
         <br><br>
-        So far, the LGE has raised {{((data.totalBNBContributed | async) / 1e18) | number}} {{project.networkCurrency}}
+        So far, the LGE has raised {{((data.totalBNBContributed | async) / 1e18) | number:'1.2-2'}} {{project.networkCurrency}}
     </p>
     <!-- ENDS WITHIN 1 HOUR -->
-    <p *ngIf="(((data.started | async) * 1000) - (now | async)) < 0 &&
-    (((data.calculatedEnd | async) * 1000) - (now | async)) > 61 &&
-    (((data.calculatedEnd | async) * 1000) - (now | async)) < 3600">
+    <p *ngIf="(((data.started | async) * 1000) - (now | async)) / 1000 < 0 &&
+    (((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 > 61 &&
+    (((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 < 3600">
         The LGE started on {{(((data.started | async) * 1000) | date)}}, and ends in 
-        {{((data.calculatedEnd | async) * 1000) - (now | async) / 3600}} minutes.
+        {{(((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 / 60 | number:'1.2-2'}} minutes.
         <br><br>
-        So far, the LGE has raised {{((data.totalBNBContributed | async) / 1e18) | number}} {{project.networkCurrency}}
+        So far, the LGE has raised {{((data.totalBNBContributed | async) / 1e18) | number:'1.2-2'}} {{project.networkCurrency}}
     </p>
     <!-- ENDS WITHIN 1 DAY -->
-    <p *ngIf="(((data.started | async) * 1000) - (now | async)) < 0 &&
-    (((data.calculatedEnd | async) * 1000) - (now | async)) > 3601 &&
-    (((data.calculatedEnd | async) * 1000) - (now | async)) < 86400">
+    <p *ngIf="(((data.started | async) * 1000) - (now | async)) / 1000 < 0 &&
+    (((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 > 3601 &&
+    (((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 < 86400">
         The LGE started on {{(((data.started | async) * 1000) | date)}}, and ends in 
-        {{((data.calculatedEnd | async) * 1000) - (now | async) / 3600}} hours.
+        {{(((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 / 3600 | number:'1.2-2'}} hours.
         <br><br>
-        So far, the LGE has raised {{((data.totalBNBContributed | async) / 1e18) | number}} {{project.networkCurrency}}
+        So far, the LGE has raised {{((data.totalBNBContributed | async) / 1e18) | number:'1.2-2'}} {{project.networkCurrency}}
     </p>
     <!-- ENDS GREATER THAN 1 DAY -->
-    <p *ngIf="(((data.started | async) * 1000) - (now | async)) < 0 &&
-    (((data.calculatedEnd | async) * 1000) - (now | async)) > 86401">
+    <p *ngIf="(((data.started | async) * 1000) - (now | async)) / 1000 < 0 &&
+    (((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 > 86401">
         The LGE started on {{(((data.started | async) * 1000) | date)}}, and ends in 
-        {{((data.calculatedEnd | async) * 1000) - (now | async) / 86400}} days.
+        {{(((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 / 86400 | number:'1.2-2'}} days.
         <br><br>
-        So far, the LGE has raised {{((data.totalBNBContributed | async) / 1e18) | number}} {{project.networkCurrency}}
+        So far, the LGE has raised {{((data.totalBNBContributed | async) / 1e18) | number:'1.2-2'}} {{project.networkCurrency}}
     </p>
     <!-- <div class="norm-container" id="timers">
         <span class="small-header">

@@ -6,15 +6,15 @@
     align-content:start;
     
     @include containers;
-    grid-template-rows:max-content 1fr;
+    grid-template-rows:max-content max-content 1fr;
     row-gap:10px;
     overflow:hidden;
-    section.wrapper, section.top-bar {
+    section.wrapper, section.top-bar, section.pools-selector {
         display:grid;
         align-content:start;
         grid-template-columns:1fr 1fr;
         column-gap:10px;
-        @media (max-width:900px) {
+        @media (max-width:1100px) {
             grid-template-rows:1fr;
             grid-template-columns:1fr;
             column-gap:10px;
@@ -22,5 +22,71 @@
     }
     section.wrapper {
         overflow-y:scroll;
+    }
+    section.pools-selector {
+        grid-template-columns:1fr 1fr 1fr 1fr;
+        justify-content: center;
+        justify-items:center;
+        align-content:center;
+        align-items:center;
+        div.pool-section {
+            position:relative;
+            &#all-pools {
+                &:after {
+                    content: 'All Pools'
+                }
+            }
+            &#master-pools {
+                &:after {
+                    content: 'Master Pools'
+                }
+            }
+            &#network-pools {
+                &:after {
+                    content: 'Network Pools'
+                }
+            }
+            &#vip-pools {
+                &:after {
+                    content: 'VIP Pools'
+                }
+            }
+            &:before {
+                transition:0.4s;
+                opacity:0.0;
+                content:'';
+                position:absolute;
+                top:-5px;
+                right:-5px;
+                left:-5px;
+                bottom:-5px;
+                grid-area:content;
+                background: $complement; /* Old browsers */
+                background: -moz-linear-gradient(top,  $complement 0%, $primary 100%); /* FF3.6-15 */
+                background: -webkit-linear-gradient(top,  $complement 0%, $primary 100%); /* Chrome10-25,Safari5.1-6 */
+                background: linear-gradient(to bottom,  $complement 0%, $primary 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#89ffb0', endColorstr='#89daff',GradientType=0 ); /* IE6-9 */
+                z-index:-1;
+                pointer-events: none;
+            }
+            &:hover {
+                &:before {
+                    opacity:1;
+                    border-radius:10px;
+                }
+            }
+            &.selected {
+                &:before {
+                    opacity:1;
+                    border-radius:10px;
+                }
+            }
+        }
+        img {
+            transition:0.4s;
+            max-height:50px;
+            cursor:pointer;
+            position:relative;
+        }
     }
 }

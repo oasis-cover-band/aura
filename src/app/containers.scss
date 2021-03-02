@@ -1,9 +1,17 @@
 @import './theme.scss';
 @mixin containers{
+    label {
+        color:$black;
+    }
     div.small-container {
       display:grid;
       grid-template-columns:1fr 1fr 1fr;
       column-gap:10px;
+      @media (max-width:800px) {
+        grid-template-rows:1fr 1fr 1fr;
+        grid-template-columns:1fr;
+        row-gap:10px;
+      }
     }
     div.norm-container {
       display:grid;
@@ -18,7 +26,12 @@
               justify-self:end;
           }
       }
-      @media (max-width:1300px) {
+      &.up-under {
+          grid-template-columns: 1fr;
+          grid-template-rows: 1fr 1fr;
+          align-content:start;
+      }
+      @media (max-width:1600px) {
           &.split.small {
             grid-template-rows:1fr 1fr;
             grid-template-columns:1fr;
@@ -35,20 +48,35 @@
     span {
         &.big-header, &.norm-header {
             label {
-                &.value {
-                    background:$primary;
+                &.value {/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#72b7d6+0,89daff+100 */
+                    background: $complement; /* Old browsers */
+                    background: -moz-linear-gradient(top,  $complement 0%, $primary 100%); /* FF3.6-15 */
+                    background: -webkit-linear-gradient(top,  $complement 0%, $primary 100%); /* Chrome10-25,Safari5.1-6 */
+                    background: linear-gradient(to bottom,  $complement 0%, $primary 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#89ffb0', endColorstr='#89daff',GradientType=0 ); /* IE6-9 */
+                    
                     border-radius:30px;
                     padding:5px 10px;
                     color:$black;
+                    &.inverse {
+                        color:$white;
+                    }
                 }
             }
             h3, h4 {
                 font-size:3.4rem;
                 color:$primary;
-                text-decoration:underline solid $white;
+                border-bottom:2px solid $black;
                 margin:5px 0px;
                 @media (max-height:500px) {
                     font-size:2rem;
+                }
+                text-align:left;
+                &.small {
+                    font-size:2.2rem;
+                }
+                &.extra-small {
+                    font-size:1.6rem;
                 }
             }
             h4 {
@@ -58,11 +86,11 @@
         &.big-header {
             text-align:right;
             justify-self:end;
-
+            min-width:100%;
         }
         &.norm-header {
             display:grid;
-            grid-template-columns:max-content max-content;
+            grid-template-columns:max-content 1fr;
             column-gap:10px;
             align-content:center;
             align-items:center;
@@ -132,5 +160,9 @@
                 }
             }
         }
+    }
+    label.grayed {
+        background:$gray!important;
+        border-radius:6px;
     }
   }

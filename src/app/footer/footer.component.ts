@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ProjectService } from '../static-info-services/project.service';
 
 @Component({
   selector: 'app-footer',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
-  constructor() { }
+  socials = this.projectService.project.socials;
+  constructor(
+    private projectService: ProjectService
+  ) { }
 
   ngOnInit(): void {
   }

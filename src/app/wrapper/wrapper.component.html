@@ -1,0 +1,52 @@
+<section class="wrapper">
+    <div class="wrapping-item" id="wbnb">
+        <div (click)="bringWrap()" class="norm-container up-under" id="wrap" [ngClass]="{'selected': mode.wBNB.wrap === true}">
+            <span class="norm-header">
+                <label class="title">Wrap {{project.lpTokenName}}</label>
+            </span>
+            <span class="norm-header">
+                <label class="value">Your {{project.lpTokenName}} {{((user.lpBalance | async) / 1e18) | number:'1.2-2'}}</label>
+            </span>
+        </div>
+        <div (click)="bringUnwrap()" class="norm-container up-under" id="unwrap" [ngClass]="{'selected': mode.wBNB.unwrap === true}">
+            <span class="norm-header">
+                <label class="title">Unwrap w{{project.lpTokenName}}</label>
+            </span>
+            <span class="norm-header">
+                <label class="value">Your w{{project.lpTokenName}} {{((user.wLPBalance | async) / 1e18) | number:'1.2-2'}}</label>
+            </span>
+        </div>
+        <span class="input" id="input">
+            <input [placeholder]="inputPlaceholder" #inputEle/>
+        </span>
+        <span class="button" id="wrap-unwrap">
+            <button [ngClass]="{
+                'working' : (wrapButton | async) === 1 || (wrapButton | async) === 2 || (wrapButton | async) === 4 || (wrapButton | async) === 5,
+                'failed' : (wrapButton | async) === 3
+            }"
+            (click)="wrap()"
+            *ngIf="mode.wBNB.wrap === true">
+                <label *ngIf="(wrapButton | async) === 0">Wrap</label>
+                <label *ngIf="(wrapButton | async) === 1">Wrapping</label>
+                <label *ngIf="(wrapButton | async) === 2">Wrapped</label>
+                <label *ngIf="(wrapButton | async) === 3">Failed</label>
+                <label *ngIf="(wrapButton | async) === 4">Approving</label>
+                <label *ngIf="(wrapButton | async) === 5">Approved</label>
+            </button>
+            <button [ngClass]="{
+                'working' : (unwrapButton | async) === 1 || (unwrapButton | async) === 2 || (unwrapButton | async) === 4 || (unwrapButton | async) === 5,
+                'failed' : (unwrapButton | async) === 3
+            }"
+            (click)="unwrap()"
+            *ngIf="mode.wBNB.unwrap === true">
+                <label *ngIf="(unwrapButton | async) === 0">Unwrap</label>
+                <label *ngIf="(unwrapButton | async) === 1">Unwrapping</label>
+                <label *ngIf="(unwrapButton | async) === 2">Unwrapped</label>
+                <label *ngIf="(unwrapButton | async) === 3">Failed</label>
+                <label *ngIf="(unwrapButton | async) === 4">Approving</label>
+                <label *ngIf="(unwrapButton | async) === 5">Approved</label>
+            </button>
+        </span>
+    
+    </div>
+</section>

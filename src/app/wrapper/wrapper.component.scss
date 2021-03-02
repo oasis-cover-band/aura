@@ -1,0 +1,92 @@
+@import '../containers.scss';
+:host {
+    grid-area:router-outlet;
+    display:grid;
+    grid-template-areas:
+    '. . .'
+    '. wrapper .'
+    '. . .';
+    grid-template-columns: 0px 1fr 0px;
+    grid-template-rows:0px 1fr 0px;
+    justify-content: space-around;
+    overflow-y:scroll;
+    section.wrapper {
+        max-height:fit-content;
+        max-width:min-content;
+        min-width:100%;
+        height:auto;
+        grid-area:wrapper;
+        display:grid;
+        grid-template-areas:
+        '. . .'
+        '. wrapping .'
+        '. . .';
+        grid-template-columns: 10px 1fr 10px;
+        grid-template-rows:10px 1fr 10px;
+        align-items:center;
+        justify-items:center;
+        @media (max-width:600px) {
+            align-items:start;
+        }
+        div.wrapping-item{
+            min-height:fit-content;
+            height:fit-content;
+            border-radius:20px;
+            background:rgba(0,0,0,0.3);
+            grid-area:wrapping;
+            display:grid;
+            grid-template-areas:
+            '. . . .'
+            '. wrap unwrap .'
+            '. input input .'
+            '. button button .'
+            '. . . .';
+            grid-template-columns:20px 0.5fr 0.5fr 20px;
+            grid-template-rows: 10px max-content max-content max-content 10px;
+            row-gap:10px;
+            justify-content:center;
+            align-content: start;
+            @media (max-width:800px) {
+                grid-template-areas:
+                '. . .'
+                '. wrap .'
+                '. unwrap .'
+                '. input .'
+                '. button .'
+                '. . .';
+                grid-template-columns:20px 1fr 20px;
+                grid-template-rows: 10px max-content max-content max-content max-content 10px;
+            }
+            @include containers;
+            span {
+                &#input {
+                    grid-area:input;
+                }
+                &.button {
+                    grid-area:button;
+                }
+            }
+            div {
+                &#wrap {
+                    grid-area:wrap;
+                }
+                &#unwrap {
+                    grid-area:unwrap;
+                }
+                &#unwrap, &#wrap {
+                    cursor:pointer;
+                    * {
+                        pointer-events: none;
+                    }
+                    transition:0.4s;
+                    transform:scale(0.8);
+                    filter:brightness(0.8);
+                    &.selected {
+                        transform:scale(1);
+                        filter:brightness(1);
+                    }
+                }
+            }
+        }
+    }
+}

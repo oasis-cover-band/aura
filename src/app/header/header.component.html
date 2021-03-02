@@ -1,9 +1,9 @@
 <section class="wrapper">
-    <div class="header-items-wrapper menu">
+    <div class="header-items-wrapper menu" [ngClass]="{'opened': menuOpen === true}">
         <app-header-item [data]="item" *ngFor="let item of headerItems"></app-header-item>
     </div>
     <div class="header-items-wrapper button">
-        <i class="material-icons">menu</i>
+        <i class="material-icons" (click)="toggleMenu()">menu</i>
     </div>
-    <app-wallet></app-wallet>
+    <app-wallet [ngClass]="{'opened': menuOpen === true}"></app-wallet>
 </section>

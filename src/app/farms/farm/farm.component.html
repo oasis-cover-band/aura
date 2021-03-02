@@ -1,6 +1,8 @@
-<section class="wrapper">
+<section class="wrapper" *ngIf="data">
     <span class="big-header" id="name">
-        <h3>{{data.name}}</h3>
+        <h3 *ngIf="(data.poolInfo | async).poolName.length <= 15">{{(data.poolInfo | async).poolName}}</h3>
+        <h3 *ngIf="(data.poolInfo | async).poolName.length > 15 && (data.poolInfo | async).poolName.length <= 25" class="small">{{(data.poolInfo | async).poolName}}</h3>
+        <h3 *ngIf="(data.poolInfo | async).poolName.length > 25" class="extra-small">{{(data.poolInfo | async).poolName}}</h3>
     </span>
     <div class="norm-container split" id="apy">
         <span class="norm-header">
@@ -30,7 +32,11 @@
     </span>
     <div class="small-container" id="buttons">
         <span class="button" id="deposit">
-            <button (click)="deposit()">
+            <button [ngClass]="{
+                'working' : (data.depositButton | async) === 1 || (data.depositButton | async) === 2 || (data.depositButton | async) === 4 || (data.depositButton | async) === 5,
+                'failed' : (data.depositButton | async) === 3
+            }"
+            (click)="deposit()">
                 <label *ngIf="(data.depositButton | async) === 0">Deposit</label>
                 <label *ngIf="(data.depositButton | async) === 1">Depositing</label>
                 <label *ngIf="(data.depositButton | async) === 2">Deposited</label>
@@ -40,7 +46,11 @@
             </button>
         </span>
         <span class="button" id="withdraw">
-            <button (click)="withdraw()">
+            <button [ngClass]="{
+                'working' : (data.withdrawButton | async) === 1 || (data.withdrawButton | async) === 2,
+                'failed' : (data.withdrawButton | async) === 3
+            }"
+            (click)="withdraw()">
                 <label *ngIf="(data.withdrawButton | async) === 0">Withdraw</label>
                 <label *ngIf="(data.withdrawButton | async) === 1">Withdrawing</label>
                 <label *ngIf="(data.withdrawButton | async) === 2">Withdrawn</label>
@@ -48,7 +58,11 @@
             </button>
         </span>
         <span class="button" id="claim">
-            <button (click)="claim()">
+            <button [ngClass]="{
+                'working' : (data.claimButton | async) === 1 || (data.claimButton | async) === 2,
+                'failed' : (data.claimButton | async) === 3
+            }"
+            (click)="claim()">
                 <label *ngIf="(data.claimButton | async) === 0">Claim</label>
                 <label *ngIf="(data.claimButton | async) === 1">Claiming</label>
                 <label *ngIf="(data.claimButton | async) === 2">Claimed</label>

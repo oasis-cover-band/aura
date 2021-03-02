@@ -1,8 +1,8 @@
 <app-header></app-header>
 
-<main>
+<main [@routerAnimations]="outlet.isActivated ? outlet.activatedRoute : ''">
   
-  <router-outlet></router-outlet>
+  <router-outlet #outlet="outlet"></router-outlet>
 
 </main>
 

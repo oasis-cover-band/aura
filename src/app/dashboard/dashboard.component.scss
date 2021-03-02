@@ -9,15 +9,13 @@
     grid-template-columns: 0px 1fr 0px;
     grid-template-rows:0px 1fr 0px;
     justify-content: space-around;
-    justify-items:center;
-    align-items:start;
     overflow-y:scroll;
     section.wrapper {
+        max-height:fit-content;
+        max-width:min-content;
         min-width:100%;
+        height:auto;
         grid-area:wrapper;
         display:grid;
-        app-notification {
-            grid-area:initial;
-        }
     }
 }

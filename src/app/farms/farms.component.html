@@ -20,6 +20,20 @@
         </span>
     </div>
 </section>
+<section class="pools-selector">
+    <div class="pool-section after-info invert" [ngClass]="{'selected': allPools === true}" id="all-pools" (click)="toggleAllPools()">
+        <img id="all-pools" src="../../assets/logos/pools/allpools.svg"/>
+    </div>
+    <div class="pool-section after-info invert" [ngClass]="{'selected': masterPools === true}"id="master-pools" (click)="toggleMasterPools()">
+        <img id="master-pools" src="../../assets/logos/pools/auraflip.svg"/>
+    </div>
+    <div class="pool-section after-info invert" [ngClass]="{'selected': networkPools === true}"id="network-pools" (click)="toggleNetworkPools()">
+        <img id="network-pools" src="../../assets/logos/pools/aurabnb.svg"/>
+    </div>
+    <div class="pool-section after-info invert" [ngClass]="{'selected': vipPools === true}" id="vip-pools" (click)="toggleVipPools()">
+        <img id="vip-pools" src="../../assets/logos/pools/auraeos.svg"/>
+    </div>
+</section>
     <section class="wrapper">
         <app-farm *ngFor="let farm of farms; let index = index" [data]="farm" [pid]="index"></app-farm>
     </section>

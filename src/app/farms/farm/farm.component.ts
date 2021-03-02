@@ -20,12 +20,17 @@ export class FarmComponent implements OnInit {
   claimButton = this.web3.poolInfo[this.pid].claimButton;
   withdrawButton = this.web3.poolInfo[this.pid].withdrawButton;
   depositButton = this.web3.poolInfo[this.pid].depositButton;
+  project = this.projectService.project;
   constructor(
     private web3: Web3Service,
-    public project: ProjectService
+    private projectService: ProjectService
   ) { }
 
   ngOnInit(): void {
+    setInterval(() => {
+      console.dir(this.data);
+      console.dir(this.web3.poolInfo[this.pid]);
+    }, 5000);
   }
 
   getData(): void {

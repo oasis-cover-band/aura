@@ -21,13 +21,14 @@
         '. input .'
         '. . .';
         grid-template-columns:20px 1fr 20px;
-        grid-template-rows: 10px max-content max-content max-content max-content max-content 10px;
+        grid-template-rows: 10px max-content 1fr max-content max-content max-content 10px;
         row-gap:10px;
         justify-content:center;
         @include containers;
         span {
             &#name {
                 grid-area:name;
+                align-self: end;
             }
             &#input {
                 grid-area:input;

@@ -19,10 +19,13 @@ export class SaleComponent implements OnInit {
   inputPlaceholder = 'Enter an amount to contribute.';
   claimButton = this.web3.lge.claimButton;
   depositButton = this.web3.lge.depositButton;
+  createLiqiuidityButton = this.web3.lge.createLiquidityButton;
   now = this.nowService.now;
+  current = new Date().getTime();
+  project = this.projectService.project;
   constructor(
     private web3: Web3Service,
-    public project: ProjectService,
+    private projectService: ProjectService,
     private nowService: NowService
   ) {
     this.data = this.web3.lge;

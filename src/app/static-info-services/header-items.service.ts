@@ -22,8 +22,18 @@ export class HeaderItemsService {
       icon: 'card_giftcard'
     },
     {
+      link: 'wrapper',
+      name: 'Wrapper',
+      icon: 'wrap_text'
+    },
+    {
       link: 'dashboard',
       name: 'Dashboard',
+      icon: 'stacked_bar_chart'
+    },
+    {
+      link: 'information',
+      name: 'Information',
       icon: 'info'
     },
   ];

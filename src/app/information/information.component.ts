@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ProjectService } from '../static-info-services/project.service';
 
 @Component({
   selector: 'app-information',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InformationComponent implements OnInit {
 
-  constructor() { }
+  projectInformation = this.projectService.projectInformation;
+  constructor(
+    private projectService: ProjectService
+  ) { }
 
   ngOnInit(): void {
   }

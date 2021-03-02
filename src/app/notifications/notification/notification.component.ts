@@ -8,8 +8,15 @@ import { NotificationsService } from 'src/app/dynamic-info-services/notification
 })
 export class NotificationComponent implements OnInit {
 
-  @Input() data;
+  @Input() data =
+  {
+  title: 'Approve Successful',
+  icon: 'alarm',
+  text: `You have successfully approved your tokens to pool.`,
+  date: new Date()
+};
   @Input() index = 0;
+  @Input() static = false;
   notificationsLength = this.notificationsService.length;
   constructor(
     private notificationsService: NotificationsService

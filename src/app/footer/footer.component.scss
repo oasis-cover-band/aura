@@ -21,6 +21,34 @@
         @media (max-height:600px) {
             grid-auto-flow: column;
         }
+        div.paragraphs {
+            max-width:100%;
+            p {
+                max-width:100%;
+            }
+        }
+        span.socials {
+            max-width:100%;
+            display:grid;
+            grid-auto-flow: column;
+            column-gap:5px;
+            a {
+                &#github {
+                    &:after {
+                        content:'Github';
+                    }
+                }
+                &#telegram {
+                    &:after {
+                        content:'Telegram';
+                    }
+                }
+                &#medium {
+                    &:after {
+                        content:'Medium';
+                    }
+                }
+            }
+        }
     }
-    
 }

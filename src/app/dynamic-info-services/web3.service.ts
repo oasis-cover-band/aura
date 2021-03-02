@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import Web3 from 'web3';
 import { BehaviorSubject } from 'rxjs';
 import { NotificationsService } from './notifications.service';
+import { ProjectService } from '../static-info-services/project.service';
 const auraAbi = require('../../assets/abi/auraabi.json');
 const auraVaultAbi = require('../../assets/abi/auravaultabi.json');
 const auraLPAbi = require('../../assets/abi/auraabi.json');
-const auraWLPAbi = require('../../assets/abi/auraabi.json');
+const auraWLPAbi = require('../../assets/abi/aurawrapabi.json');
 declare const window: any;
 // tslint:disable:max-line-length
 
@@ -17,9 +18,9 @@ export class Web3Service {
   web3: Web3;
 
   auraContract;
-  auraContractAddress = '0xD900cBDf3C8D7bB5ACEF39C3218E8B93A4429C50';
+  auraContractAddress = this.projectService.project.tokenAddress;
 
-  auraVaultContractAddress = '0x9A79c9637d91aB4653cD24451F1b1773D8765Ffa';
+  auraVaultContractAddress = this.projectService.project.vaultAddress;
   auraVaultContract;
 
   // USERVARS
@@ -51,6 +52,11 @@ export class Web3Service {
     lpDecimals: new BehaviorSubject(0),
     wLPTotalSupply: new BehaviorSubject(0),
     lpTotalSupply: new BehaviorSubject(0),
+  };
+
+  wrapper = {
+    unwrapButton: new BehaviorSubject(0),
+    wrapButton: new BehaviorSubject(0)
   };
 
   // LGE VARS
@@ -104,9 +110,11 @@ export class Web3Service {
         rewardPaid: 0
       }),
       poolInfo: new BehaviorSubject({
+        poolName: '',
         stakedToken: '',
         allocPoint: 0,
         accAURAPerShare: 0,
+        VIPpool: false,
         withdrawable: false
       }),
       userBalance: new BehaviorSubject(0),
@@ -118,13 +126,11 @@ export class Web3Service {
   sendButton: BehaviorSubject<any> = new BehaviorSubject(0);
 
   constructor(
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+    private projectService: ProjectService
   ) {
     this.tryProvider().then(tryProviderResult => {
       this.connectWallet();
-      setInterval(() => {
-        this.getInfo();
-      }, 1000);
     });
   }
 
@@ -133,6 +139,13 @@ export class Web3Service {
     this.getUserInfo();
     this.getLGEInfo();
     this.getLPTokensInfo();
+    this.getAllPoolInfo().then(afterGetAllPoolInfo => {
+      this.poolInfo.forEach(async (element, index) => {
+        await this.setContract(index).then(afterSetting => {
+          this.getTokenContractInfo(index);
+        });
+      });
+    });
   }
   connectWallet(): void {
     this.loginProcedure();
@@ -159,8 +172,6 @@ export class Web3Service {
         this.web3.eth.defaultAccount = userAddresses[0];
       });
       this.setContracts();
-      setInterval(() => {
-      }, 1500);
     } catch (error) {
     }
   }
@@ -172,7 +183,32 @@ export class Web3Service {
     });
   }
 
-  async getApproval(poolId: number): Promise<any> {
+  async getTokenContractInfo(poolId: number): Promise<any> {
+    await this.getPoolTokenName(poolId);
+    await this.getPoolTokenDecimals(poolId);
+    await this.getPoolTokenSymbol(poolId);
+    await this.getPoolTokenApproval(poolId);
+  }
+
+  async getPoolTokenName(poolId: number): Promise<any> {
+    return await this.poolInfo[poolId].token.contract.methods.name().call().then(result => {
+      this.poolInfo[poolId].token.name.next(result);
+    });
+  }
+
+  async getPoolTokenDecimals(poolId: number): Promise<any> {
+    return await this.poolInfo[poolId].token.contract.methods.decimals().call().then(result => {
+      this.poolInfo[poolId].token.decimals.next(result);
+    });
+  }
+
+  async getPoolTokenSymbol(poolId: number): Promise<any> {
+    return await this.poolInfo[poolId].token.contract.methods.symbol().call().then(result => {
+      this.poolInfo[poolId].token.symbol.next(result);
+    });
+  }
+
+  async getPoolTokenApproval(poolId: number): Promise<any> {
     return await this.poolInfo[poolId].token.contract.methods.allowance(this.user.address.getValue(), this.auraVaultContractAddress).call().then(result => {
       this.poolInfo[poolId].tokenApproval.next(result);
     });
@@ -180,8 +216,6 @@ export class Web3Service {
 
   async approve(poolId: number): Promise<any> {
     this.poolInfo[poolId].depositButton.next(4);
-    console.dir(this.poolInfo[poolId].token.contract);
-    console.dir(this.poolInfo[poolId].token.address);
     return await this.poolInfo[poolId].token.contract.methods.approve(this.auraVaultContractAddress, BigInt(999999999999999999999999)).send({ from: this.user.address.getValue() })
       .on('transactionHash', (transactionHash) => {
       })
@@ -245,14 +279,7 @@ export class Web3Service {
         poolId,
         String(Math.floor(amount * 1e18))
       )
-        .send({ from: this.user.address.getValue() }).then(result => {
-          if (result.status === true) {
-            this.poolInfo[poolId].depositButton.next(2);
-            setTimeout(() => {
-              this.poolInfo[poolId].depositButton.next(0);
-            }, 2500);
-          }
-        })
+        .send({ from: this.user.address.getValue() })
         .on('transactionHash', (transactionHash) => {
         })
         .on('confirmation', (confirmation) => {
@@ -403,9 +430,6 @@ export class Web3Service {
     this.getPendingAura(poolId);
     this.getPoolInfo(poolId);
     this.getUserBalance(poolId);
-    this.getPoolTokenName(poolId);
-    this.getPoolTokenDecimals(poolId);
-    this.getPoolTokenSymbol(poolId);
   }
 
   async getUserPoolInfo(poolId: number): Promise<any> {
@@ -417,24 +441,6 @@ export class Web3Service {
   async getPendingAura(poolId: number): Promise<any> {
     return await this.auraVaultContract.methods.pendingAURA(poolId, this.user.address.getValue()).call().then(result => {
       this.poolInfo[poolId].pendingAura.next(result);
-    });
-  }
-
-  async getPoolTokenName(poolId: number): Promise<any> {
-    return await this.poolInfo[poolId].token.contract.methods.name().call().then(result => {
-      this.poolInfo[poolId].token.name.next(result);
-    });
-  }
-
-  async getPoolTokenDecimals(poolId: number): Promise<any> {
-    return await this.poolInfo[poolId].token.contract.methods.decimals().call().then(result => {
-      this.poolInfo[poolId].token.decimals.next(result);
-    });
-  }
-
-  async getPoolTokenSymbol(poolId: number): Promise<any> {
-    return await this.poolInfo[poolId].token.contract.methods.symbol().call().then(result => {
-      this.poolInfo[poolId].token.symbol.next(result);
     });
   }
 
@@ -635,7 +641,9 @@ export class Web3Service {
             await this.setPoolTokenContracts().then(async setPoolTokenContractsResult => {
               await this.getLPContracts().then(async getLPResult => {
                 await this.setLPContracts().then(setLPResult => {
-      
+                  setInterval(() => {
+                    this.getInfo();
+                  }, 5000);
                 });
               });
             });
@@ -647,14 +655,44 @@ export class Web3Service {
 
   async setPoolTokenContracts(): Promise<any> {
     this.poolInfo.length = this.vault.length.getValue();
-    await this.poolInfo.forEach(async (element, index) => {
-            console.dir(index);
-            this.poolInfo[index].token.address.next(this.poolInfo[index].poolInfo.getValue().stakedToken);
-            console.dir(index);
-            console.dir(this.poolInfo[index].poolInfo.getValue().stakedToken);
-            console.dir(this.poolInfo[index].token.address.getValue());
-            this.poolInfo[index].token.contract = await new this.web3.eth.Contract(auraAbi, this.poolInfo[index].poolInfo.getValue().stakedToken);
-        });
+    for (let index = 0; index < this.poolInfo.length; index++) {
+      this.poolInfo[index] = {
+        name: 'WBNB-AURA', // MAKE IT GET FROM token.name()
+        token: {
+          name: new BehaviorSubject(''),
+          address: new BehaviorSubject(''),
+          contract: undefined,
+          decimals: new BehaviorSubject(0),
+          symbol: new BehaviorSubject(''),
+        },
+        apy: new BehaviorSubject(0),
+        claimButton: new BehaviorSubject(0),
+        depositButton: new BehaviorSubject(0),
+        withdrawButton: new BehaviorSubject(0),
+        tokenApproval: new BehaviorSubject(0),
+        tokenRewards: new BehaviorSubject(0),
+        pendingAura: new BehaviorSubject(0),
+        userPoolInfo: new BehaviorSubject({
+          amount: 0,
+          rewardPaid: 0
+        }),
+        poolInfo: new BehaviorSubject({
+          poolName: '',
+          stakedToken: '',
+          allocPoint: 0,
+          accAURAPerShare: 0,
+          VIPpool: false,
+          withdrawable: false
+        }),
+        userBalance: new BehaviorSubject(0),
+        multiplier: new BehaviorSubject(30)
+      };
+    }
+  }
+
+  async setContract(poolId: number): Promise<any> {
+    await this.poolInfo[poolId].token.address.next(this.poolInfo[poolId].poolInfo.getValue().stakedToken);
+    this.poolInfo[poolId].token.contract = await new this.web3.eth.Contract(auraAbi, this.poolInfo[poolId].poolInfo.getValue().stakedToken);
   }
 
   async getLPContracts(): Promise<any> {
@@ -692,7 +730,6 @@ export class Web3Service {
 
   async setWLPContract(): Promise<any> {
     this.liquidityToken.wLPContract = await new this.web3.eth.Contract(auraWLPAbi, this.liquidityToken.wLPAddress.getValue());
-
   }
 
   // ================== //
@@ -745,7 +782,7 @@ export class Web3Service {
   // LP TOKENS INFO   //
   // ================== //
 
-// THIS IS CALLED LATER DUE TO THE LP TOKENS' INFORMATION BEING PULLED FROM TOKEN CONTRACT ITSELF
+  // THIS IS CALLED LATER DUE TO THE LP TOKENS' INFORMATION BEING PULLED FROM TOKEN CONTRACT ITSELF
   async getLPTokensInfo(): Promise<any> {
     this.getUserLPTokenBalances();
     this.getLPTokensTotalSupplies();
@@ -829,5 +866,83 @@ export class Web3Service {
     return await this.liquidityToken.wLPContract.methods.totalSupply().call().then(async result => {
       this.liquidityToken.wLPTotalSupply.next(result);
     });
+  }
+
+  async wrapFlip(amount: number): Promise<any> {
+    this.wrapper.wrapButton.next(1);
+    return await this.liquidityToken.wLPContract.methods.wrapFLIP(
+      String(Math.floor(amount * 1e18))
+    ).send({
+      from: this.user.address.getValue(),
+    })
+      .on('transactionHash', (transactionHash) => {
+      })
+      .on('confirmation', (confirmation) => {
+        if (confirmation) {
+        }
+      }).on('receipt', (receipt) => {
+        this.wrapper.wrapButton.next(2);
+        this.notificationsService.notify({
+          title: 'Wrap Successful',
+          icon: 'alarm',
+          text: 'Your LP tokens have been wrapped successfully.',
+          date: new Date()
+        });
+        setTimeout(() => {
+          this.wrapper.wrapButton.next(0);
+        }, 2500);
+      })
+      .on('error', (error) => {
+        this.wrapper.wrapButton.next(2);
+        this.notificationsService.notify({
+          title: 'Wrap Error',
+          icon: 'alarm',
+          text: 'There was an error wrapping your LP tokens.',
+          date: new Date()
+        });
+        this.wrapper.wrapButton.next(3);
+        setTimeout(() => {
+          this.wrapper.wrapButton.next(0);
+        }, 2500);
+      });
+  }
+
+  async unwrapFlip(amount: number): Promise<any> {
+    this.wrapper.unwrapButton.next(1);
+    return await this.liquidityToken.wLPContract.methods.wrapFLIP(
+      String(Math.floor(amount * 1e18))
+    ).send({
+      from: this.user.address.getValue(),
+    })
+      .on('transactionHash', (transactionHash) => {
+      })
+      .on('confirmation', (confirmation) => {
+        if (confirmation) {
+        }
+      }).on('receipt', (receipt) => {
+        this.wrapper.unwrapButton.next(2);
+        this.notificationsService.notify({
+          title: 'Unwrap Successful',
+          icon: 'alarm',
+          text: 'Your LP tokens have been unwrapped successfully.',
+          date: new Date()
+        });
+        setTimeout(() => {
+          this.wrapper.unwrapButton.next(0);
+        }, 2500);
+      })
+      .on('error', (error) => {
+        this.wrapper.unwrapButton.next(2);
+        this.notificationsService.notify({
+          title: 'Unwrap Error',
+          icon: 'alarm',
+          text: 'There was an error unwrapping your LP tokens.',
+          date: new Date()
+        });
+        this.wrapper.unwrapButton.next(3);
+        setTimeout(() => {
+          this.wrapper.unwrapButton.next(0);
+        }, 2500);
+      });
   }
 }
