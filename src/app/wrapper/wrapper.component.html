@@ -1,25 +1,34 @@
 <section class="wrapper">
     <div class="wrapping-item" id="wbnb">
         <div (click)="bringWrap()" class="norm-container up-under" id="wrap" [ngClass]="{'selected': mode.wBNB.wrap === true}">
-            <span class="norm-header">
+            <span class="norm-header"
+            *ngIf="(user.lpBalance | async) as lpBalance;else greyed">
                 <label class="title">Wrap {{project.lpTokenName}}</label>
             </span>
-            <span class="norm-header">
-                <label class="value">Your {{project.lpTokenName}} {{((user.lpBalance | async) / 1e18) | number:'1.2-2'}}</label>
+            <span class="norm-header"
+            *ngIf="(user.lpBalance | async) as lpBalance;else greyed">
+                <label class="value">Your {{project.lpTokenName}} {{(lpBalance / 1e18) | number:'1.2-2'}}</label>
             </span>
+            <ng-template class="greyed-bar" #greyed><div class="greyed-bar"></div></ng-template>
         </div>
         <div (click)="bringUnwrap()" class="norm-container up-under" id="unwrap" [ngClass]="{'selected': mode.wBNB.unwrap === true}">
-            <span class="norm-header">
+            <span class="norm-header"
+            *ngIf="(user.wLPBalance | async) as wLPBalance;else greyed">
                 <label class="title">Unwrap w{{project.lpTokenName}}</label>
             </span>
-            <span class="norm-header">
-                <label class="value">Your w{{project.lpTokenName}} {{((user.wLPBalance | async) / 1e18) | number:'1.2-2'}}</label>
+            <span class="norm-header"
+            *ngIf="(user.wLPBalance | async) as wLPBalance;else greyed">
+                <label class="value">Your w{{project.lpTokenName}} {{(wLPBalance / 1e18) | number:'1.2-2'}}</label>
             </span>
+            <ng-template class="greyed-bar" #greyed><div class="greyed-bar"></div></ng-template>
         </div>
         <span class="input" id="input">
-            <input [placeholder]="inputPlaceholder" #inputEle/>
+            <input [placeholder]="inputPlaceholder" #inputEle
+            *ngIf="(user.lpBalance | async) as lpBalance;else greyed"/>
+            <ng-template class="greyed-bar" #greyed><div class="greyed-bar"></div></ng-template>
         </span>
-        <span class="button" id="wrap-unwrap">
+        <span class="button" id="wrap-unwrap"
+        *ngIf="(user.lpBalance | async) as lpBalance">
             <button [ngClass]="{
                 'working' : (wrapButton | async) === 1 || (wrapButton | async) === 2 || (wrapButton | async) === 4 || (wrapButton | async) === 5,
                 'failed' : (wrapButton | async) === 3

@@ -1,37 +1,50 @@
-<section class="wrapper" *ngIf="data">
-    <span class="big-header" id="name">
-        <h3 *ngIf="(data.poolInfo | async).poolName.length <= 15">{{(data.poolInfo | async).poolName}}</h3>
-        <h3 *ngIf="(data.poolInfo | async).poolName.length > 15 && (data.poolInfo | async).poolName.length <= 25" class="small">{{(data.poolInfo | async).poolName}}</h3>
-        <h3 *ngIf="(data.poolInfo | async).poolName.length > 25" class="extra-small">{{(data.poolInfo | async).poolName}}</h3>
-    </span>
+<section class="wrapper" *ngIf="data" [ngClass]="{'super-apy': (data.poolInfo | async).allocPoint > 10000}">
+    <div class="norm-container inverse" id="name">
+        <span class="big-header" *ngIf="(data.poolInfo | async) as poolInfo;else greyed">
+            <h3 *ngIf="poolInfo.poolName.length <= 15">{{poolInfo.poolName}}</h3>
+            <h3 *ngIf="poolInfo.poolName.length > 15 && poolInfo.poolName.length <= 25" class="small">{{poolInfo.poolName}}</h3>
+            <h3 *ngIf="poolInfo.poolName.length > 25" class="extra-small">{{poolInfo.poolName}}</h3>
+        </span>
+        <span class="small-container" *ngIf="(data.token.address | async) as tokenAddress;else greyed">
+            <a *ngIf="pid === 2" class="icon after-info invert short" id="pool" [href]="project.exchangeAddress + '#/pool?outputCurrency=' + (tokenAddress)" target="_blank"><i class="material-icons">add_circle</i></a>
+            <a *ngIf="pid === 1" class="icon after-info invert short" id="wrap" (click)="goWrapper()"><i class="material-icons">wrap_text</i></a>
+            <a class="icon after-info invert short" id="swap" [href]="project.exchangeAddress + '#/swap?outputCurrency=' + (tokenAddress)" target="_blank"><i class="material-icons">swap_horizontal_circle</i></a>
+            <a class="icon after-info invert short" id="check" [href]="project.blockExplorerAddress + '/token/' + (tokenAddress) + '?a=' + (user.address | async)" target="_blank"><i class="material-icons">check_circle</i></a>
+        </span>
+
+        <ng-template class="greyed-bar" #greyed><div class="greyed-bar"></div></ng-template>
+    </div>
     <div class="norm-container split" id="apy">
-        <span class="norm-header">
+        <span class="norm-header" *ngIf="(data.apy | async) as apy;else greyed">
             <label class="title">APY:</label>
-            <label class="value">{{(data.apy | async) | number}}%</label>
+            <label class="value">{{apy | number}}%</label>
         </span>
-        <span class="norm-header">
-            <label class="value">{{(data.multiplier | async) | number}}x</label>
+        <span class="norm-header" *ngIf="(data.poolInfo | async) as poolInfo;else greyed">
+            <label class="value">{{poolInfo.allocPoint | number}}x</label>
         </span>
+        <ng-template class="greyed-bar" #greyed><div class="greyed-bar"></div></ng-template>
     </div>
     <div class="small-container" id="misc">
-        <span class="small-header value">
+        <span class="small-header value" *ngIf="(data.userBalance | async) as userBalance;else greyed">
             <label class="title">Balance</label>
-            <label class="value small"><b>{{(data.userBalance | async) / 1e18 | number}}</b> <small>{{data.name}} {{project.lpTokenName}}</small></label>
+            <label class="value small"><b>{{userBalance / 1e18 | number}}</b> <small>{{data.name}} {{project.lpTokenName}}</small></label>
         </span>
-        <span class="small-header value">
+        <span class="small-header value" *ngIf="(data.userPoolInfo | async) as userPoolInfo;else greyed">
             <label class="title">Deposits</label>
-            <label class="value small"><b>{{(data.userPoolInfo | async).amount / 1e18 | number}}</b> <small>{{data.name}} {{project.lpTokenName}}</small></label>
+            <label class="value small"><b>{{userPoolInfo.amount / 1e18 | number}}</b> <small>{{data.name}} {{project.lpTokenName}}</small></label>
         </span>
-        <span class="small-header value">
+        <span class="small-header value" *ngIf="(data.pendingAura | async) as pendingAura;else greyed">
             <label class="title">Rewards</label>
-            <label class="value"><b>{{(data.pendingAura | async) / 1e18 | number}}</b> <small>{{project.tokenName}}</small></label>
+            <label class="value"><b>{{pendingAura / 1e18 | number}}</b> <small>{{project.tokenName}}</small></label>
         </span>
+        <ng-template class="greyed-bar" #greyed><div class="greyed-bar"></div></ng-template>
     </div>
     <span class="input" id="input">
-        <input [placeholder]="inputPlaceholder" #inputEle/>
+        <input [placeholder]="inputPlaceholder" *ngIf="(data.userBalance | async) as userBalance;else greyed" #inputEle/>
+        <ng-template class="greyed-bar" #greyed><div class="greyed-bar"></div></ng-template>
     </span>
     <div class="small-container" id="buttons">
-        <span class="button" id="deposit">
+        <span class="button" id="deposit" *ngIf="(data.userBalance | async) as userBalance;else greyed" >
             <button [ngClass]="{
                 'working' : (data.depositButton | async) === 1 || (data.depositButton | async) === 2 || (data.depositButton | async) === 4 || (data.depositButton | async) === 5,
                 'failed' : (data.depositButton | async) === 3
@@ -45,7 +58,7 @@
                 <label *ngIf="(data.depositButton | async) === 5">Approved</label>
             </button>
         </span>
-        <span class="button" id="withdraw">
+        <span class="button" id="withdraw" *ngIf="(data.userBalance | async) as userBalance;else greyed" >
             <button [ngClass]="{
                 'working' : (data.withdrawButton | async) === 1 || (data.withdrawButton | async) === 2,
                 'failed' : (data.withdrawButton | async) === 3
@@ -57,7 +70,7 @@
                 <label *ngIf="(data.withdrawButton | async) === 3">Failed</label>
             </button>
         </span>
-        <span class="button" id="claim">
+        <span class="button" id="claim" *ngIf="(data.userBalance | async) as userBalance;else greyed" >
             <button [ngClass]="{
                 'working' : (data.claimButton | async) === 1 || (data.claimButton | async) === 2,
                 'failed' : (data.claimButton | async) === 3
@@ -69,5 +82,6 @@
                 <label *ngIf="(data.claimButton | async) === 3">Failed</label>
             </button>
         </span>
+        <ng-template class="greyed-bar" #greyed><div class="greyed-bar"></div></ng-template>
     </div>
 </section>

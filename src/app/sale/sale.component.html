@@ -6,51 +6,55 @@
         </span>
     </div>
     <span class="big-header" id="price">
-        <label class="value" *ngIf="(data.FLIPperBNBUnit | async) !== 0">{{(data.FLIPperBNBUnit | async) / 1e18 | number}} {{project.lpTokenName}} per 1 {{project.networkCurrency}}</label>
+        <label class="value" *ngIf="(data.FLIPperBNBUnit | async) > 0 && (data.FLIPperBNBUnit | async) as FLIPperBNBUnit;else greyed">{{FLIPperBNBUnit / 1e18 | number}} {{project.lpTokenName}} per 1 {{project.networkCurrency}}</label>
+        <ng-template class="greyed-bar" #greyed><div class="greyed-bar"></div></ng-template>
     </span>
     <div class="small-container" id="time">
-        <span class="small-header">
+        <span class="small-header" *ngIf="(data.started | async) as started;else greyed">
             <label class="title">Start Date</label>
-            <label class="value">{{((data.started | async) * 1000)  | date:'dd/MM/yyyy'}}</label>
+            <label class="value">{{(started * 1000)  | date:'dd/MM/yyyy'}}</label>
         </span>
-        <span class="small-header">
+        <span class="small-header" *ngIf="(data.ended | async) as ended;else greyed">
             <label class="title">End Date</label>
-            <label class="value">{{((data.ended | async) * 1000) | date:'dd/MM/yyyy'}}</label>
+            <label class="value">{{(ended * 1000) | date:'dd/MM/yyyy'}}</label>
         </span>
-        <span class="small-header value">
+        <span class="small-header value" *ngIf="(data.duration | async) as duration;else greyed">
             <label class="title">Duration</label>
-            <label class="value"><b>{{(data.duration | async) / 3600 | number}}</b> <small>hours</small></label>
+            <label class="value"><b>{{duration / 3600 | number}}</b> <small>hours</small></label>
         </span>
+        <ng-template class="greyed-bar" #greyed><div class="greyed-bar"></div></ng-template>
     </div>
     <div class="small-container" id="global">
-        <span class="small-header value">
+        <span class="small-header value" *ngIf="(data.totalBNBContributed | async) as totalBNBContributed;else greyed">
             <label class="title">Global Tokens</label>
-            <label class="value"><b>{{(((data.totalBNBContributed | async) / 1e18) * ((data.FLIPperBNBUnit | async) / 1e18)) | number}}</b> <small>{{project.lpTokenName}}</small></label>
+            <label class="value"><b>{{(totalBNBContributed / 1e18 * ((data.FLIPperBNBUnit | async) / 1e18)) | number}}</b> <small>{{project.lpTokenName}}</small></label>
         </span>
-        <span class="small-header value">
+        <span class="small-header value" *ngIf="(data.totalBNBContributed | async) as totalBNBContributed;else greyed">
             <label class="title">Global Contributions</label>
-            <label class="value"><b>{{(data.totalBNBContributed | async) / 1e18 | number}}</b> <small>{{project.networkCurrency}}</small></label>
+            <label class="value"><b>{{data.totalBNBContributed / 1e18 | number}}</b> <small>{{project.networkCurrency}}</small></label>
         </span>
-        <span class="small-header value">
+        <span class="small-header value" *ngIf="(data.individualCap | async) as individualCap;else greyed">
             <label class="title">Individual Cap</label>
-            <label class="value"><b>{{(data.individualCap | async) / 1e18 | number}}</b> <small>{{project.networkCurrency}}</small></label>
+            <label class="value"><b>{{individualCap / 1e18 | number}}</b> <small>{{project.networkCurrency}}</small></label>
         </span>
+        <ng-template class="greyed-bar" #greyed><div class="greyed-bar"></div></ng-template>
     </div>
     <div class="norm-container" id="your">
-        <span class="small-header value">
+        <span class="small-header value" *ngIf="(data.user.contribution | async) as contribution;else greyed">
             <label class="title">Your Contribution</label>
-            <label class="value"><b>{{(data.user.contribution | async) / 1e18 | number}}</b> <small>{{project.networkCurrency}}</small></label>
+            <label class="value"><b>{{contribution / 1e18 | number}}</b> <small>{{project.networkCurrency}}</small></label>
         </span>
-        <span class="small-header value">
+        <span class="small-header value" *ngIf="(data.user.contribution | async) as contribution;else greyed">
             <label class="title">Your Tokens</label>
-            <label class="value"><b>{{(((data.user.contribution | async) / 1e18) * ((data.FLIPperBNBUnit | async) / 1e18)) | number}}</b> <small>{{project.lpTokenName}}</small></label>
+            <label class="value"><b>{{((contribution / 1e18) * ((data.FLIPperBNBUnit | async) / 1e18)) | number}}</b> <small>{{project.lpTokenName}}</small></label>
         </span>
+        <ng-template class="greyed-bar" #greyed><div class="greyed-bar"></div></ng-template>
     </div>
     <span class="input" id="input" *ngIf="(data.FLIPperBNBUnit | async) < 1">
         <input [placeholder]="inputPlaceholder" #inputEle/>
     </span>
     <div class="norm-container" id="buttons">
-        <span class="button" id="deposit">
+        <span class="button" id="deposit" *ngIf="(data.user.contribution | async) as contribution;else greyed">
             <button [ngClass]="{
                 'working' : (data.depositButton | async) === 1 || (data.withdrawButton | async) === 2,
                 'failed' : (data.depositButton | async) === 3
@@ -69,7 +73,7 @@
                 <label *ngIf="(data.FLIPperBNBUnit | async) > 1">LGE Ended.</label>
             </button>
         </span>
-        <span class="button" id="claim">
+        <span class="button" id="claim" *ngIf="(data.user.contribution | async) as contribution;else greyed">
             <button [ngClass]="{
                 'working' : (data.claimButton | async) === 1 || (data.claimButton | async) === 2,
                 'failed' : (data.claimButton | async) === 3
@@ -90,6 +94,7 @@
                 <label *ngIf="((((data.calculatedEnd | async) * 1000) - (now | async)) / 1000) / 86400 > 1">Ends in {{((((data.calculatedEnd | async) * 1000) - (now | async)) / 1000) / 86400 | number:'1.2-2'}} days.</label>
             </button>
         </span>
+        <ng-template class="greyed-bar" #greyed><div class="greyed-bar"></div></ng-template>
     </div>
 </section>
 <section class="misc">

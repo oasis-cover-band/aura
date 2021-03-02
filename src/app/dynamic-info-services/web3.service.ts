@@ -4,9 +4,12 @@ import { BehaviorSubject } from 'rxjs';
 import { NotificationsService } from './notifications.service';
 import { ProjectService } from '../static-info-services/project.service';
 const auraAbi = require('../../assets/abi/auraabi.json');
-const auraVaultAbi = require('../../assets/abi/auravaultabi.json');
+const stableCoinAbi = require('../../assets/abi/auraabi.json');
+const wrappedNetworkCurrencyAbi = require('../../assets/abi/auraabi.json');
 const auraLPAbi = require('../../assets/abi/auraabi.json');
 const auraWLPAbi = require('../../assets/abi/aurawrapabi.json');
+const auraVaultAbi = require('../../assets/abi/auravaultabi.json');
+const exchangeAbi = require('../../assets/abi/exchangeabi.json');
 declare const window: any;
 // tslint:disable:max-line-length
 
@@ -18,10 +21,22 @@ export class Web3Service {
   web3: Web3;
 
   auraContract;
-  auraContractAddress = this.projectService.project.tokenAddress;
+  auraContractAddress = this.projectService.project.contracts.tokenAddress;
 
-  auraVaultContractAddress = this.projectService.project.vaultAddress;
+  auraVaultContractAddress = this.projectService.project.contracts.vaultAddress;
   auraVaultContract;
+
+  stableCoinContractAddress = this.projectService.project.contracts.stableCoinAddress;
+  stableCoinContract;
+
+  exchangeFactoryContractAddress = this.projectService.project.contracts.exchangeFactoryAddress;
+  exchangeFactoryContract;
+
+  wrappedNetworkCurrencyContractAddress = this.projectService.project.contracts.wrappedNetworkCurrencyAddress;
+  wrappedNetworkCurrencyContract;
+
+  stableCoinWrappedNetworkCurrencyPairAddress = new BehaviorSubject('');
+  auraWrappedNetworkCurrencyPairAddress = new BehaviorSubject('');
 
   // USERVARS
   user = {
@@ -98,7 +113,9 @@ export class Web3Service {
         decimals: new BehaviorSubject(0),
         symbol: new BehaviorSubject(''),
       },
-      apy: new BehaviorSubject(0),
+      apy: new BehaviorSubject(30),
+      priceInUSD: new BehaviorSubject(0),
+      priceInNetworkCurrency: new BehaviorSubject(0),
       claimButton: new BehaviorSubject(0),
       depositButton: new BehaviorSubject(0),
       withdrawButton: new BehaviorSubject(0),
@@ -117,13 +134,35 @@ export class Web3Service {
         VIPpool: false,
         withdrawable: false
       }),
-      userBalance: new BehaviorSubject(0),
-      multiplier: new BehaviorSubject(30)
+      pairInfo: {
+        pairAddress: new BehaviorSubject(''),
+        networkCurrencyPairBalance: new BehaviorSubject(0),
+        tokenPairBalance: new BehaviorSubject(0)
+      },
+      userBalance: new BehaviorSubject(0)
     }
   ];
 
   // BUTTONS
   sendButton: BehaviorSubject<any> = new BehaviorSubject(0);
+
+  // STABLECOIN-NETWORK CURRENCY FOR APY CALCULATIONS
+  apyCalculator = {
+    aura: {
+      priceInUSD: new BehaviorSubject(0),
+      priceInNetworkCurrency: new BehaviorSubject(0),
+      pairBalance: new BehaviorSubject(0)
+    },
+    networkCurrency: {
+      price: new BehaviorSubject(0),
+      pairBalanceAura: new BehaviorSubject(0),
+      pairBalanceStableCoin: new BehaviorSubject(0),
+    },
+    stableCoin: {
+      pairBalance: new BehaviorSubject(0)
+    },
+  };
+
 
   constructor(
     private notificationsService: NotificationsService,
@@ -134,19 +173,71 @@ export class Web3Service {
     });
   }
 
-  getInfo(): void {
+  async getInfo(): Promise<any> {
     this.getTokenInfo();
     this.getUserInfo();
     this.getLGEInfo();
-    this.getLPTokensInfo();
-    this.getAllPoolInfo().then(afterGetAllPoolInfo => {
+    await this.getLPTokensInfo();
+    // await this.getPrices();
+    await this.getAllPoolInfo().then(afterGetAllPoolInfo => {
       this.poolInfo.forEach(async (element, index) => {
         await this.setContract(index).then(afterSetting => {
-          this.getTokenContractInfo(index);
+          this.getPoolTokenContractInfo(index);
         });
       });
     });
   }
+
+  async getPrices(): Promise<any> {
+    return await this.getAuraNetworkCurrencyPairAddress().then(async afterAuraNetworkCurrencyPairAddress => {
+      await this.getStableCoinNetworkCurrencyPairAddress().then(async afterStableCoinNetworkCurrencyPairAddress => {
+        await this.getNetworkCurrencyPrice().then(async afterNetworkCurrencyPrice => {
+          await this.getAuraPriceInNetworkCurrency().then(async afterAuraPriceInNetworkCurrency => {
+            await this.getAuraPriceInUSD().then(async afterAuraPriceInUSD => {
+    
+            });
+          });
+        });
+      });
+    });
+  }
+
+  async getAuraNetworkCurrencyPairAddress(): Promise<any> {
+    return await this.exchangeFactoryContract.methods.getPair(this.auraContractAddress, this.wrappedNetworkCurrencyContractAddress).call().then(async result => {
+      await this.auraWrappedNetworkCurrencyPairAddress.next(result);
+    });
+  }
+
+  async getStableCoinNetworkCurrencyPairAddress(): Promise<any> {
+    return await this.exchangeFactoryContract.methods.getPair(this.stableCoinContractAddress, this.wrappedNetworkCurrencyContractAddress).call().then(async result => {
+      await this.stableCoinWrappedNetworkCurrencyPairAddress.next(result);
+    });
+  }
+
+  async getNetworkCurrencyPrice(): Promise<any> {
+    return await this.stableCoinContract.methods.balanceOf(this.stableCoinWrappedNetworkCurrencyPairAddress.getValue()).call().then(async resultStable => {
+      await this.apyCalculator.stableCoin.pairBalance.next(resultStable);
+      await this.wrappedNetworkCurrencyContract.methods.balanceOf(this.stableCoinWrappedNetworkCurrencyPairAddress.getValue()).call().then(async resultNetwork => {
+        await this.apyCalculator.networkCurrency.pairBalanceStableCoin.next(resultNetwork);
+        await this.apyCalculator.networkCurrency.price.next(this.apyCalculator.stableCoin.pairBalance.getValue() / this.apyCalculator.networkCurrency.pairBalanceStableCoin.getValue());
+      });
+    });
+  }
+
+  async getAuraPriceInNetworkCurrency(): Promise<any> {
+    return await this.auraContract.methods.balanceOf(this.auraWrappedNetworkCurrencyPairAddress.getValue()).call().then(async resultAura => {
+      await this.apyCalculator.aura.pairBalance.next(resultAura);
+      await this.wrappedNetworkCurrencyContract.methods.balanceOf(this.auraWrappedNetworkCurrencyPairAddress.getValue()).call().then(async resultNetwork => {
+        await this.apyCalculator.networkCurrency.pairBalanceAura.next(resultNetwork);
+        await this.apyCalculator.aura.priceInNetworkCurrency.next(this.apyCalculator.aura.pairBalance.getValue() / this.apyCalculator.networkCurrency.pairBalanceAura.getValue());
+      });
+    });
+  }
+
+  async getAuraPriceInUSD(): Promise<any> {
+    return await this.apyCalculator.aura.priceInUSD.next(this.apyCalculator.aura.priceInNetworkCurrency.getValue() * this.apyCalculator.networkCurrency.price.getValue());
+  }
+
   connectWallet(): void {
     this.loginProcedure();
   }
@@ -183,11 +274,12 @@ export class Web3Service {
     });
   }
 
-  async getTokenContractInfo(poolId: number): Promise<any> {
+  async getPoolTokenContractInfo(poolId: number): Promise<any> {
     await this.getPoolTokenName(poolId);
     await this.getPoolTokenDecimals(poolId);
     await this.getPoolTokenSymbol(poolId);
     await this.getPoolTokenApproval(poolId);
+    // await this.getPoolTokenPrices(poolId);
   }
 
   async getPoolTokenName(poolId: number): Promise<any> {
@@ -212,6 +304,36 @@ export class Web3Service {
     return await this.poolInfo[poolId].token.contract.methods.allowance(this.user.address.getValue(), this.auraVaultContractAddress).call().then(result => {
       this.poolInfo[poolId].tokenApproval.next(result);
     });
+  }
+
+  async getPoolTokenPrices(poolId: number): Promise<any> {
+    return await this.getPoolTokenNetworkCurrencyPairAddress(poolId).then(async afterPoolTokenNetworkCurrencyPairAddress => {
+      await this.getPoolTokenPriceInNetworkCurrency(poolId, this.poolInfo[poolId].pairInfo.pairAddress.getValue()).then(async afterPoolTokenPriceInNetworkCurrency => {
+        await this.getPoolTokenPriceInUSD(poolId).then(async afterPoolTokenPriceInUSD => {
+
+        });
+      });
+    });
+  }
+
+  async getPoolTokenNetworkCurrencyPairAddress(poolId: number): Promise<any> {
+    return await this.exchangeFactoryContract.methods.getPair(this.poolInfo[poolId].token.address, this.wrappedNetworkCurrencyContractAddress).call().then(async result => {
+      await this.poolInfo[poolId].pairInfo.pairAddress.next(result);
+    });
+  }
+
+  async getPoolTokenPriceInNetworkCurrency(poolId: number, pairAddress: string): Promise<any> {
+    return await this.poolInfo[poolId].token.contract.methods.balanceOf(pairAddress).call().then(async resultToken => {
+      await this.poolInfo[poolId].pairInfo.tokenPairBalance.next(resultToken);
+      await this.wrappedNetworkCurrencyContract.methods.balanceOf(pairAddress).call().then(async resultNetwork => {
+        await this.poolInfo[poolId].pairInfo.networkCurrencyPairBalance.next(resultNetwork);
+        await this.poolInfo[poolId].priceInNetworkCurrency.next(this.poolInfo[poolId].pairInfo.tokenPairBalance.getValue() / this.poolInfo[poolId].pairInfo.networkCurrencyPairBalance.getValue());
+      });
+    });
+  }
+
+  async getPoolTokenPriceInUSD(poolId: number): Promise<any> {
+    return await this.poolInfo[poolId].priceInUSD.next(this.poolInfo[poolId].priceInNetworkCurrency.getValue() * this.apyCalculator.networkCurrency.price.getValue());
   }
 
   async approve(poolId: number): Promise<any> {
@@ -640,10 +762,12 @@ export class Web3Service {
           await this.getAllPoolInfo().then(async getAllPoolInfoResult => {
             await this.setPoolTokenContracts().then(async setPoolTokenContractsResult => {
               await this.getLPContracts().then(async getLPResult => {
-                await this.setLPContracts().then(setLPResult => {
-                  setInterval(() => {
-                    this.getInfo();
-                  }, 5000);
+                await this.setLPContracts().then(async setLPResult => {
+                  await this.setSecondaryContracts().then(setSecondaryResult => {
+                    setInterval(() => {
+                      this.getInfo();
+                    }, 5000);
+                  });
                 });
               });
             });
@@ -665,7 +789,9 @@ export class Web3Service {
           decimals: new BehaviorSubject(0),
           symbol: new BehaviorSubject(''),
         },
-        apy: new BehaviorSubject(0),
+        apy: new BehaviorSubject(30),
+        priceInUSD: new BehaviorSubject(0),
+        priceInNetworkCurrency: new BehaviorSubject(0),
         claimButton: new BehaviorSubject(0),
         depositButton: new BehaviorSubject(0),
         withdrawButton: new BehaviorSubject(0),
@@ -684,8 +810,12 @@ export class Web3Service {
           VIPpool: false,
           withdrawable: false
         }),
-        userBalance: new BehaviorSubject(0),
-        multiplier: new BehaviorSubject(30)
+        pairInfo: {
+          pairAddress: new BehaviorSubject(''),
+          networkCurrencyPairBalance: new BehaviorSubject(0),
+          tokenPairBalance: new BehaviorSubject(0)
+        },
+        userBalance: new BehaviorSubject(0)
       };
     }
   }
@@ -704,8 +834,23 @@ export class Web3Service {
     await this.setLPContract();
     await this.setWLPContract();
   }
+  async setSecondaryContracts(): Promise<any> {
+    await this.setStableCoinContract();
+    await this.setWrappedNetworkCurrencyContract();
+    await this.setExchangeFactoryContract();
+  }
+
   async setAuraContract(): Promise<any> {
     this.auraContract = await new this.web3.eth.Contract(auraAbi, this.auraContractAddress);
+  }
+  async setStableCoinContract(): Promise<any> {
+    this.stableCoinContract = await new this.web3.eth.Contract(stableCoinAbi, this.stableCoinContractAddress);
+  }
+  async setWrappedNetworkCurrencyContract(): Promise<any> {
+    this.wrappedNetworkCurrencyContract = await new this.web3.eth.Contract(wrappedNetworkCurrencyAbi, this.wrappedNetworkCurrencyContractAddress);
+  }
+  async setExchangeFactoryContract(): Promise<any> {
+    this.exchangeFactoryContract = await new this.web3.eth.Contract(exchangeAbi, this.exchangeFactoryContractAddress);
   }
 
   async setVaultContract(): Promise<any> {

@@ -31,6 +31,11 @@
           grid-template-rows: 1fr 1fr;
           align-content:start;
       }
+      &.inverse {
+          grid-template-columns:1fr max-content;
+          align-content:center;
+          align-items:center;
+      }
       @media (max-width:1600px) {
           &.split.small {
             grid-template-rows:1fr 1fr;
@@ -64,9 +69,9 @@
                 }
             }
             h3, h4 {
-                font-size:3.4rem;
-                color:$complement;
-                border-bottom:2px solid $black;
+                font-size:3rem;
+                color:$primary;
+                // border-bottom:2px solid $black;
                 margin:5px 0px;
                 @media (max-height:500px) {
                     font-size:2rem;
@@ -78,6 +83,13 @@
                 &.extra-small {
                     font-size:1.6rem;
                 }
+                background: $complement; /* Old browsers */
+                background: -moz-linear-gradient(top,  $complement 0%, $primary 100%); /* FF3.6-15 */
+                background: -webkit-linear-gradient(top,  $complement 0%, $primary 100%); /* Chrome10-25,Safari5.1-6 */
+                background: linear-gradient(to bottom,  $complement 0%, $primary 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#89ffb0', endColorstr='#89daff',GradientType=0 ); /* IE6-9 */
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
             }
             h4 {
                 font-size:2rem;
@@ -97,6 +109,9 @@
             label {
                 font-size:2rem;
                 &.title {
+                    color:$white;
+                }
+                &.inverse {
                     color:$black;
                 }
             }
@@ -122,6 +137,7 @@
             column-gap:5x;
             label {
                 font-size:1rem;
+                color:$white;
                 &.title {
                     border-bottom:2px solid $complement;
                     text-align:left;

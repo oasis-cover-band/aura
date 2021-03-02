@@ -32,7 +32,11 @@ html,body {
     }
     
     ::-webkit-scrollbar-thumb {
-      background-color: $primary;    /* color of the scroll thumb */
+        background: $complement; /* Old browsers */
+        background: -moz-linear-gradient(top,  $complement 0%, $primary 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top,  $complement 0%, $primary 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom,  $complement 0%, $primary 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#89ffb0', endColorstr='#89daff',GradientType=0 ); /* IE6-9 */
       border-radius: 20px;       /* roundness of the scroll thumb */
       border: 3px solid $black;  /* creates padding around scroll thumb */
     }
@@ -92,8 +96,10 @@ a.icon {
     padding:2.5px 2.5px;
     border-radius:4px;
     &:hover {
-        background:$dark;
-        color:$primary;
+        &.social {
+            background:$black;
+            color:$primary;
+        }
     }
     max-width:fit-content;
     justify-self:center;
@@ -120,6 +126,9 @@ a.icon {
         align-items:center;
         justify-items:center;
         pointer-events:none;
+        min-width:100%;
+        height:fit-content;
+        z-index:99999999;
     }
     &:hover {
         &:after {
@@ -130,6 +139,12 @@ a.icon {
             &:after {
                 opacity:1;
                 transform:translateY(200%);
+            }
+            &.short {
+                &:after {
+                    opacity:1;
+                    transform:translateY(100%);
+                }
             }
         }
     }
@@ -249,7 +264,7 @@ input {
     transition:0.4s;
     border-radius:4px;
     &:hover {
-        filter:hue-rotate(90deg);
+        filter:brightness(0.8);
         color:$black;
     }
 }
@@ -297,3 +312,13 @@ input {
   ::-webkit-input-placeholder { /* Edge */
     color: $black;
   }
+  
+  *.greyed-bar {
+    min-width:100%;
+    width:100px;
+    min-height:50px;
+    max-height:50px;
+    border-radius:8px;
+    background:$black!important;
+    color:$black!important;
+}

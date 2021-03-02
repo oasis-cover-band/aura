@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Web3Service } from 'src/app/dynamic-info-services/web3.service';
 import { ProjectService } from 'src/app/static-info-services/project.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-farm',
@@ -21,16 +22,14 @@ export class FarmComponent implements OnInit {
   withdrawButton = this.web3.poolInfo[this.pid].withdrawButton;
   depositButton = this.web3.poolInfo[this.pid].depositButton;
   project = this.projectService.project;
+  user = this.web3.user;
   constructor(
     private web3: Web3Service,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
-    setInterval(() => {
-      console.dir(this.data);
-      console.dir(this.web3.poolInfo[this.pid]);
-    }, 5000);
   }
 
   getData(): void {
@@ -51,4 +50,7 @@ export class FarmComponent implements OnInit {
     this.web3.claim(this.pid);
   }
 
+  goWrapper(): void {
+    this.router.navigateByUrl('wrapper');
+  }
 }

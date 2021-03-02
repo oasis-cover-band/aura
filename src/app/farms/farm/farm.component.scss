@@ -26,15 +26,47 @@
         justify-content:center;
         @include containers;
         span {
-            &#name {
-                grid-area:name;
-                align-self: end;
-            }
             &#input {
                 grid-area:input;
             }
         }
+        a {
+            cursor:pointer;
+            &#pool {
+                &:after {
+                    content: 'Add Liquidity';
+                }
+            }
+            &#swap {
+                &:after {
+                    content: 'Buy Tokens';
+                }
+            }
+            &#check {
+                &:after {
+                    content: 'View Token Code';
+                }
+            }
+            &#wrap {
+                &:after {
+                    content: 'Wrap Liquidity';
+                }
+            }
+            i {
+                background: $complement; /* Old browsers */
+                background: -moz-linear-gradient(top,  $complement 0%, $primary 100%); /* FF3.6-15 */
+                background: -webkit-linear-gradient(top,  $complement 0%, $primary 100%); /* Chrome10-25,Safari5.1-6 */
+                background: linear-gradient(to bottom,  $complement 0%, $primary 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#89ffb0', endColorstr='#89daff',GradientType=0 ); /* IE6-9 */
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+        }
         div {
+            &#name {
+                grid-area:name;
+                align-self: end;
+            }
             &#apy {
                 grid-area:apy;
             }
@@ -43,6 +75,22 @@
             }
             &#buttons {
                 grid-area:buttons;
+            }
+        }
+        &.super-apy {
+            background:$black;
+            box-shadow: 0px 5px 5px aqua, -5px -5px 5px pink, 5px -5px 5px yellowgreen, -5px 5px 5px limegreen;
+            animation: rainbow 6s infinite ease-in-out;
+            @keyframes rainbow {
+                25% {
+                    box-shadow: 0px 5px 10px limegreen, -5px -5px 10px aqua, 5px -5px 10px pink, -5px 5px 10px yellowgreen;
+                }
+                50% {
+                    box-shadow: 0px 5px 10px yellowgreen, -5px -5px 10px limegreen, 5px -5px 10px aqua, -5px 5px 10px pink;
+                }
+                75% {
+                    box-shadow: 0px 5px 10px pink, -5px -5px 10px yellowgreen, 5px -5px 10px limegreen, -5px 5px 10px aqua;
+                }
             }
         }
     }
