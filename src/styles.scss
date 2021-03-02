@@ -81,7 +81,7 @@ body {
     grid-area:body;
     grid-template-areas:'angular-content';
     background:$black;
-    background: url('./assets/backgrounds/wave.svg');
+    background: url('./assets/backgrounds/wave2.svg');
     background-position:50% 50%;
     background-repeat:no-repeat;
     background-size:cover;
@@ -109,7 +109,7 @@ a.icon {
         right:-20px;
         left:-20px;
         bottom:0px;
-        color:$primary;
+        color:$complement;
         background:$black;
         display:grid;
         padding:5px;
@@ -140,10 +140,10 @@ button {
     max-width:100%;
     max-height:50px;
     min-height:50px;
-    border:2px solid $primary;
+    border:2px solid $complement;
     outline:none;
     background:none;
-    color:$primary;
+    color:$complement;
     font-family: 'Rubik';
     transition:0.4s;
     border-radius:4px;
@@ -182,7 +182,7 @@ button {
         justify-self:center;
         grid-area:content;
         pointer-events: none;
-        color:$primary!important;
+        color:$complement!important;
         z-index:2;
     }
     &.failed {
@@ -193,7 +193,7 @@ button {
         border-color:$dark;
     }
     &.working {
-        background:$primary;
+        background:$complement;
         label {
             color:$black!important;
         }
@@ -201,19 +201,19 @@ button {
         box-shadow:0px 0px 0px rgba(255,255,255,0);
         @keyframes strobe {
             20% {
-                border-top-color:$complement;
+                border-top-color:$primary;
             }
             40% {
-                border-right-color:$complement;
+                border-right-color:$primary;
             }
             50% {
-                box-shadow:0px 0px 4px $complement;
+                box-shadow:0px 0px 4px $primary;
             }
             60% {
-                border-bottom-color:$complement;
+                border-bottom-color:$primary;
             }
             80% {
-                border-left-color:$complement;
+                border-left-color:$primary;
             }
         }
     }

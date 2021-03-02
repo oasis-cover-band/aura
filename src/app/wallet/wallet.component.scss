@@ -24,7 +24,7 @@
         cursor:pointer;
         align-content:center;
         align-items:center;
-        background:$dark;
+        background:rgba(0,0,0,0.4);
         border-radius:4px;
         @media (max-height:800px) {
             grid-template-rows: 2px 1fr 2px;
@@ -41,7 +41,11 @@
                 align-items: center;
                 min-height:100%;
                 grid-area:balance;
-                background:$primary;
+                background: $complement; /* Old browsers */
+                background: -moz-linear-gradient(top,  $complement 0%, $primary 100%); /* FF3.6-15 */
+                background: -webkit-linear-gradient(top,  $complement 0%, $primary 100%); /* Chrome10-25,Safari5.1-6 */
+                background: linear-gradient(to bottom,  $complement 0%, $primary 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#89ffb0', endColorstr='#89daff',GradientType=0 ); /* IE6-9 */
                 color:$black;
                 border-radius:4px;
                 text-align:center;
