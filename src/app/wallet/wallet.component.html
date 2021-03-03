@@ -1,4 +1,4 @@
-<section class="balance" id="wallet" *ngIf="(user.address | async) !== ''">
+<section class="balance" id="wallet" *ngIf="(user.address | async) !== ''" (click)="viewBalances()">
     <div id="address">
         <i class="material-icons">account_balance_wallet</i>
     </div>

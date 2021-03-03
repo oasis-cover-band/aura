@@ -9,6 +9,7 @@
     '. . .';
     grid-template-columns: 10px 1fr 10px;
     grid-template-rows: 10px 1fr 10px;
+    z-index:9999999999;
     section.wrapper {
         grid-area:content;
         display:grid;
@@ -73,11 +74,13 @@
         app-wallet {
             align-self:end;
             transition:0.4s;
-            &.opened {
-                transition:0s;
-                opacity:0;
-                transform:scale(0);
-                overflow:hidden;
+            @media (max-width:600px), (max-height:800px) {
+                &.opened {
+                    transition:0s;
+                    opacity:0;
+                    transform:scale(0);
+                    overflow:hidden;
+                }
             }
         }
         @media (max-width:600px), (max-height:800px) {

@@ -44,6 +44,9 @@
             &#input {
                 grid-area:input;
             }
+            &#buttons {
+                grid-area:buttons;
+            }
         }
         div {
             &#name {
@@ -60,9 +63,6 @@
             }
             &#your {
                 grid-area:your;
-            }
-            &#buttons {
-                grid-area:buttons;
             }
         }
     }

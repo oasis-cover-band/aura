@@ -3,10 +3,12 @@ import { BehaviorSubject } from 'rxjs';
 import { Web3Service } from 'src/app/dynamic-info-services/web3.service';
 import { ProjectService } from 'src/app/static-info-services/project.service';
 import { Router } from '@angular/router';
+import { inOutAnimations } from 'src/app/animations';
 
 @Component({
   selector: 'app-farm',
   templateUrl: './farm.component.html',
+  animations: [inOutAnimations],
   styleUrls: ['./farm.component.scss']
 })
 export class FarmComponent implements OnInit {
@@ -23,6 +25,8 @@ export class FarmComponent implements OnInit {
   depositButton = this.web3.poolInfo[this.pid].depositButton;
   project = this.projectService.project;
   user = this.web3.user;
+
+  showingMore = false;
   constructor(
     private web3: Web3Service,
     private projectService: ProjectService,
@@ -48,6 +52,9 @@ export class FarmComponent implements OnInit {
 
   claim(): void {
     this.web3.claim(this.pid);
+  }
+  showMore(): void {
+    this.showingMore = !this.showingMore;
   }
 
   goWrapper(): void {

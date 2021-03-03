@@ -8,6 +8,7 @@
     grid-template-columns: 10px 1fr 10px;
     grid-template-rows:10px 1fr 10px;
     section.wrapper {
+        height:fit-content;
         border-radius:20px;
         background:rgba(0,0,0,0.3);
         grid-area:wrapper;
@@ -16,18 +17,45 @@
         '. . .'
         '. apy .'
         '. name .'
+        '. info .'
+        '. show .'
         '. misc .'
         '. buttons .'
         '. input .'
         '. . .';
         grid-template-columns:20px 1fr 20px;
-        grid-template-rows: 10px max-content 1fr max-content max-content max-content 10px;
+        grid-template-rows: 10px max-content 1fr max-content max-content max-content max-content max-content 10px;
         row-gap:10px;
         justify-content:center;
         @include containers;
         span {
             &#input {
                 grid-area:input;
+            }
+            &#show {
+                grid-area:show;
+                align-self:start;
+                label {
+                    align-self:center;
+                    display:grid;
+                    align-items:center;
+                    justify-self:stat;
+                    grid-auto-flow: column;
+                    grid-template-columns: max-content max-content;
+                    background:rgba(0,0,0,0.3);
+                    color:$complement;
+                    border-radius:4px;
+                    transition:0.4s;
+                    width:fit-content;
+                    padding:5px;
+                    cursor:pointer;
+                    * {
+                        pointer-events: none;
+                    }
+                    &:hover {
+                        background:rgba(0,0,0,0.6);
+                    }
+                }
             }
         }
         a {
@@ -45,6 +73,12 @@
             &#check {
                 &:after {
                     content: 'View Token Code';
+                }
+            }
+            &#block-check {
+                position:relative;
+                &:after {
+                    content: 'View On Block Explorer';
                 }
             }
             &#wrap {
@@ -66,6 +100,19 @@
             &#name {
                 grid-area:name;
                 align-self: end;
+            }
+            &#info {
+                grid-area:info;
+                align-self: end;
+                i {
+                    background: $complement; /* Old browsers */
+                    background: -moz-linear-gradient(top,  $complement 0%, $primary 100%); /* FF3.6-15 */
+                    background: -webkit-linear-gradient(top,  $complement 0%, $primary 100%); /* Chrome10-25,Safari5.1-6 */
+                    background: linear-gradient(to bottom,  $complement 0%, $primary 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#89ffb0', endColorstr='#89daff',GradientType=0 ); /* IE6-9 */
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
             }
             &#apy {
                 grid-area:apy;

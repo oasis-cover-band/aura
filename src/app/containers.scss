@@ -12,11 +12,34 @@
         grid-template-columns:1fr;
         row-gap:10px;
       }
+      background:rgba(0,0,0,0.25);
+      padding:5px;
+      border-radius:8px;
+      &.mushy {
+          grid-template-columns: max-content 1fr max-content;
+          grid-template-rows:1fr;
+          &:nth-child(2) {
+              text-align:left;
+              span {
+                  text-align:left;
+              }
+          }
+          align-items:center;
+      }
+      &.naked {
+          background:rgba(0,0,0,0);
+      }
     }
     div.norm-container {
       display:grid;
       grid-template-columns:1fr 1fr;
       column-gap:10px;
+      background:rgba(0,0,0,0.25);
+      padding:5px;
+      border-radius:8px;
+      &.naked {
+          background:rgba(0,0,0,0);
+      }
       &.split {
           grid-template-columns:1fr 1fr;
           :nth-child(1) {
@@ -35,6 +58,9 @@
           grid-template-columns:1fr max-content;
           align-content:center;
           align-items:center;
+          &.mushy {
+            grid-template-columns:max-content 1fr;
+          }
       }
       @media (max-width:1600px) {
           &.split.small {
@@ -52,6 +78,7 @@
     }
     span {
         &.big-header, &.norm-header {
+            align-items:center;
             label {
                 &.value {/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#72b7d6+0,89daff+100 */
                     background: $complement; /* Old browsers */

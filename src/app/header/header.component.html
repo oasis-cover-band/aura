@@ -5,5 +5,5 @@
     <div class="header-items-wrapper button">
         <i class="material-icons" (click)="toggleMenu()">menu</i>
     </div>
-    <app-wallet [ngClass]="{'opened': menuOpen === true}"></app-wallet>
+    <app-wallet [ngClass]="{'opened': menuOpen === true, 'showing-pool': showingPoolTokens === true}" (click)="showPoolTokens()"></app-wallet>
 </section>

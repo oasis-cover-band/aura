@@ -6,17 +6,19 @@ import { Injectable } from '@angular/core';
 export class ProjectService {
   project = {
     contracts: {
-      tokenAddress: '0xA6e59Dc48E2799912e4e5CCdb6e6918Bf0F6e4f7',
-      vaultAddress: '0x746c4e2B8C0f55B0d182F5Ad35F1c4dde9597334',
+      tokenAddress: '0xe6796811322A32b5A33dB08eB525645B61e25D23',
+      vaultAddress: '0xD77695a186E28Cc865C1DD34db06aEdeb53c0085',
       stableCoinAddress: '0xA6e59Dc48E2799912e4e5CCdb6e6918Bf0F6e4f7',
       wrappedNetworkCurrencyAddress: '0xA6e59Dc48E2799912e4e5CCdb6e6918Bf0F6e4f7',
       exchangeFactoryAddress: '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f',
     },
+    name: 'AURA',
     tokenName: 'AURA',
     lpTokenName: 'FLIP',
     networkCurrency: 'BNB',
     blockExplorer: 'BscScan',
-    blockExplorerAddress: 'https://bscscan.com',
+    blockExplorerAddress: 'https://testnet.bscscan.com',
+    // blockExplorerAddress: 'https://bscscan.com',
     exchangeAddress: 'https://exchange.pancakeswap.finance/',
     socials: {
       telegram: 'https://t.me/auragroup',

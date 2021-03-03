@@ -70,6 +70,8 @@ export class Web3Service {
   };
 
   wrapper = {
+    unwrapAllowance: new BehaviorSubject(0),
+    wrapAllowance: new BehaviorSubject(0),
     unwrapButton: new BehaviorSubject(0),
     wrapButton: new BehaviorSubject(0)
   };
@@ -114,6 +116,8 @@ export class Web3Service {
         symbol: new BehaviorSubject(''),
       },
       apy: new BehaviorSubject(30),
+      tvl: new BehaviorSubject(42000000),
+      poolTokenBalance: new BehaviorSubject(0),
       priceInUSD: new BehaviorSubject(0),
       priceInNetworkCurrency: new BehaviorSubject(0),
       claimButton: new BehaviorSubject(0),
@@ -177,6 +181,7 @@ export class Web3Service {
     this.getTokenInfo();
     this.getUserInfo();
     this.getLGEInfo();
+    this.getWrapperApprovals();
     await this.getLPTokensInfo();
     // await this.getPrices();
     await this.getAllPoolInfo().then(afterGetAllPoolInfo => {
@@ -280,6 +285,7 @@ export class Web3Service {
     await this.getPoolTokenSymbol(poolId);
     await this.getPoolTokenApproval(poolId);
     // await this.getPoolTokenPrices(poolId);
+    // await this.getPoolTokenVaultBalance(poolId);
   }
 
   async getPoolTokenName(poolId: number): Promise<any> {
@@ -313,6 +319,13 @@ export class Web3Service {
 
         });
       });
+    });
+  }
+
+  async getPoolTokenVaultBalance(poolId: number): Promise<any> {
+    return await this.poolInfo[poolId].token.contract.methods.balanceOf(this.auraVaultContractAddress).call().then(result => {
+      this.poolInfo[poolId].poolTokenBalance.next(result);
+      this.poolInfo[poolId].tvl.next((this.poolInfo[poolId].poolTokenBalance.getValue() / 1e18) * this.poolInfo[poolId].priceInUSD.getValue());
     });
   }
 
@@ -375,7 +388,7 @@ export class Web3Service {
       return await this.approve(poolId).then(async result => {
         await this.auraVaultContract.methods.deposit(
           poolId,
-          String(Math.floor(amount * 1e18))
+          BigInt(Math.floor(amount * 1e18))
         )
           .send({ from: this.user.address.getValue() })
           .on('transactionHash', (transactionHash) => {
@@ -399,7 +412,7 @@ export class Web3Service {
     } else {
       return await this.auraVaultContract.methods.deposit(
         poolId,
-        String(Math.floor(amount * 1e18))
+        BigInt(Math.floor(amount * 1e18))
       )
         .send({ from: this.user.address.getValue() })
         .on('transactionHash', (transactionHash) => {
@@ -438,7 +451,7 @@ export class Web3Service {
     this.poolInfo[poolId].withdrawButton.next(1);
     return await this.auraVaultContract.methods.withdraw(
       poolId,
-      String(Math.floor(amount * 1e18))
+      BigInt(Math.floor(amount * 1e18))
     ).send({ from: this.user.address.getValue() })
       .on('transactionHash', (transactionHash) => {
       })
@@ -573,7 +586,7 @@ export class Web3Service {
   }
 
   async getUserBalance(poolId: number): Promise<any> {
-    this.poolInfo[poolId].token.contract.methods.balanceOf(this.user.address.getValue()).call().then(async result => {
+    return await this.poolInfo[poolId].token.contract.methods.balanceOf(this.user.address.getValue()).call().then(async result => {
       this.poolInfo[poolId].userBalance.next(result);
     });
   }
@@ -592,54 +605,54 @@ export class Web3Service {
     this.getTotalFLIPMinted();
   }
   async getBNBContributed(): Promise<any> {
-    this.auraContract.methods.BNBContributed(this.user.address.getValue()).call().then(async result => {
+    return await this.auraContract.methods.BNBContributed(this.user.address.getValue()).call().then(async result => {
       this.lge.user.contribution.next(result);
     });
   }
   async getFLIPPerBNBUnit(): Promise<any> {
-    this.auraContract.methods.FLIPperBNBUnit().call().then(async result => {
+    return await this.auraContract.methods.FLIPperBNBUnit().call().then(async result => {
       this.lge.FLIPperBNBUnit.next(result);
     });
   }
   async getLGEEnd(): Promise<any> {
-    this.auraContract.methods.LGECompleted_Timestamp().call().then(async result => {
+    return await this.auraContract.methods.LGECompleted_Timestamp().call().then(async result => {
       this.lge.ended.next(result);
     });
   }
   async getLGEStart(): Promise<any> {
-    this.auraContract.methods.contractStart_Timestamp().call().then(async result => {
+    return await this.auraContract.methods.contractStart_Timestamp().call().then(async result => {
       this.lge.started.next(result);
     });
   }
   async getLGECalculatedEnd(): Promise<any> {
-    this.auraContract.methods.contractStart_Timestamp().call().then(async result => {
+    return await this.auraContract.methods.contractStart_Timestamp().call().then(async result => {
       this.auraContract.methods.contributionPhase().call().then(async resultZ => {
         this.lge.calculatedEnd.next(Number(result) + Number(resultZ));
       });
     });
   }
   async getLGEDuration(): Promise<any> {
-    this.auraContract.methods.contributionPhase().call().then(async result => {
+    return await this.auraContract.methods.contributionPhase().call().then(async result => {
       this.lge.duration.next(result);
     });
   }
   async getIndividualCap(): Promise<any> {
-    this.auraContract.methods.individualCap().call().then(async result => {
+    return await this.auraContract.methods.individualCap().call().then(async result => {
       this.lge.individualCap.next(result);
     });
   }
   async getInitialSupply(): Promise<any> {
-    this.auraContract.methods.initialSupply().call().then(async result => {
+    return await this.auraContract.methods.initialSupply().call().then(async result => {
       this.lge.initialSupply.next(result);
     });
   }
   async getTotalFLIPMinted(): Promise<any> {
-    this.auraContract.methods.totalFLIPTokensMinted().call().then(async result => {
+    return await this.auraContract.methods.totalFLIPTokensMinted().call().then(async result => {
       this.lge.totalFLIPMinted.next(result);
     });
   }
   async getTotalBNBContributed(): Promise<any> {
-    this.auraContract.methods.totalBNBContributed().call().then(async result => {
+    return await this.auraContract.methods.totalBNBContributed().call().then(async result => {
       this.lge.totalBNBContributed.next(result);
     });
   }
@@ -721,7 +734,7 @@ export class Web3Service {
     ).send({
       from: this.user.address.getValue(),
       to: this.auraContract,
-      value: String(Math.floor(amount * 1e18))
+      value: BigInt(Math.floor(amount * 1e18))
     })
       .on('transactionHash', (transactionHash) => {
       })
@@ -790,6 +803,8 @@ export class Web3Service {
           symbol: new BehaviorSubject(''),
         },
         apy: new BehaviorSubject(30),
+        tvl: new BehaviorSubject(4200000),
+        poolTokenBalance: new BehaviorSubject(0),
         priceInUSD: new BehaviorSubject(0),
         priceInNetworkCurrency: new BehaviorSubject(0),
         claimButton: new BehaviorSubject(0),
@@ -881,15 +896,15 @@ export class Web3Service {
   // USER BALANCES      //
   // ================== //
   async getUserBNBBalance(): Promise<any> {
-    this.web3.eth.getBalance(this.user.address.getValue()).then(async result => {
-      this.user.bnbBalance.next(Number(result));
-    });
+      return await this.web3.eth.getBalance(this.user.address.getValue()).then(async result => {
+        this.user.bnbBalance.next(Number(result));
+      });
   }
 
   async getUserAuraBalance(): Promise<any> {
-    this.auraContract.methods.balanceOf(this.user.address.getValue()).call().then(async result => {
-      this.user.auraBalance.next(result);
-    });
+      return await this.auraContract.methods.balanceOf(this.user.address.getValue()).call().then(async result => {
+        this.user.auraBalance.next(result);
+      });
   }
 
   // ================== //
@@ -903,22 +918,22 @@ export class Web3Service {
     this.getTokenTotalSupply();
   }
   async getTokenName(): Promise<any> {
-    this.auraContract.methods.name().call().then(async result => {
+    return await this.auraContract.methods.name().call().then(async result => {
       this.token.name.next(result);
     });
   }
   async getTokenSymbol(): Promise<any> {
-    this.auraContract.methods.symbol().call().then(async result => {
+    return await this.auraContract.methods.symbol().call().then(async result => {
       this.token.symbol.next(result);
     });
   }
   async getTokenDecimals(): Promise<any> {
-    this.auraContract.methods.decimals().call().then(async result => {
+    return await this.auraContract.methods.decimals().call().then(async result => {
       this.token.decimals.next(result);
     });
   }
   async getTokenTotalSupply(): Promise<any> {
-    this.auraContract.methods.totalSupply().call().then(async result => {
+    return await this.auraContract.methods.totalSupply().call().then(async result => {
       this.token.totalSupply.next(result);
     });
   }
@@ -1013,10 +1028,128 @@ export class Web3Service {
     });
   }
 
+  async getWrapperApprovals(): Promise<any> {
+    this.getWrapperWrapApproval();
+    this.getWrapperUnwrapApproval();
+  }
+  async getWrapperWrapApproval(): Promise<any> {
+    return await this.liquidityToken.lpContract.methods.allowance(this.user.address.getValue(), this.liquidityToken.wLPAddress.getValue()).call().then(result => {
+      this.wrapper.wrapAllowance.next(result);
+    });
+  }
+
+  async getWrapperUnwrapApproval(): Promise<any> {
+    return await this.liquidityToken.wLPContract.methods.allowance(this.user.address.getValue(), this.liquidityToken.wLPAddress.getValue()).call().then(result => {
+      this.wrapper.unwrapAllowance.next(result);
+    });
+  }
+
+  async approveWrapperWrap(): Promise<any> {
+    this.wrapper.wrapButton.next(4);
+    return await this.liquidityToken.lpContract.methods.approve(this.liquidityToken.wLPAddress.getValue(), BigInt(999999999999999999999999)).send({ from: this.user.address.getValue() })
+      .on('transactionHash', (transactionHash) => {
+      })
+      .on('confirmation', (confirmation) => {
+        if (confirmation) {
+        }
+      }).on('receipt', (receipt) => {
+        this.wrapper.wrapButton.next(5);
+        this.notificationsService.notify({
+          title: 'Approve Successful',
+          icon: 'alarm',
+          text: 'You have successfully approved your LP okens to the wrapper.',
+          date: new Date()
+        });
+        setTimeout(() => {
+          this.wrapper.wrapButton.next(1);
+        }, 2500);
+      })
+      .on('error', (error) => {
+        this.wrapper.wrapButton.next(3);
+        this.notificationsService.notify({
+          title: 'Approve Error',
+          icon: 'alarm',
+          text: 'There was an error approving your LP tokens to the wrapper.',
+          date: new Date()
+        });
+        setTimeout(() => {
+          this.wrapper.wrapButton.next(0);
+        }, 2500);
+      });
+  }
+  async approveWrapperUnwrap(): Promise<any> {
+    this.wrapper.unwrapButton.next(4);
+    return await this.liquidityToken.wLPContract.methods.approve(this.liquidityToken.wLPAddress.getValue(), BigInt(999999999999999999999999)).send({ from: this.user.address.getValue() })
+      .on('transactionHash', (transactionHash) => {
+      })
+      .on('confirmation', (confirmation) => {
+        if (confirmation) {
+        }
+      }).on('receipt', (receipt) => {
+        this.wrapper.unwrapButton.next(5);
+        this.notificationsService.notify({
+          title: 'Approve Successful',
+          icon: 'alarm',
+          text: 'You have successfully approved your wrapped LP tokens to the wrapper.',
+          date: new Date()
+        });
+        setTimeout(() => {
+          this.wrapper.unwrapButton.next(1);
+        }, 2500);
+      })
+      .on('error', (error) => {
+        this.wrapper.unwrapButton.next(3);
+        this.notificationsService.notify({
+          title: 'Approve Error',
+          icon: 'alarm',
+          text: 'There was an error approving your wrapped LP tokens to the wrapper.',
+          date: new Date()
+        });
+        setTimeout(() => {
+          this.wrapper.unwrapButton.next(0);
+        }, 2500);
+      });
+  }
+
   async wrapFlip(amount: number): Promise<any> {
     this.wrapper.wrapButton.next(1);
+    if (BigInt(this.wrapper.wrapAllowance.getValue()) < 1) {
+      return await this.approveWrapperWrap().then(async result => {
+        await this.liquidityToken.wLPContract.methods.wrapFLIP(
+          BigInt(Math.floor(amount * 1e18))
+        ).send({
+          from: this.user.address.getValue(),
+        })
+          .on('transactionHash', (transactionHash) => {
+          })
+          .on('confirmation', (confirmation) => {
+            if (confirmation) {
+            }
+          }).on('receipt', (receipt) => {
+            this.wrapper.wrapButton.next(2);
+            this.notificationsService.notify({
+              title: 'Wrap Successful',
+              icon: 'alarm',
+              text: 'Your LP tokens have been wrapped successfully.',
+              date: new Date()
+            });
+            setTimeout(() => {
+              this.wrapper.wrapButton.next(0);
+            }, 2500);
+          })
+          .on('error', (error) => {
+            this.wrapper.wrapButton.next(2);
+            this.notificationsService.notify({
+              title: 'Wrap Error',
+              icon: 'alarm',
+              text: 'There was an error wrapping your LP tokens.',
+              date: new Date()
+            });
+          });
+      });
+    } else {
     return await this.liquidityToken.wLPContract.methods.wrapFLIP(
-      String(Math.floor(amount * 1e18))
+      BigInt(Math.floor(amount * 1e18))
     ).send({
       from: this.user.address.getValue(),
     })
@@ -1050,12 +1183,52 @@ export class Web3Service {
           this.wrapper.wrapButton.next(0);
         }, 2500);
       });
+    }
   }
 
   async unwrapFlip(amount: number): Promise<any> {
     this.wrapper.unwrapButton.next(1);
-    return await this.liquidityToken.wLPContract.methods.wrapFLIP(
-      String(Math.floor(amount * 1e18))
+    if (BigInt(this.wrapper.unwrapAllowance.getValue()) < 1) {
+      return await this.approveWrapperUnwrap().then(async result => {
+        await this.liquidityToken.wLPContract.methods.unWrapFLIP(
+          BigInt(Math.floor(amount * 1e18))
+        ).send({
+          from: this.user.address.getValue(),
+        })
+          .on('transactionHash', (transactionHash) => {
+          })
+          .on('confirmation', (confirmation) => {
+            if (confirmation) {
+            }
+          }).on('receipt', (receipt) => {
+            this.wrapper.unwrapButton.next(2);
+            this.notificationsService.notify({
+              title: 'Unwrap Successful',
+              icon: 'alarm',
+              text: 'Your LP tokens have been unwrapped successfully.',
+              date: new Date()
+            });
+            setTimeout(() => {
+              this.wrapper.unwrapButton.next(0);
+            }, 2500);
+          })
+          .on('error', (error) => {
+            this.wrapper.unwrapButton.next(2);
+            this.notificationsService.notify({
+              title: 'Unwrap Error',
+              icon: 'alarm',
+              text: 'There was an error unwrapping your LP tokens.',
+              date: new Date()
+            });
+            this.wrapper.unwrapButton.next(3);
+            setTimeout(() => {
+              this.wrapper.unwrapButton.next(0);
+            }, 2500);
+          });
+      });
+    } else {
+    return await this.liquidityToken.wLPContract.methods.unWrapFLIP(
+      BigInt(Math.floor(amount * 1e18))
     ).send({
       from: this.user.address.getValue(),
     })
@@ -1089,5 +1262,6 @@ export class Web3Service {
           this.wrapper.unwrapButton.next(0);
         }, 2500);
       });
+    }
   }
 }

@@ -1,11 +1,14 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Web3Service } from '../dynamic-info-services/web3.service';
 import { ProjectService } from '../static-info-services/project.service';
+import { BehaviorSubject } from 'rxjs';
+import { inOutAnimations } from '../animations';
 
 @Component({
   selector: 'app-wrapper',
   templateUrl: './wrapper.component.html',
-  styleUrls: ['./wrapper.component.scss']
+  styleUrls: ['./wrapper.component.scss'],
+  animations: [inOutAnimations]
 })
 export class WrapperComponent implements OnInit {
 
@@ -17,7 +20,7 @@ export class WrapperComponent implements OnInit {
   };
   @ViewChild('inputEle', {static: false}) inputEle: ElementRef;
   user = this.web3.user;
-  inputPlaceholder = 'Enter an amount to wrap or unwrap.';
+  inputPlaceholder = new BehaviorSubject('Enter an amount to wrap or unwrap.');
   wrapButton = this.web3.wrapper.wrapButton;
   unwrapButton = this.web3.wrapper.unwrapButton;
   project = this.projectService.project;

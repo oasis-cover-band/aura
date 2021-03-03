@@ -1,31 +1,31 @@
 <section class="wrapper">
     <div class="wrapping-item" id="wbnb">
-        <div (click)="bringWrap()" class="norm-container up-under" id="wrap" [ngClass]="{'selected': mode.wBNB.wrap === true}">
+        <div (click)="bringWrap()" class="norm-container up-under naked" id="wrap" [ngClass]="{'selected': mode.wBNB.wrap === true}">
             <span class="norm-header"
-            *ngIf="(user.lpBalance | async) as lpBalance;else greyed">
+            *ngIf="(user.lpBalance | async) as lpBalance;else greyed" [@inOutAnimations]>
                 <label class="title">Wrap {{project.lpTokenName}}</label>
             </span>
             <span class="norm-header"
-            *ngIf="(user.lpBalance | async) as lpBalance;else greyed">
+            *ngIf="(user.lpBalance | async) as lpBalance;else greyed" [@inOutAnimations]>
                 <label class="value">Your {{project.lpTokenName}} {{(lpBalance / 1e18) | number:'1.2-2'}}</label>
             </span>
-            <ng-template class="greyed-bar" #greyed><div class="greyed-bar"></div></ng-template>
+            <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
         </div>
-        <div (click)="bringUnwrap()" class="norm-container up-under" id="unwrap" [ngClass]="{'selected': mode.wBNB.unwrap === true}">
+        <div (click)="bringUnwrap()" class="norm-container up-under naked" id="unwrap" [ngClass]="{'selected': mode.wBNB.unwrap === true}">
             <span class="norm-header"
-            *ngIf="(user.wLPBalance | async) as wLPBalance;else greyed">
+            *ngIf="(user.wLPBalance | async) as wLPBalance;else greyed" [@inOutAnimations]>
                 <label class="title">Unwrap w{{project.lpTokenName}}</label>
             </span>
             <span class="norm-header"
-            *ngIf="(user.wLPBalance | async) as wLPBalance;else greyed">
+            *ngIf="(user.wLPBalance | async) as wLPBalance;else greyed" [@inOutAnimations]>
                 <label class="value">Your w{{project.lpTokenName}} {{(wLPBalance / 1e18) | number:'1.2-2'}}</label>
             </span>
-            <ng-template class="greyed-bar" #greyed><div class="greyed-bar"></div></ng-template>
+            <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
         </div>
         <span class="input" id="input">
-            <input [placeholder]="inputPlaceholder" #inputEle
-            *ngIf="(user.lpBalance | async) as lpBalance;else greyed"/>
-            <ng-template class="greyed-bar" #greyed><div class="greyed-bar"></div></ng-template>
+            <input [placeholder]="(inputPlaceholder | async)" #inputEle
+            *ngIf="(user.lpBalance | async) as lpBalance;else greyed" [@inOutAnimations]/>
+            <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
         </span>
         <span class="button" id="wrap-unwrap"
         *ngIf="(user.lpBalance | async) as lpBalance">

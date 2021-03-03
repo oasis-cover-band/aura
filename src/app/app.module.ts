@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { HeaderModule } from './header/header.module';
 import { FooterModule } from './footer/footer.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { SystemNotificationModule } from './system-notification/system-notification.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { NotificationsModule } from './notifications/notifications.module';
     HeaderModule,
     FooterModule,
     NotificationsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    SystemNotificationModule
   ],
   providers: [],
   bootstrap: [AppComponent]

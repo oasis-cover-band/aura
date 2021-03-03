@@ -6,61 +6,61 @@
         </span>
     </div>
     <span class="big-header" id="price">
-        <label class="value" *ngIf="(data.FLIPperBNBUnit | async) > 0 && (data.FLIPperBNBUnit | async) as FLIPperBNBUnit;else greyed">{{FLIPperBNBUnit / 1e18 | number}} {{project.lpTokenName}} per 1 {{project.networkCurrency}}</label>
-        <ng-template class="greyed-bar" #greyed><div class="greyed-bar"></div></ng-template>
+        <label class="value" *ngIf="(data.FLIPperBNBUnit | async) > 0 && (data.FLIPperBNBUnit | async) as FLIPperBNBUnit;">{{FLIPperBNBUnit / 1e18 | number}} {{project.lpTokenName}} per 1 {{project.networkCurrency}}</label>
+        <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
     </span>
     <div class="small-container" id="time">
-        <span class="small-header" *ngIf="(data.started | async) as started;else greyed">
+        <span class="small-header" *ngIf="(data.started | async) as started;else greyed" [@inOutAnimations]>
             <label class="title">Start Date</label>
-            <label class="value">{{(started * 1000)  | date:'dd/MM/yyyy'}}</label>
+            <label class="value">{{(started * 1000)  | date:'dd/MM/yyyy hh:mm:ss a'}}</label>
         </span>
-        <span class="small-header" *ngIf="(data.ended | async) as ended;else greyed">
+        <span class="small-header" *ngIf="(data.ended | async) as ended;else greyed" [@inOutAnimations]>
             <label class="title">End Date</label>
-            <label class="value">{{(ended * 1000) | date:'dd/MM/yyyy'}}</label>
+            <label class="value">{{(ended * 1000) | date:'dd/MM/yyyy hh:mm:ss a'}}</label>
         </span>
-        <span class="small-header value" *ngIf="(data.duration | async) as duration;else greyed">
+        <span class="small-header value" *ngIf="(data.duration | async) as duration;else greyed" [@inOutAnimations]>
             <label class="title">Duration</label>
             <label class="value"><b>{{duration / 3600 | number}}</b> <small>hours</small></label>
         </span>
-        <ng-template class="greyed-bar" #greyed><div class="greyed-bar"></div></ng-template>
+        <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
     </div>
     <div class="small-container" id="global">
-        <span class="small-header value" *ngIf="(data.totalBNBContributed | async) as totalBNBContributed;else greyed">
-            <label class="title">Global Tokens</label>
+        <span class="small-header value" *ngIf="(data.totalBNBContributed | async) as totalBNBContributed;else greyed" [@inOutAnimations]>
+            <label class="title">Total Tokens</label>
             <label class="value"><b>{{(totalBNBContributed / 1e18 * ((data.FLIPperBNBUnit | async) / 1e18)) | number}}</b> <small>{{project.lpTokenName}}</small></label>
         </span>
-        <span class="small-header value" *ngIf="(data.totalBNBContributed | async) as totalBNBContributed;else greyed">
-            <label class="title">Global Contributions</label>
-            <label class="value"><b>{{data.totalBNBContributed / 1e18 | number}}</b> <small>{{project.networkCurrency}}</small></label>
+        <span class="small-header value" *ngIf="(data.totalBNBContributed | async) as totalBNBContributed;else greyed" [@inOutAnimations]>
+            <label class="title">Total Contributions</label>
+            <label class="value"><b>{{totalBNBContributed / 1e18 | number}}</b> <small>{{project.networkCurrency}}</small></label>
         </span>
-        <span class="small-header value" *ngIf="(data.individualCap | async) as individualCap;else greyed">
+        <span class="small-header value" *ngIf="(data.individualCap | async) as individualCap;else greyed" [@inOutAnimations]>
             <label class="title">Individual Cap</label>
             <label class="value"><b>{{individualCap / 1e18 | number}}</b> <small>{{project.networkCurrency}}</small></label>
         </span>
-        <ng-template class="greyed-bar" #greyed><div class="greyed-bar"></div></ng-template>
+        <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
     </div>
-    <div class="norm-container" id="your">
-        <span class="small-header value" *ngIf="(data.user.contribution | async) as contribution;else greyed">
+    <div class="norm-container" id="your" *ngIf="(data.user.contribution | async) > 1">
+        <span class="small-header value" *ngIf="(data.user.contribution | async) as contribution;else greyed" [@inOutAnimations]>
             <label class="title">Your Contribution</label>
             <label class="value"><b>{{contribution / 1e18 | number}}</b> <small>{{project.networkCurrency}}</small></label>
         </span>
-        <span class="small-header value" *ngIf="(data.user.contribution | async) as contribution;else greyed">
-            <label class="title">Your Tokens</label>
-            <label class="value"><b>{{((contribution / 1e18) * ((data.FLIPperBNBUnit | async) / 1e18)) | number}}</b> <small>{{project.lpTokenName}}</small></label>
+        <span class="small-header value" *ngIf="(data.user.contribution | async) as contribution;else greyed" [@inOutAnimations]>
+            <label class="title">Your Share %</label>
+            <label class="value"><b>{{((contribution / 1e18) / ((data.totalBNBContributed | async) / 1e18)) * 100 | number}}%</b> <small>{{project.lpTokenName}}</small></label>
         </span>
-        <ng-template class="greyed-bar" #greyed><div class="greyed-bar"></div></ng-template>
+        <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
     </div>
     <span class="input" id="input" *ngIf="(data.FLIPperBNBUnit | async) < 1">
         <input [placeholder]="inputPlaceholder" #inputEle/>
     </span>
-    <div class="norm-container" id="buttons">
-        <span class="button" id="deposit" *ngIf="(data.user.contribution | async) as contribution;else greyed">
+    <span class="big-header" id="buttons" *ngIf="(data.user.contribution | async) as contribution;else greyed" [@inOutAnimations]>
+        <span class="button" id="deposit"
+        *ngIf="(((data.started | async) * 1000) - (now | async)) < 0 && (data.FLIPperBNBUnit | async) < 1">
             <button [ngClass]="{
                 'working' : (data.depositButton | async) === 1 || (data.withdrawButton | async) === 2,
                 'failed' : (data.depositButton | async) === 3
             }"
-            (click)="deposit()"
-            *ngIf="(((data.started | async) * 1000) - (now | async)) < 0 && (data.FLIPperBNBUnit | async) < 1">
+            (click)="deposit()">
                 <label *ngIf="(data.depositButton | async) === 0">Deposit</label>
                 <label *ngIf="(data.depositButton | async) === 1">Depositing</label>
                 <label *ngIf="(data.depositButton | async) === 2">Deposited</label>
@@ -73,13 +73,13 @@
                 <label *ngIf="(data.FLIPperBNBUnit | async) > 1">LGE Ended.</label>
             </button>
         </span>
-        <span class="button" id="claim" *ngIf="(data.user.contribution | async) as contribution;else greyed">
+        <span class="button" id="claim"
+        *ngIf="(((data.calculatedEnd | async) * 1000) - (now | async)) < 0 && (data.FLIPperBNBUnit | async) > 1 && contribution > 1">
             <button [ngClass]="{
                 'working' : (data.claimButton | async) === 1 || (data.claimButton | async) === 2,
                 'failed' : (data.claimButton | async) === 3
             }"
-            (click)="claim()"
-            *ngIf="(((data.calculatedEnd | async) * 1000) - (now | async)) < 0 && (data.FLIPperBNBUnit | async) > 1">
+            (click)="claim()">
                 <label *ngIf="(data.claimButton | async) === 0">Claim</label>
                 <label *ngIf="(data.claimButton | async) === 1">Claiming</label>
                 <label *ngIf="(data.claimButton | async) === 2">Claimed</label>
@@ -94,8 +94,8 @@
                 <label *ngIf="((((data.calculatedEnd | async) * 1000) - (now | async)) / 1000) / 86400 > 1">Ends in {{((((data.calculatedEnd | async) * 1000) - (now | async)) / 1000) / 86400 | number:'1.2-2'}} days.</label>
             </button>
         </span>
-        <ng-template class="greyed-bar" #greyed><div class="greyed-bar"></div></ng-template>
-    </div>
+    </span>
+    <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
 </section>
 <section class="misc">
     <i class="material-icons">alarm</i>
@@ -139,10 +139,10 @@
         }"
         (click)="createLiquidity()"
         *ngIf="(data.FLIPperBNBUnit | async) < 1">
-        <label *ngIf="(createLiquidityButton | async) === 0">End LGE</label>
-        <label *ngIf="(createLiquidityButton | async) === 1">Ending</label>
-        <label *ngIf="(createLiquidityButton | async) === 2">Ended</label>
-        <label *ngIf="(createLiquidityButton | async) === 3">Failed</label>
+        <label *ngIf="(data.createLiquidityButton | async) === 0">End LGE</label>
+        <label *ngIf="(data.createLiquidityButton | async) === 1">Ending</label>
+        <label *ngIf="(data.createLiquidityButton | async) === 2">Ended</label>
+        <label *ngIf="(data.createLiquidityButton | async) === 3">Failed</label>
     </button>
     </p>
     <!-- ENDS WITHIN 60 SECONDS -->

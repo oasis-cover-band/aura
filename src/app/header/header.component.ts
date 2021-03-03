@@ -10,6 +10,7 @@ export class HeaderComponent implements OnInit {
 
   headerItems = this.headerItemsService.headerItems;
   menuOpen = false;
+  showingPoolTokens = false;
   constructor(
     private headerItemsService: HeaderItemsService
   ) { }
@@ -21,4 +22,9 @@ export class HeaderComponent implements OnInit {
     this.menuOpen = !this.menuOpen;
   }
 
+  showPoolTokens(): void {
+    console.dir('this.showingPoolTokens');
+    console.dir(this.showingPoolTokens);
+    this.showingPoolTokens = !this.showingPoolTokens;
+  }
 }

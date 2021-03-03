@@ -3,10 +3,12 @@ import { BehaviorSubject } from 'rxjs';
 import { Web3Service } from 'src/app/dynamic-info-services/web3.service';
 import { ProjectService } from 'src/app/static-info-services/project.service';
 import { NowService } from '../dynamic-info-services/now.service';
+import { inOutAnimations } from '../animations';
 
 @Component({
   selector: 'app-sale',
   templateUrl: './sale.component.html',
+  animations: [inOutAnimations],
   styleUrls: ['./sale.component.scss']
 })
 export class SaleComponent implements OnInit {

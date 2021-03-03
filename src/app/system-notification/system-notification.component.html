@@ -1,0 +1,8 @@
+<section class="wrapper" *ngIf="(tokensToClaim | async) > 0 && (now | async) > ((ended | async) * 1000)" (click)="goClaim()">
+    <div class="norm-container inverse mushy">
+        <i class="material-icons">info</i>
+        <div class="message">
+            You have tokens to claim from the LGE.
+        </div>
+    </div>
+</section>
