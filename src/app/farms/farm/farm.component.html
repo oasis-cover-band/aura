@@ -19,8 +19,8 @@
         <span class="small-header">
             <i class="material-icons">info</i>
         </span>
-        <span class="big-header" *ngIf="(this.data.token.name | async) as name;else greyed">
-            <p>Stake <a class="after-info" id="block-check" [href]="project.blockExplorerAddress + '/token/' + (this.data.token.address | async) + '?a=' + (user.address | async)" target="_blank" target="_blank">{{name}}</a>, get <a class="after-info" id="block-check" [href]="project.blockExplorerAddress + '/token/' + this.project.contracts.tokenAddress + '?a=' + (user.address | async)"  target="_blank">{{project.tokenName}}</a>.</p>
+        <span class="big-header" *ngIf="(data.token.name | async) as name;else greyed">
+            <p>Stake <a class="after-info" id="block-check" [href]="project.blockExplorerAddress + '/token/' + (data.token.address | async) + '?a=' + (user.address | async)" target="_blank" target="_blank">{{name}}</a>, get <a class="after-info" id="block-check" [href]="project.blockExplorerAddress + '/token/' + project.contracts.tokenAddress + '?a=' + (user.address | async)"  target="_blank">{{project.tokenName}}</a>.</p>
         </span>
         <span class="small-header" *ngIf="(data.tvl | async) as tvl;else greyed">
             <label class="title">Total Value Locked</label>
@@ -100,10 +100,10 @@
         <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
     </div>
     <span class="big-header" id="show" (click)="showMore()">
-        <label *ngIf="!showingMore" [@inOutAnimations]>
+        <label class="show extra" *ngIf="!showingMore" [@inOutAnimations]>
             <i class="material-icons">arrow_downward</i>Show More
         </label>
-        <label *ngIf="showingMore" [@inOutAnimations]>
+        <label class="show extra" *ngIf="showingMore" [@inOutAnimations]>
             <i class="material-icons">arrow_upward</i>Show Less
         </label>
     </span>

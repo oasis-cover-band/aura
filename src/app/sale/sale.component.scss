@@ -37,6 +37,10 @@
         row-gap:10px;
         justify-content:center;
         @include containers;
+        div.grey-button{
+            grid-area:buttons;
+            justify-self:end;
+        }
         span {
             &#price {
                 grid-area:price;

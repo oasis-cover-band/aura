@@ -53,7 +53,7 @@
     <span class="input" id="input" *ngIf="(data.FLIPperBNBUnit | async) < 1">
         <input [placeholder]="inputPlaceholder" #inputEle/>
     </span>
-    <span class="big-header" id="buttons" *ngIf="(data.user.contribution | async) as contribution;else greyed" [@inOutAnimations]>
+    <span class="big-header" id="buttons" *ngIf="(data.user.contribution | async) as contribution;else greyedButtons" [@inOutAnimations]>
         <span class="button" id="deposit"
         *ngIf="(((data.started | async) * 1000) - (now | async)) < 0 && (data.FLIPperBNBUnit | async) < 1">
             <button [ngClass]="{
@@ -96,6 +96,7 @@
         </span>
     </span>
     <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
+    <ng-template class="greyed-bar" #greyedButtons><div class="greyed-bar grey-button" [@inOutAnimations]></div></ng-template>
 </section>
 <section class="misc">
     <i class="material-icons">alarm</i>

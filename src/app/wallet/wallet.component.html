@@ -1,68 +1,117 @@
-<section class="balance" id="wallet" *ngIf="(user.address | async) !== ''" (click)="viewBalances()">
-    <div id="address">
-        <i class="material-icons">account_balance_wallet</i>
-    </div>
-    <div id="balance">
-        <span>
-            {{(user.address | async) | slice:0:5}}...{{(user.address | async) | slice:35:40}}
-        </span>
-    </div>
-</section>
-<section class="balance" id="wallet" *ngIf="(user.address | async) === ''" (click)="connectWallet()">
-    <div id="address">
-        <i class="material-icons">account_balance_wallet</i>
-    </div>
-    <div id="balance">
-        <span>
-            Connect
-        </span>
-    </div>
-</section>
-<section class="balance" id="bnb">
-    <div id="address">
-        <span>
-            {{project.networkCurrency}}
-        </span>
-    </div>
-    <div id="balance">
-        <span>
-            {{(((user.bnbBalance | async) / 1e18) | number:'1.2-2')}}
-        </span>
-    </div>
-</section>
-<section class="balance" id="aura">
-    <div id="address">
-        <span>
-            {{project.tokenName}}
-        </span>
-    </div>
-    <div id="balance">
-        <span>
-            {{(((user.auraBalance | async) / 1e18) | number:'1.2-2')}}
-        </span>
-    </div>
-</section>
-<section class="balance" id="flipwbnb">
-    <div id="address">
-        <span>
-            {{project.lpTokenName}}
-        </span>
-    </div>
-    <div id="balance">
-        <span>
-            {{(((user.lpBalance | async) / 1e18) | number:'1.2-2')}}
-        </span>
-    </div>
-</section>
-<section class="balance" id="wflipwbnb">
-    <div id="address">
-        <span>
-            w{{project.lpTokenName}}
-        </span>
-    </div>
-    <div id="balance">
-        <span>
-            {{(((user.wLPBalance | async) / 1e18) | number:'1.2-2')}}
-        </span>
-    </div>
+<section class="balances">
+    <section class="balance" id="wallet" *ngIf="(user.address | async) !== ''" (click)="viewBalances()" [@inOutAnimations]>
+        <div id="address">
+            <i class="material-icons">account_balance_wallet</i>
+        </div>
+        <div id="balance">
+            <span class="mobile" *ngIf="viewingBalances">
+                Close Wallet
+            </span>
+            <span class="non-mobile" *ngIf="viewingBalances">
+                {{(user.address | async) | slice:0:5}}...{{(user.address | async) | slice:35:40}}
+            </span>
+            <span *ngIf="!viewingBalances">
+                {{(user.address | async) | slice:0:5}}...{{(user.address | async) | slice:35:40}}
+            </span>
+        </div>
+    </section>
+    <section class="balance" id="wallet" *ngIf="(user.address | async) === ''" (click)="connectWallet()" [@inOutAnimations]>
+        <div id="address">
+            <i class="material-icons">account_balance_wallet</i>
+        </div>
+        <div id="balance">
+            <span>
+                Connect
+            </span>
+        </div>
+    </section>
+    <section class="balance" id="bnb" *ngIf="(user.bnbBalance | async) as bnbBalance;else greyed" [@inOutAnimations]>
+        <div id="address">
+            <span>
+                {{project.networkCurrency}}
+            </span>
+        </div>
+        <div id="balance">
+            <span>
+                {{((bnbBalance / 1e18) | number:'1.2-2')}}
+            </span>
+        </div>
+    </section>
+    <section class="balance" id="aura" *ngIf="(user.auraBalance | async) as auraBalance;else greyed" [@inOutAnimations]>
+        <div id="address">
+            <span>
+                {{project.tokenName}}
+            </span>
+        </div>
+        <div id="balance">
+            <span>
+                {{((auraBalance / 1e18) | number:'1.2-2')}}
+            </span>
+        </div>
+    </section>
+    <section class="balance" id="flipwbnb" *ngIf="(user.lpBalance | async) as lpBalance;else greyed" [@inOutAnimations]>
+        <div id="address">
+            <span>
+                {{project.lpTokenName}}
+            </span>
+        </div>
+        <div id="balance">
+            <span>
+                {{((lpBalance / 1e18) | number:'1.2-2')}}
+            </span>
+        </div>
+    </section>
+    <section class="balance" id="wflipwbnb" *ngIf="(user.wLPBalance | async) as wLPBalance;else greyed" [@inOutAnimations]>
+        <div id="address">
+            <span>
+                w{{project.lpTokenName}}
+            </span>
+        </div>
+        <div id="balance">
+            <span>
+                {{((wLPBalance / 1e18) | number:'1.2-2')}}
+            </span>
+        </div>
+    </section>
+    <!-- IGNORE FIRST 3 POOLS, PULLED FROM ABOVE -->
+    <section class="balance pool-balance" *ngFor="let poolItem of poolInfo | slice: 3;">
+        <div id="address" *ngIf="(poolItem.token.symbol | async) as tokenSymbol;else greyeda">
+            <span>
+                {{tokenSymbol | slice:0:4}}
+            </span>
+        </div>
+        <div id="balance" *ngIf="(poolItem.userBalance | async) as userBalance;else greyedn">
+            <span>
+                <!-- {{(poolItem.token.name | async)}} -->
+                {{((userBalance / 1e18) | number:'1.2-2')}}
+            </span>
+        </div>
+        <ng-template class="greyed-bar balance" #greyeda><div class="greyed-bar balance" id="address" [@inOutAnimations]></div></ng-template>
+        <ng-template class="greyed-bar balance" #greyedn><div class="greyed-bar balance" id="balance" [@inOutAnimations]></div></ng-template>
+    </section>
+    <section class="balance pool-balance-switch" (click)="showPoolTokens()" *ngIf="!showingPoolTokensStyle" [@inOutAnimations]>
+        <div id="address">
+            <span class="shiny">
+                <i class="material-icons">add_circle</i>
+            </span>
+        </div>
+        <div id="balance">
+            <span class="small">
+                Show Pool Tokens
+            </span>
+        </div>
+    </section>
+    <section class="balance pool-balance-switch" (click)="showPoolTokens()" *ngIf="showingPoolTokensStyle" [@inOutAnimations]>
+        <div id="address">
+            <span class="shiny">
+                <i class="material-icons">remove_circle</i>
+            </span>
+        </div>
+        <div id="balance">
+            <span class="small">
+                Hide Pool Tokens
+            </span>
+        </div>
+    </section>
+    <ng-template class="greyed-bar balance" #greyed><div class="greyed-bar balance" [@inOutAnimations]></div></ng-template>
 </section>

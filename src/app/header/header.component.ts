@@ -22,9 +22,7 @@ export class HeaderComponent implements OnInit {
     this.menuOpen = !this.menuOpen;
   }
 
-  showPoolTokens(): void {
-    console.dir('this.showingPoolTokens');
-    console.dir(this.showingPoolTokens);
-    this.showingPoolTokens = !this.showingPoolTokens;
+  setShowingPoolTokens(status: boolean): void {
+    this.showingPoolTokens = status;
   }
 }

@@ -24,6 +24,7 @@
         row-gap:10px;
     }
     section.wrapper {
+        overflow-x:hidden;
         overflow-y:scroll;
     }
     section.pools-selector {

@@ -35,6 +35,8 @@
                 }
                 &.button{
                     display:grid;
+                    z-index:1000000;
+                    pointer-events: all;
                     i {
                         font-size:3rem;
                         background: $complement; /* Old browsers */
@@ -69,6 +71,9 @@
                         overflow-y:scroll;
                     }
                 }
+            }
+            &.showing-pool-tokens {
+                display:none;
             }
         }
         app-wallet {

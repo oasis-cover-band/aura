@@ -3,24 +3,36 @@
     display:grid;
     grid-template-areas:
     '. . .'
-    '. wallet .'
-    '. bnb .'
-    '. aura .'
-    '. flipwbnb .'
-    '. wflipwbnb .'
+    '. balances .'
     '. . .';
-    grid-template-columns: 2.5px 1fr 2.5px;
-    grid-template-rows: 5px max-content max-content max-content max-content max-content 5px;
+    grid-template-columns: 5px 1fr 5px;
+    grid-template-rows: 5px 1fr 5px;
     row-gap:10px;
     height:fit-content;
+    align-content: start;
+    align-items:start;
+    span.mobile {
+        display:none!important;
+    }
+    section.balances {
+        grid-area:balances;
+        display:grid;
+        grid-template-columns: 1fr;
+        grid-auto-rows:max-content;
+        row-gap:10px;
+        height:fit-content;
+        align-items:start;
+        align-content:start;
+    }
     section.balance {
+        pointer-events: visible;
         display:grid;
         grid-template-areas:
         '. . . .'
         '. address balance .'
         '. . . .';
         grid-template-columns: 5px 45px 1fr 5px;
-        grid-template-rows: 10px 1fr 10px;
+        grid-template-rows: 10px max-content 10px;
         column-gap:2px;
         cursor:pointer;
         align-content:center;
@@ -36,6 +48,11 @@
         div {
             &#address {
                 grid-area:address;
+                span {
+                    &.shiny {
+                        color: $complement;
+                    }
+                }
             }
             &#balance {
                 display:grid;
@@ -50,30 +67,50 @@
                 color:$black;
                 border-radius:4px;
                 text-align:center;
+                span {
+                    &.small {
+                        font-size:0.7rem;
+                    }
+                }
             }
         }
         &#wallet {
-            grid-area:wallet;
+            // grid-area:wallet;
             i {
                 font-size:1rem;
             }
         }
         &#bnb {
-            grid-area:bnb;
+            // grid-area:bnb;
         }
         &#aura {
-            grid-area:aura;
+            // grid-area:aura;
         }
         &#flipwbnb {
-            grid-area:flipwbnb;
+            // grid-area:flipwbnb;
         }
         &#wflipwbnb {
-            grid-area:wflipwbnb;
+            // grid-area:wflipwbnb;
+        }
+        &.pool-balance {
+            height:0px;
+            opacity:0;
+            transition:0.4s;
         }
     }
+    &.showing-pool {
+        section.balance {
+            &.pool-balance {
+                height:max-content;
+                opacity:1;
+            }
+        }
+    }
+    // WHEN ON MOBILE
     @media (max-width:600px), (max-height:800px) {
         border-radius: 0px 0px 8px 8px;
-        section.balance {
+        overflow:hidden;
+        section.balance, div.balance {
          display:none!important;   
         }
         section#wallet {
@@ -86,6 +123,12 @@
             section.balance {
              display:grid!important;   
             }
+        }
+        span.non-mobile {
+            display:none!important;
+        }
+        span.mobile {
+            display:grid!important;
         }
     }
 }
