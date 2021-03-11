@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderItemsService } from '../static-info-services/header-items.service';
+import { inOutAnimations } from '../animations';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  animations: [ inOutAnimations ]
 })
 export class HeaderComponent implements OnInit {
 
@@ -24,5 +26,6 @@ export class HeaderComponent implements OnInit {
 
   setShowingPoolTokens(status: boolean): void {
     this.showingPoolTokens = status;
+    this.menuOpen = false;
   }
 }

@@ -44,6 +44,7 @@ export class Web3Service {
   // EXTERNAL
   // // EXCHANGE VARIABLES
   exchange = {
+    dayData: new BehaviorSubject({}),
     price: new BehaviorSubject(0),
     priceUSD: new BehaviorSubject(0),
     volume:  new BehaviorSubject(0),
@@ -65,8 +66,10 @@ export class Web3Service {
     symbol: new BehaviorSubject(''),
     decimals: new BehaviorSubject(0),
     totalSupply: new BehaviorSubject(0),
+    circulatingSupply: new BehaviorSubject(0),
     buyFee: new BehaviorSubject(0),
     sellFee: new BehaviorSubject(0),
+    poolId: new BehaviorSubject(0)
   };
   // LIQUIDITY TOKEN VARIABLES
   liquidityToken = {
@@ -82,6 +85,8 @@ export class Web3Service {
     lpDecimals: new BehaviorSubject(0),
     wLPTotalSupply: new BehaviorSubject(0),
     lpTotalSupply: new BehaviorSubject(0),
+    wLPPoolId: new BehaviorSubject(0),
+    lpPoolId: new BehaviorSubject(0)
   };
   // WRAPPED VARIABLES
   wrapper = {
@@ -278,7 +283,6 @@ export class Web3Service {
         this.user.address.next(userAddresses[0]);
         this.web3.eth.defaultAccount = userAddresses[0];
       });
-      this.setContracts();
     } catch (error) {
     }
   }
@@ -795,6 +799,7 @@ export class Web3Service {
               await this.getLPContracts().then(async getLPResult => {
                 await this.setLPContracts().then(async setLPResult => {
                   await this.setSecondaryContracts().then(setSecondaryResult => {
+                    console.dir('intervalSet');
                     setInterval(() => {
                       this.getInfo();
                     }, 5000);
@@ -854,6 +859,15 @@ export class Web3Service {
   }
 
   async setContract(poolId: number): Promise<any> {
+    if (this.poolInfo[poolId].poolInfo.getValue().stakedToken === this.auraContractAddress) {
+      this.token.poolId.next(poolId);
+    }
+    if (this.poolInfo[poolId].poolInfo.getValue().stakedToken === this.liquidityToken.wLPAddress.getValue()) {
+      this.liquidityToken.wLPPoolId.next(poolId);
+    }
+    if (this.poolInfo[poolId].poolInfo.getValue().stakedToken === this.liquidityToken.lpAddress.getValue()) {
+      this.liquidityToken.lpPoolId.next(poolId);
+    }
     await this.poolInfo[poolId].token.address.next(this.poolInfo[poolId].poolInfo.getValue().stakedToken);
     return this.poolInfo[poolId].token.contract = await new this.web3.eth.Contract(auraAbi, this.poolInfo[poolId].poolInfo.getValue().stakedToken);
   }
@@ -934,6 +948,8 @@ export class Web3Service {
     this.getTokenSymbol();
     this.getTokenDecimals();
     this.getTokenTotalSupply();
+    this.getTokenBuyFee();
+    this.getTokenSellFee();
   }
   async getTokenName(): Promise<any> {
     return await this.auraContract.methods.name().call().then(async result => {
@@ -954,6 +970,20 @@ export class Web3Service {
     return await this.auraContract.methods.totalSupply().call().then(async result => {
       this.token.totalSupply.next(result);
     });
+  }
+  async getTokenBuyFee(): Promise<any> {
+    return await this.auraContract.methods.buyFee().call().then(async result => {
+      this.token.buyFee.next(result);
+    });
+  }
+  async getTokenSellFee(): Promise<any> {
+    return await this.auraContract.methods.sellFee().call().then(async result => {
+      this.token.sellFee.next(result);
+    });
+  }
+  async getTokenCirculatingSupply(): Promise<any> {
+    // totalSupply - what is in uniswap - what is in pool 2
+    return await this.token.circulatingSupply.next((this.token.totalSupply.getValue() - this.apyCalculator.networkCurrency.pairBalanceAura.getValue()) - this.poolInfo[this.token.poolId.getValue()].poolTokenBalance.getValue());
   }
 
   // ================== //

@@ -1,8 +1,8 @@
 <section class="wrapper">
-    <div class="header-items-wrapper menu" [ngClass]="{'opened': menuOpen === true, 'showing-pool-tokens': showingPoolTokens === true}">
+    <div class="header-items-wrapper menu" [ngClass]="{'opened': menuOpen === true}" *ngIf="showingPoolTokens === false" [@inOutAnimations]>
         <app-header-item [data]="item" *ngFor="let item of headerItems"></app-header-item>
     </div>
-    <div class="header-items-wrapper button">
+    <div class="header-items-wrapper button" [@inOutAnimations]>
         <i class="material-icons" (click)="toggleMenu()">menu</i>
     </div>
     <app-wallet [ngClass]="{'opened': menuOpen === true}" (showingPoolTokens)="setShowingPoolTokens($event)"></app-wallet>

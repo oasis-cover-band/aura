@@ -14,7 +14,7 @@
         grid-area:content;
         display:grid;
         justify-content: stretch;
-        align-content: space-between;
+        align-content: start;
         row-gap:5px;
         div.header-items-wrapper {
             display:grid;
@@ -39,10 +39,10 @@
                     pointer-events: all;
                     i {
                         font-size:3rem;
-                        background: $complement; /* Old browsers */
-                        background: -moz-linear-gradient(top,  $complement 0%, $primary 100%); /* FF3.6-15 */
-                        background: -webkit-linear-gradient(top,  $complement 0%, $primary 100%); /* Chrome10-25,Safari5.1-6 */
-                        background: linear-gradient(to bottom,  $complement 0%, $primary 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                        background: $light; /* Old browsers */
+                        background: -moz-linear-gradient(top,  $light 0%, $primary 100%); /* FF3.6-15 */
+                        background: -webkit-linear-gradient(top,  $light 0%, $primary 100%); /* Chrome10-25,Safari5.1-6 */
+                        background: linear-gradient(to bottom,  $light 0%, $primary 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
                         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#89ffb0', endColorstr='#89daff',GradientType=0 ); /* IE6-9 */
                         -webkit-background-clip: text;
                         -webkit-text-fill-color: transparent;
@@ -54,7 +54,7 @@
                     cursor:pointer;
                     &:hover {
                         i {
-                            text-shadow:0px 0px 5px $complement;
+                            text-shadow:0px 0px 5px $light;
                         }
                     }
                 }
@@ -71,9 +71,6 @@
                         overflow-y:scroll;
                     }
                 }
-            }
-            &.showing-pool-tokens {
-                display:none;
             }
         }
         app-wallet {

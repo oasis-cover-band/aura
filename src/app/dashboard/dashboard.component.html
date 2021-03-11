@@ -1,1 +1,79 @@
-<p>dashboard works!</p>
+<section class="wrapper naked">
+    <section class="wrapper-inner naked" id="volume">
+        <h5 id="stat-line-00-header" class="header">Volume</h5>
+        <div class="big-container" id="stat-line-00">
+            <div class="small-container" id="total-volume">
+                    <span class="small-header value" *ngIf="(exchange.volume | async) as volume;else greyed" [@inOutAnimations]>
+                        <label class="title">Total Volume <small>(in {{project.tokenName}})</small></label>
+                        <label class="value small"><b>{{volume | number}}</b> <small>{{project.tokenName}}</small></label>
+                    </span>
+                    <span class="small-header value" *ngIf="(exchange.volumeNetworkCurrency | async) as volumeNetworkCurrency;else greyed" [@inOutAnimations]>
+                        <label class="title">Total Volume <small>(in W{{project.networkCurrency}})</small></label>
+                        <label class="value small"><b>{{volumeNetworkCurrency | number}}</b> <small>w{{project.networkCurrency}}</small></label>
+                    </span>
+                    <span class="small-header value" *ngIf="(exchange.volumeUSD | async) as volumeUSD;else greyed" [@inOutAnimations]>
+                        <label class="title">Total Volume <small>(in USD)</small></label>
+                        <label class="value small"><b>{{volumeUSD | number}}</b> <small>USD</small></label>
+                    </span>
+                    <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
+            </div>
+        </div>
+    </section>
+    <section class="wrapper-inner naked" id="rewards">
+        <h5 id="stat-line-00-header" class="header">Rewards</h5>
+        <div class="big-container" id="stat-line-00">
+        
+            <div class="medium-container" id="rewards-given">
+                <span class="small-header value" *ngIf="(vault.cumulativeRewardsSinceStart | async) as rewardsSinceStart;else greyed" [@inOutAnimations]>
+                    <label class="title">Total Rewards <small>(in {{project.tokenName}})</small></label>
+                    <label class="value small"><b>{{rewardsSinceStart / 1e18 | number}}</b> <small>{{project.tokenName}}</small></label>
+                </span>
+                <span class="small-header value" *ngIf="(priceInUSD | async) as priceInUSD;else greyed" [@inOutAnimations]>
+                    <label class="title">Total Rewards <small>(in USD)</small></label>
+                    <label class="value small"><b>{{((vault.cumulativeRewardsSinceStart | async) / 1e18) * priceInUSD| number}}</b> <small>USD</small></label>
+                </span>
+                <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
+            </div>
+        </div>
+    </section>
+    <section class="wrapper-inner naked" id="tokenomics">
+        <h5 id="stat-line-00-header" class="header">Tokenomics</h5>
+        <div class="small-container naked" id="stat-line-00">
+            <div class="medium-container" id="marketcap">
+            <span class="small-header value" *ngIf="(priceInUSD | async) as priceInUSD;else greyed" [@inOutAnimations]>
+                        <label class="title">Marketcap <small>(total)</small></label>
+                        <label class="value small"><b>{{((token.totalSupply | async) / 1e18) * priceInUSD | number}}</b> <small>USD</small></label>
+                    </span>
+                    <span class="small-header value" *ngIf="(priceInUSD | async) as priceInUSD;else greyed" [@inOutAnimations]>
+                        <label class="title">Marketcap <small>(circulating)</small></label>
+                        <label class="value small"><b>{{((token.totalSupply | async) / 1e18) * priceInUSD | number}}</b> <small>USD</small></label>
+                    </span>
+                    <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
+            </div>
+        
+            <div class="medium-container" id="supply">
+                <span class="small-header value" *ngIf="(token.totalSupply | async) as totalSupply;else greyed" [@inOutAnimations]>
+                    <label class="title">Supply <small>(total)</small></label>
+                    <label class="value small"><b>{{totalSupply / 1e18 | number}}</b> <small>{{project.tokenName}}</small></label>
+                </span>
+                <span class="small-header value" *ngIf="(token.totalSupply | async) as totalSupply;else greyed" [@inOutAnimations]>
+                    <label class="title">Supply <small>(circulating)</small></label>
+                    <label class="value small"><b>{{totalSupply / 1e18 | number}}</b> <small>{{project.tokenName}}</small></label>
+                </span>
+                <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
+            </div>
+
+            <div class="medium-container" id="price">
+                <span class="small-header value" *ngIf="(priceInUSD | async) as priceInUSD;else greyed" [@inOutAnimations]>
+                    <label class="title">Price <small>(in USD)</small></label>
+                    <label class="value small"><b>{{priceInUSD / 1e18 | number}}</b> <small>USD</small></label>
+                </span>
+                <span class="small-header value" *ngIf="(priceInNetworkCurrency | async) as priceInNetworkCurrency;else greyed" [@inOutAnimations]>
+                    <label class="title">price <small>(in {{project.networkCurrency}})</small></label>
+                    <label class="value small"><b>{{priceInNetworkCurrency / 1e18 | number}}</b> <small>{{project.networkCurrency}}</small></label>
+                </span>
+                <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
+            </div>
+        </div>
+    </section>
+</section>

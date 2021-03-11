@@ -1,5 +1,5 @@
 <section class="wrapper">
-    <div class="norm-container" id="name">
+    <div class="medium-container" id="name">
         <app-logo></app-logo>
         <span class="big-header">
             <h3>{{(token.name | async)}} LGE</h3>
@@ -39,7 +39,7 @@
         </span>
         <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
     </div>
-    <div class="norm-container" id="your" *ngIf="(data.user.contribution | async) > 1">
+    <div class="medium-container" id="your" *ngIf="(data.user.contribution | async) > 1">
         <span class="small-header value" *ngIf="(data.user.contribution | async) as contribution;else greyed" [@inOutAnimations]>
             <label class="title">Your Contribution</label>
             <label class="value"><b>{{contribution / 1e18 | number}}</b> <small>{{project.networkCurrency}}</small></label>
@@ -181,7 +181,7 @@
         <br><br>
         So far, the LGE has raised {{((data.totalBNBContributed | async) / 1e18) | number:'1.2-2'}} {{project.networkCurrency}}
     </p>
-    <!-- <div class="norm-container" id="timers">
+    <!-- <div class="medium-container" id="timers">
         <span class="small-header">
             <label class="title">End Time</label>
             <label class="value">{{((data.calculatedEnd | async) * 1000) - (now | async)}}</label>

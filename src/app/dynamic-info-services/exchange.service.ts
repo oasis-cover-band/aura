@@ -19,6 +19,7 @@ export class ExchangeService {
     private apollo: Apollo,
     private web3: Web3Service
     ) {
+      console.dir('intervalSet');
     setInterval(() => {
       if (this.uniswapPair.getValue() !== '') {
       const pair = this.uniswapPair.getValue();
@@ -34,12 +35,29 @@ export class ExchangeService {
                 volumeToken1
                 volumeToken0
                 volumeUSD
+            },
+            tokenDayDatas(first: 10, orderBy: date, orderDirection: desc,
+             where: {
+               token: "${this.auraContractAddress}"
+             }
+            ) {
+               id
+               date
+               priceUSD
+               totalLiquidityToken
+               totalLiquidityUSD
+               totalLiquidityETH
+               dailyVolumeETH
+               dailyVolumeToken
+               dailyVolumeUSD
             }
         }
         `,
       })
       .valueChanges.subscribe((result: any) => {
         if (result.data.pair !== null) {
+          console.dir(result.data.tokenDayDatas);
+          this.web3.exchange.dayData.next(result.data.tokenDayDatas);
           this.web3.exchange.volume.next(Number(result.data.pair.volumeToken0));
           this.web3.exchange.volumeNetworkCurrency.next(Number(result.data.pair.volumeToken1));
           this.web3.exchange.volumeUSD.next(Number(Math.floor(result.data.pair.volumeToken1 * this.networkCurrencyPriceUSD.getValue())));

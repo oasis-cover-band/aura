@@ -34,21 +34,28 @@ export const inOutAnimations =
 trigger(
   'inOutAnimations', 
   [
-    transition(
-      ':enter', 
-      [
-        style({ opacity: 0 }),
-        animate('0.4s ease-out', 
-                style({opacity: 1 }))
-      ]
-    ),
-    transition(
-      ':leave', 
-      [
-        style({ opacity: 1 }),
-        animate('0.4s ease-in', 
-                style({ opacity: 0 }))
-      ]
-    )
+    transition('* => *', [
+        query(
+            ':enter',
+            [
+                style({opacity: 0, transform: 'scaleY(0)', fontSize: '0px'}),
+            ],
+            { optional: true }
+            ),
+        query(
+            ':leave',
+            [
+                animate('0.55s ease-in-out', style({opacity: 0, transform: 'scaleY(0)', fontSize: '0px'})),
+            ],
+            { optional: true }
+            ),
+        query(
+            ':enter',
+            [
+              animate('0.55s ease-in-out', style({opacity: 1, transform: 'scaleY(1)', fontSize: 'initial'})),
+            ],
+            { optional: true }
+            )
+    ])
   ]
 );

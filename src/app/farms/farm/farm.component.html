@@ -1,6 +1,6 @@
 <section class="wrapper" *ngIf="data" [ngClass]="{'super-apy': (data.poolInfo | async).allocPoint > 10000}">
-    <div class="norm-container inverse naked" id="name">
-        <span class="big-header" *ngIf="(data.poolInfo | async) as poolInfo;else greyed">
+    <div class="medium-container inverse naked" id="name">
+        <span class="large-header" *ngIf="(data.poolInfo | async) as poolInfo;else greyed">
             <!-- <h3 *ngIf="poolInfo.poolName.length <= 15">{{poolInfo.poolName}}</h3>
             <h3 *ngIf="poolInfo.poolName.length > 15 && poolInfo.poolName.length <= 25" class="small">{{poolInfo.poolName}}</h3> -->
             <h3 *ngIf="poolInfo.poolName.length <= 25" class="small">{{poolInfo.poolName}}</h3>
@@ -19,7 +19,7 @@
         <span class="small-header">
             <i class="material-icons">info</i>
         </span>
-        <span class="big-header" *ngIf="(data.token.name | async) as name;else greyed">
+        <span class="large-header" *ngIf="(data.token.name | async) as name;else greyed">
             <p>Stake <a class="after-info" id="block-check" [href]="project.blockExplorerAddress + '/token/' + (data.token.address | async) + '?a=' + (user.address | async)" target="_blank" target="_blank">{{name}}</a>, get <a class="after-info" id="block-check" [href]="project.blockExplorerAddress + '/token/' + project.contracts.tokenAddress + '?a=' + (user.address | async)"  target="_blank">{{project.tokenName}}</a>.</p>
         </span>
         <span class="small-header" *ngIf="(data.tvl | async) as tvl;else greyed">
@@ -29,12 +29,12 @@
 
         <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
     </div>
-    <div class="norm-container split naked" id="apy">
-        <span class="norm-header" *ngIf="(data.apy | async) as apy;else greyed">
+    <div class="medium-container split naked" id="apy">
+        <span class="medium-header" *ngIf="(data.apy | async) as apy;else greyed">
             <label class="title">APY:</label>
             <label class="value">{{apy | number}}%</label>
         </span>
-        <span class="norm-header" *ngIf="(data.poolInfo | async) as poolInfo;else greyed">
+        <span class="medium-header" *ngIf="(data.poolInfo | async) as poolInfo;else greyed">
             <label class="value">{{poolInfo.allocPoint | number}}x</label>
         </span>
         <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
@@ -99,7 +99,7 @@
         </span>
         <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
     </div>
-    <span class="big-header" id="show" (click)="showMore()">
+    <span class="large-header" id="show" (click)="showMore()">
         <label class="show extra" *ngIf="!showingMore" [@inOutAnimations]>
             <i class="material-icons">arrow_downward</i>Show More
         </label>

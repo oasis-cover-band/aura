@@ -1,12 +1,12 @@
 <section class="wrapper" (click)="close()">
-    <span class="big-header" id="title">
+    <span class="large-header" id="title">
         <h4>{{data.title}}</h4>
     </span>
-    <span class="norm-header" id="text">
+    <span class="medium-header" id="text">
         <i class="material-icons">{{data.icon}}</i>
         <p class="text" [ngClass]="{'break-spaces': static === true}">{{data.text}}</p>
     </span>
-    <span class="norm-header split" id="date" *ngIf="!static">
+    <span class="medium-header split" id="date" *ngIf="!static">
         <label class="date">
             {{(data.date) | date}}
         </label>

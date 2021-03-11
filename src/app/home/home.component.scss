@@ -10,6 +10,21 @@
     grid-template-rows: max-content max-content;
     grid-template-columns: 1fr;
     justify-items:start;
+    app-logo {
+        justify-self:center;
+        min-width:200px;
+        min-height:200px;
+        ::ng-deep {
+            img {
+                min-width:200px;
+                min-height:200px;
+                max-width:200px;
+                max-height:200px;
+                width:200px;
+                height:200px;
+            }
+        }
+    }
     }
     div.wrapper {
         align-self:center;
@@ -19,7 +34,13 @@
     }
     h1, h5 {
         margin:0px;
-        color:$black;
+        background: $light; /* Old browsers */
+        background: -moz-linear-gradient(top,  $light 0%, $primary 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top,  $light 0%, $primary 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom,  $light 0%, $primary 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#89ffb0', endColorstr='#89daff',GradientType=0 ); /* IE6-9 */
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
     h5 {
         font-size:1rem;

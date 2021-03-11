@@ -7,7 +7,7 @@
       display:grid;
       grid-template-columns:1fr 1fr 1fr;
       column-gap:10px;
-      @media (max-width:800px) {
+      @media (max-width:1100px) {
         grid-template-rows:1fr 1fr 1fr;
         grid-template-columns:1fr;
         row-gap:10px;
@@ -26,11 +26,8 @@
           }
           align-items:center;
       }
-      &.naked {
-          background:rgba(0,0,0,0);
-      }
     }
-    div.norm-container {
+    div.medium-container {
       display:grid;
       grid-template-columns:1fr 1fr;
       column-gap:10px;
@@ -75,16 +72,21 @@
             }
         }
       }
+      @media (max-width:400px) {
+        grid-template-rows:1fr 1fr;
+        grid-template-columns:1fr;
+        row-gap:5px;
+      }
     }
     span {
-        &.big-header, &.norm-header {
+        &.large-header, &.medium-header {
             align-items:center;
             label {
                 &.value {/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#72b7d6+0,89daff+100 */
-                    background: $complement; /* Old browsers */
-                    background: -moz-linear-gradient(top,  $complement 0%, $primary 100%); /* FF3.6-15 */
-                    background: -webkit-linear-gradient(top,  $complement 0%, $primary 100%); /* Chrome10-25,Safari5.1-6 */
-                    background: linear-gradient(to bottom,  $complement 0%, $primary 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                    background: $light; /* Old browsers */
+                    background: -moz-linear-gradient(top,  $light 0%, $primary 100%); /* FF3.6-15 */
+                    background: -webkit-linear-gradient(top,  $light 0%, $primary 100%); /* Chrome10-25,Safari5.1-6 */
+                    background: linear-gradient(to bottom,  $light 0%, $primary 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
                     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#89ffb0', endColorstr='#89daff',GradientType=0 ); /* IE6-9 */
                     
                     border-radius:30px;
@@ -110,10 +112,10 @@
                 &.extra-small {
                     font-size:1.6rem;
                 }
-                background: $complement; /* Old browsers */
-                background: -moz-linear-gradient(top,  $complement 0%, $primary 100%); /* FF3.6-15 */
-                background: -webkit-linear-gradient(top,  $complement 0%, $primary 100%); /* Chrome10-25,Safari5.1-6 */
-                background: linear-gradient(to bottom,  $complement 0%, $primary 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                background: $light; /* Old browsers */
+                background: -moz-linear-gradient(top,  $light 0%, $primary 100%); /* FF3.6-15 */
+                background: -webkit-linear-gradient(top,  $light 0%, $primary 100%); /* Chrome10-25,Safari5.1-6 */
+                background: linear-gradient(to bottom,  $light 0%, $primary 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#89ffb0', endColorstr='#89daff',GradientType=0 ); /* IE6-9 */
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
@@ -122,12 +124,12 @@
                 font-size:2rem;
             }
         }
-        &.big-header {
+        &.large-header {
             text-align:right;
             justify-self:end;
             min-width:100%;
         }
-        &.norm-header {
+        &.medium-header {
             display:grid;
             grid-template-columns:max-content 1fr;
             column-gap:10px;
@@ -166,9 +168,12 @@
                 font-size:1rem;
                 color:$white;
                 &.title {
-                    border-bottom:2px solid $complement;
+                    border-bottom:2px solid $light;
                     text-align:left;
                     justify-self:stretch;
+                    small {
+                        font-size:0.75rem;
+                    }
                 }
                 &.value {
                     text-align:right;
@@ -207,5 +212,8 @@
     label.grayed {
         background:$gray!important;
         border-radius:6px;
+    }
+    .naked, &.naked {
+        background:rgba(0,0,0,0)!important;
     }
   }
