@@ -41,6 +41,9 @@ export class Web3Service {
   stableCoinWrappedNetworkCurrencyPairAddress = new BehaviorSubject('');
   auraWrappedNetworkCurrencyPairAddress = new BehaviorSubject('');
 
+  // USED TO STOP GATHERING INFORMATION FROM BLOCKCHAIN
+  exitInterval = undefined;
+
   // EXTERNAL
   // // EXCHANGE VARIABLES
   exchange = {
@@ -119,6 +122,8 @@ export class Web3Service {
     cumulativeRewardsSinceStart: new BehaviorSubject(0),
     averageFeesPerBlockSinceStart: new BehaviorSubject(0),
     averageFeesPerBlockEpoch: new BehaviorSubject(0),
+    rewardsInThisEpoch: new BehaviorSubject(0),
+    epoch: new BehaviorSubject(0),
     length: new BehaviorSubject(0)
   };
   // POOL TOKENS VARIABLES
@@ -185,9 +190,6 @@ export class Web3Service {
     private notificationsService: NotificationsService,
     private projectService: ProjectService
   ) {
-    this.tryProvider().then(tryProviderResult => {
-      this.connectWallet();
-    });
   }
 
   async getInfo(): Promise<any> {
@@ -260,7 +262,35 @@ export class Web3Service {
   }
 
   connectWallet(): void {
-    this.loginProcedure();
+    this.notificationsService.notify({
+      title: 'Logging In',
+      icon: 'alarm',
+      text: 'You are attempting to login.',
+      date: new Date()
+    });
+    this.tryProvider().then(tryProviderResult => {
+      this.loginProcedure();
+    });
+  }
+
+  logout(): void {
+    this.stopGatheringInfo();
+    this.web3.setProvider(null);
+    this.clearUser();
+    this.notificationsService.notify({
+      title: 'Logged Out',
+      icon: 'alarm',
+      text: 'You have successfully logged out.',
+      date: new Date()
+    });
+  }
+
+  clearUser(): void {
+    this.user.address.next('');
+    this.user.auraBalance.next(0);
+    this.user.bnbBalance.next(0);
+    this.user.lpBalance.next(0);
+    this.user.wLPBalance.next(0);
   }
 
   async tryProvider(): Promise<any> {
@@ -271,7 +301,7 @@ export class Web3Service {
       this.web3 = new Web3(window.ethereum);
     }
     if (!this.web3.givenProvider && !this.web3.currentProvider) {
-      this.web3 = new Web3('https://data-seed-prebsc-2-s3.binance.org:8545/'); // METAMASK
+      this.web3 = new Web3(this.projectService.project.rpcNetwork);
     }
     await this.setContracts();
   }
@@ -282,8 +312,20 @@ export class Web3Service {
       window.ethereum.on('accountsChanged', (userAddresses) => {
         this.user.address.next(userAddresses[0]);
         this.web3.eth.defaultAccount = userAddresses[0];
+        this.notificationsService.notify({
+          title: 'Account Changed',
+          icon: 'alarm',
+          text: 'Please verify this account is connected to the application.',
+          date: new Date()
+        });
       });
     } catch (error) {
+      this.notificationsService.notify({
+        title: 'Login Error',
+        icon: 'alarm',
+        text: 'There was an error logging you in.',
+        date: new Date()
+      });
     }
   }
 
@@ -291,6 +333,12 @@ export class Web3Service {
     this.web3.eth.requestAccounts().then(userAddresses => {
       this.web3.eth.defaultAccount = userAddresses[0];
       this.user.address.next(userAddresses[0]);
+      this.notificationsService.notify({
+        title: 'Logged In',
+        icon: 'alarm',
+        text: 'You have successfully logged in.',
+        date: new Date()
+      });
     });
   }
 
@@ -549,6 +597,7 @@ export class Web3Service {
 
   async getCumulativeRewardsSinceStart(): Promise<any> {
     return await this.auraVaultContract.methods.cumulativeRewardsSinceStart().call().then(result => {
+      console.dir(result);
       this.vault.cumulativeRewardsSinceStart.next(result);
     });
   }
@@ -565,6 +614,19 @@ export class Web3Service {
     });
   }
 
+  async getRewardsInThisEpoch(): Promise<any> {
+    return await this.auraVaultContract.methods.rewardsInThisEpoch().call().then(result => {
+      this.vault.rewardsInThisEpoch.next(result);
+    });
+  }
+
+  async getEpoch(): Promise<any> {
+    return await this.auraVaultContract.methods.epoch().call().then(result => {
+      this.vault.epoch.next(result);
+    });
+  }
+
+
 
   async getUserInfo(): Promise<any> {
     this.getUserBNBBalance();
@@ -575,6 +637,7 @@ export class Web3Service {
     await this.getCumulativeRewardsSinceStart();
     await this.getAverageFeesPerBlockSinceStart();
     await this.getAverageFeesPerBlockEpoch();
+    await this.getRewardsInThisEpoch();
     return await this.poolInfo.forEach(async (element, index) => {
       await this.getAllUserPoolInfo(index);
     });
@@ -799,10 +862,11 @@ export class Web3Service {
               await this.getLPContracts().then(async getLPResult => {
                 await this.setLPContracts().then(async setLPResult => {
                   await this.setSecondaryContracts().then(setSecondaryResult => {
-                    console.dir('intervalSet');
-                    setInterval(() => {
-                      this.getInfo();
-                    }, 5000);
+                    if (this.exitInterval === undefined) {
+                      this.exitInterval = setInterval(() => {
+                        this.getInfo();
+                      }, 5000);
+                    }
                   });
                 });
               });
@@ -811,6 +875,11 @@ export class Web3Service {
         });
       });
     });
+  }
+
+  stopGatheringInfo(): void {
+    clearInterval(this.exitInterval);
+    this.exitInterval = undefined;
   }
 
   async setPoolTokenContracts(): Promise<any> {
@@ -982,7 +1051,6 @@ export class Web3Service {
     });
   }
   async getTokenCirculatingSupply(): Promise<any> {
-    // totalSupply - what is in uniswap - what is in pool 2
     return await this.token.circulatingSupply.next((this.token.totalSupply.getValue() - this.apyCalculator.networkCurrency.pairBalanceAura.getValue()) - this.poolInfo[this.token.poolId.getValue()].poolTokenBalance.getValue());
   }
 

@@ -1,5 +1,5 @@
 <section class="wrapper">
-    <div class="header-items-wrapper menu" [ngClass]="{'opened': menuOpen === true}" *ngIf="showingPoolTokens === false" [@inOutAnimations]>
+    <div class="header-items-wrapper menu" [ngClass]="{'opened': menuOpen === true}" *ngIf="menuOpen === true || showingPoolTokens === false" [@inOutAnimations]>
         <app-header-item [data]="item" *ngFor="let item of headerItems"></app-header-item>
     </div>
     <div class="header-items-wrapper button" [@inOutAnimations]>

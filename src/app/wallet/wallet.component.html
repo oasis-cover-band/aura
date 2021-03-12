@@ -8,10 +8,10 @@
                 Close Wallet
             </span>
             <span class="non-mobile" *ngIf="viewingBalances">
-                {{(user.address | async) | slice:0:5}}...{{(user.address | async) | slice:35:40}}
+                {{(user.address | async) | slice:0:5}}...{{(user.address | async) | slice:37:42}}
             </span>
             <span *ngIf="!viewingBalances">
-                {{(user.address | async) | slice:0:5}}...{{(user.address | async) | slice:35:40}}
+                {{(user.address | async) | slice:0:5}}...{{(user.address | async) | slice:37:42}}
             </span>
         </div>
     </section>
@@ -52,7 +52,7 @@
     <section class="balance" id="flipwbnb" *ngIf="(user.lpBalance | async) as lpBalance;else greyed" [@inOutAnimations]>
         <div id="address">
             <span>
-                {{project.lpTokenName}}
+                LP
             </span>
         </div>
         <div id="balance">
@@ -64,7 +64,7 @@
     <section class="balance" id="wflipwbnb" *ngIf="(user.wLPBalance | async) as wLPBalance;else greyed" [@inOutAnimations]>
         <div id="address">
             <span>
-                w{{project.lpTokenName}}
+                {{project.lpTokenName}}
             </span>
         </div>
         <div id="balance">
@@ -89,7 +89,7 @@
         <ng-template class="greyed-bar balance" #greyeda><div class="greyed-bar balance" id="address" [@inOutAnimations]></div></ng-template>
         <ng-template class="greyed-bar balance" #greyedn><div class="greyed-bar balance" id="balance" [@inOutAnimations]></div></ng-template>
     </section>
-    <section class="balance pool-balance-switch" (click)="showPoolTokens()" *ngIf="!showingPoolTokensStyle" [@inOutAnimations]>
+    <section class="balance pool-balance-switch" (click)="showPoolTokens()" *ngIf="(user.address | async) && !showingPoolTokensStyle" [@inOutAnimations]>
         <div id="address">
             <span class="shiny">
                 <i class="material-icons">add_circle</i>
@@ -101,7 +101,7 @@
             </span>
         </div>
     </section>
-    <section class="balance pool-balance-switch" (click)="showPoolTokens()" *ngIf="showingPoolTokensStyle" [@inOutAnimations]>
+    <section class="balance pool-balance-switch" (click)="showPoolTokens()" *ngIf="(user.address | async) && showingPoolTokensStyle" [@inOutAnimations]>
         <div id="address">
             <span class="shiny">
                 <i class="material-icons">remove_circle</i>
@@ -110,6 +110,18 @@
         <div id="balance">
             <span class="small">
                 Hide Pool Tokens
+            </span>
+        </div>
+    </section>
+    <section class="balance pool-balance-switch" (click)="logout()" *ngIf="(user.address | async) !== ''" [@inOutAnimations]>
+        <div id="address">
+            <span class="shiny">
+                <i class="material-icons">remove_circle</i>
+            </span>
+        </div>
+        <div id="balance">
+            <span class="small">
+                Logout
             </span>
         </div>
     </section>

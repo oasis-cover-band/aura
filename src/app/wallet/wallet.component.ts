@@ -42,4 +42,8 @@ export class WalletComponent implements OnInit {
     // this.showingPoolTokens.emit(true);
     this.viewingBalances = !this.viewingBalances;
   }
+
+  logout(): void {
+    this.web3.logout();
+  }
 }

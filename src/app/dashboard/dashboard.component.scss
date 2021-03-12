@@ -22,9 +22,10 @@
         '. volume .'
         '. rewards .'
         '. tokenomics .'
+        '. empty .'
         '. . .';
         grid-template-columns: 20px 1fr 20px;
-        grid-template-rows: 10px max-content max-content max-content 10px;
+        grid-template-rows: 10px max-content max-content max-content 300px 10px;
         #tokenomics {
             grid-area:tokenomics;
         }
@@ -33,6 +34,9 @@
         }
         #rewards {
             grid-area:rewards;
+        }
+        div.empty {
+            grid-area:empty;
         }
         row-gap:10px;
         column-gap:10px;

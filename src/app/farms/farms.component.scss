@@ -92,4 +92,15 @@
             position:relative;
         }
     }
+    @media (max-height:600px) {
+        section.top-bar {
+            font-size:40%;
+        }
+    }
+    @media (max-height:400px) {
+        section.top-bar {
+            height:0px;
+            overflow:hidden;
+        }
+    }
 }

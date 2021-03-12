@@ -7,18 +7,20 @@ import { Injectable } from '@angular/core';
 export class ProjectService {
   project = {
     contracts: {
-      tokenAddress: '0xe6796811322A32b5A33dB08eB525645B61e25D23',
-      vaultAddress: '0xD77695a186E28Cc865C1DD34db06aEdeb53c0085',
+      tokenAddress: '0x25A99d1e1A08c9211e9B1Add162aA529d92e0C93',
+      vaultAddress: '0x0C87adc5490103c27Be85Ab090dabeC86919aEf8',
       stableCoinAddress: '0xA6e59Dc48E2799912e4e5CCdb6e6918Bf0F6e4f7',
       wrappedNetworkCurrencyAddress: '0xA6e59Dc48E2799912e4e5CCdb6e6918Bf0F6e4f7',
       exchangeFactoryAddress: '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f', // ETH MAINNET
       exchangeRouterAddress: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D', // ETH MAINNET
     },
     name: 'AURA',
-    tokenName: 'AURA',
-    lpTokenName: 'FLIP',
+    tokenName: '🍇',
+    lpTokenName: '🍷',
+    vaultName: 'Cellar',
     networkCurrency: 'BNB',
     networkName: 'Binance Smart Chain',
+    rpcNetwork: 'https://data-seed-prebsc-2-s3.binance.org:8545/', // BSC TESTNET
     blockExplorer: 'BscScan',
     blockExplorerAddress: 'https://testnet.bscscan.com', // BSC TESTNET
     // blockExplorerAddress: 'https://bscscan.com', // BSC MAINNET
@@ -42,7 +44,7 @@ export class ProjectService {
   {
   title: `How does ` + this.project.name + ` make everyone money?`,
   icon: 'monetization_on',
-  text: `` + this.project.name + ` provides token holders with an inflationless method of earning rewards for placing their tokens in the ` + this.project.name + ` Vault.
+  text: `` + this.project.name + ` provides token holders with an inflationless method of earning rewards for placing their tokens in the ` + this.project.tokenName + ` ` + this.project.vaultName +  `.
   
   ` + this.project.name + ` also creates an ever-increasing price floor, increasing ` + this.project.tokenName + `'s price consistently overtime.
   
@@ -52,7 +54,7 @@ export class ProjectService {
   {
   title: `What is a price floor? How does it work?`,
   icon: 'layers',
-  text: `We are introducing the concept of unwrapping wrapped ` + this.project.tokenName + ` FLIP liquidity tokens.
+  text: `We are introducing the concept of unwrapping wrapped ` + this.project.tokenName + `-W` + this.project.networkCurrency + ` ` + this.project.lpTokenName + ` liquidity tokens.
 
   A fee is taken from the tokens being unwrapped, this fee is permanently locked, creating an ever increasing price floor.
 
@@ -62,9 +64,9 @@ export class ProjectService {
   {
   title: `What is farming? How does it work?`,
   icon: 'agriculture',
-  text: `For example: ` + this.project.tokenName + ` holders, or ` + this.project.name + `-W` + this.project.networkCurrency + ` FLIP liquidity providers may provide their tokens to the ` + this.project.name + ` Vault, in a process known as "farming", or "staking".
+  text: `For example: ` + this.project.tokenName + ` holders, or ` + this.project.tokenName + `-W` + this.project.networkCurrency + ` ` + this.project.lpTokenName + ` liquidity providers may provide their tokens to the ` + this.project.tokenName + ` ` + this.project.vaultName +  `, in a process known as "farming", or "staking".
   
-  These "farmers" and "stakers" are then rewarded for locking up their tokens. Their tokens are not permanently locked. They earn rewards for every second their tokens are placed in the ` + this.project.name + ` Vault.
+  These "farmers" and "stakers" are then rewarded for locking up their tokens. Their tokens are not permanently locked. They earn rewards for every second their tokens are placed in the ` + this.project.tokenName + ` ` + this.project.vaultName +  `.
   
   The protocol does not need to mint new tokens to reward farmers. The protocol is designed to provide an inflationless, sustainable and safe method of generating yield through taxing a portion of each trade, and providing it to those currently farming.`,
   date: new Date()
@@ -72,9 +74,9 @@ export class ProjectService {
   {
   title: `Is anything else coming to ` + this.project.name + `?`,
   icon: 'add_circle',
-  text: `Similarly to cVault Finance, we are building a series of 'Automated Strategy Vaults' which will execute second-layer profit generating strategies.
+  text: `Similarly to cVault Finance, we are building a series of 'Automated Strategy ` + this.project.vaultName + `s' which will execute second-layer profit generating strategies.
 
-  Though on the ` + this.project.networkName + ` this causes a hurdle due to the lack of safe and reputable protocols. Our first vault will interact with Pancakeswap, with community voting to guide the team towards integrating more projects.`,
+  Though on the ` + this.project.networkName + ` this causes a hurdle due to the lack of safe and reputable protocols. Our first ` + this.project.vaultName + ` will interact with Pancakeswap, with community voting to guide the team towards integrating more projects.`,
   date: new Date()
   },
   {
@@ -86,7 +88,7 @@ export class ProjectService {
 
   This is only a start to the changes we're making.
   
-  You will be able to unwrap liquidity after a set time! No longer will you be worried about having permanently wrapped liquidity tokens.
+  You will be able to unwrap liquidity after a set time! No longer will you be worried about having permanently wrapped liquidity tokens. ` + this.project.lpTokenName + ` tokens give you just that, piece of mind.
   
   There will be VIP pools, where you must stake a certain amount of ` + this.project.tokenName + ` to participate in the farming of these pools.`,
   date: new Date()

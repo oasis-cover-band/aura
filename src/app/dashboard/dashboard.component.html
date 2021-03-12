@@ -26,11 +26,11 @@
             <div class="medium-container" id="rewards-given">
                 <span class="small-header value" *ngIf="(vault.cumulativeRewardsSinceStart | async) as rewardsSinceStart;else greyed" [@inOutAnimations]>
                     <label class="title">Total Rewards <small>(in {{project.tokenName}})</small></label>
-                    <label class="value small"><b>{{rewardsSinceStart / 1e18 | number}}</b> <small>{{project.tokenName}}</small></label>
+                    <label class="value small"><b>{{(rewardsSinceStart + (vault.rewardsInThisEpoch | async)) / 1e18 | number}}</b> <small>{{project.tokenName}}</small></label>
                 </span>
                 <span class="small-header value" *ngIf="(priceInUSD | async) as priceInUSD;else greyed" [@inOutAnimations]>
                     <label class="title">Total Rewards <small>(in USD)</small></label>
-                    <label class="value small"><b>{{((vault.cumulativeRewardsSinceStart | async) / 1e18) * priceInUSD| number}}</b> <small>USD</small></label>
+                    <label class="value small"><b>{{(((vault.cumulativeRewardsSinceStart | async) + (vault.rewardsInThisEpoch | async)) / 1e18) * priceInUSD| number}}</b> <small>USD</small></label>
                 </span>
                 <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
             </div>
@@ -76,4 +76,5 @@
             </div>
         </div>
     </section>
+    <div class="empty"></div>
 </section>

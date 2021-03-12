@@ -1,11 +1,11 @@
 <section class="wrapper">
     <div class="medium-container" id="name">
         <app-logo></app-logo>
-        <span class="big-header">
+        <span class="large-header">
             <h3>{{(token.name | async)}} LGE</h3>
         </span>
     </div>
-    <span class="big-header" id="price">
+    <span class="large-header" id="price">
         <label class="value" *ngIf="(data.FLIPperBNBUnit | async) > 0 && (data.FLIPperBNBUnit | async) as FLIPperBNBUnit;">{{FLIPperBNBUnit / 1e18 | number}} {{project.lpTokenName}} per 1 {{project.networkCurrency}}</label>
         <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
     </span>
@@ -53,7 +53,7 @@
     <span class="input" id="input" *ngIf="(data.FLIPperBNBUnit | async) < 1">
         <input [placeholder]="inputPlaceholder" #inputEle/>
     </span>
-    <span class="big-header" id="buttons" *ngIf="(data.user.contribution | async) as contribution;else greyedButtons" [@inOutAnimations]>
+    <span class="large-header" id="buttons" *ngIf="(data.user.contribution | async) as contribution;else greyedButtons" [@inOutAnimations]>
         <span class="button" id="deposit"
         *ngIf="(((data.started | async) * 1000) - (now | async)) < 0 && (data.FLIPperBNBUnit | async) < 1">
             <button [ngClass]="{
@@ -192,3 +192,4 @@
         </span>
     </div> -->
 </section>
+<div class="empty"></div>
