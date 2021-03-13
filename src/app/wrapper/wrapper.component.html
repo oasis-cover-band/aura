@@ -3,22 +3,22 @@
         <div (click)="bringWrap()" class="medium-container up-under naked" id="wrap" [ngClass]="{'selected': mode.wBNB.wrap === true}">
             <span class="medium-header"
             *ngIf="(user.lpBalance | async) as lpBalance;else greyed" [@inOutAnimations]>
-                <label class="title">Wrap {{project.lpTokenName}}</label>
+                <label class="title">Wrap {{(liquidityToken.lpSymbol | async)}}</label>
             </span>
             <span class="medium-header"
             *ngIf="(user.lpBalance | async) as lpBalance;else greyed" [@inOutAnimations]>
-                <label class="value">Your {{project.lpTokenName}} {{(lpBalance / 1e18) | number:'1.2-2'}}</label>
+                <label class="value">You have {{(lpBalance / 1e18) | number:'1.2-2'}} {{(liquidityToken.lpSymbol | async)}}</label>
             </span>
             <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
         </div>
         <div (click)="bringUnwrap()" class="medium-container up-under naked" id="unwrap" [ngClass]="{'selected': mode.wBNB.unwrap === true}">
             <span class="medium-header"
             *ngIf="(user.wLPBalance | async) as wLPBalance;else greyed" [@inOutAnimations]>
-                <label class="title">Unwrap w{{project.lpTokenName}}</label>
+                <label class="title">Unwrap {{(liquidityToken.wLPSymbol | async)}}</label>
             </span>
             <span class="medium-header"
             *ngIf="(user.wLPBalance | async) as wLPBalance;else greyed" [@inOutAnimations]>
-                <label class="value">Your w{{project.lpTokenName}} {{(wLPBalance / 1e18) | number:'1.2-2'}}</label>
+                <label class="value">You have {{(wLPBalance / 1e18) | number:'1.2-2'}} {{(liquidityToken.wLPSymbol | async)}}</label>
             </span>
             <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
         </div>
@@ -30,8 +30,9 @@
         <span class="button" id="wrap-unwrap"
         *ngIf="(user.lpBalance | async) as lpBalance">
             <button [ngClass]="{
-                'working' : (wrapButton | async) === 1 || (wrapButton | async) === 2 || (wrapButton | async) === 4 || (wrapButton | async) === 5,
-                'failed' : (wrapButton | async) === 3
+                'working' : (wrapButton | async) === 1 || (wrapButton | async) === 4,
+                'failed' : (wrapButton | async) === 3,
+                'success': (wrapButton | async) === 2 || (wrapButton | async) === 5
             }"
             (click)="wrap()"
             *ngIf="mode.wBNB.wrap === true">
@@ -43,8 +44,9 @@
                 <label *ngIf="(wrapButton | async) === 5">Approved</label>
             </button>
             <button [ngClass]="{
-                'working' : (unwrapButton | async) === 1 || (unwrapButton | async) === 2 || (unwrapButton | async) === 4 || (unwrapButton | async) === 5,
-                'failed' : (unwrapButton | async) === 3
+                'working' : (unwrapButton | async) === 1 || (unwrapButton | async) === 4,
+                'failed' : (unwrapButton | async) === 3,
+                'success': (unwrapButton | async) === 2 || (unwrapButton | async) === 5
             }"
             (click)="unwrap()"
             *ngIf="mode.wBNB.unwrap === true">

@@ -24,6 +24,7 @@ export class WrapperComponent implements OnInit {
   wrapButton = this.web3.wrapper.wrapButton;
   unwrapButton = this.web3.wrapper.unwrapButton;
   project = this.projectService.project;
+  liquidityToken = this.web3.liquidityToken;
   constructor(
     private web3: Web3Service,
     private projectService: ProjectService

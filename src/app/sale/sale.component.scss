@@ -43,6 +43,9 @@
             justify-self:end;
         }
         span {
+            &#name {
+                grid-area:name;
+            }
             &#price {
                 grid-area:price;
             }
@@ -54,12 +57,6 @@
             }
         }
         div {
-            &#name {
-                grid-area:name;
-                app-logo {
-                    max-height:100px;
-                }
-            }
             &#time {
                 grid-area:time;
             }

@@ -45,7 +45,7 @@
 				"type": "uint256"
 			}
 		],
-		"name": "FLIPTokenClaimed",
+		"name": "LPTTokenClaimed",
 		"type": "event"
 	},
 	{
@@ -78,6 +78,25 @@
 			}
 		],
 		"name": "Log",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "previousOwner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "OwnershipTransferred",
 		"type": "event"
 	},
 	{
@@ -126,12 +145,12 @@
 	},
 	{
 		"inputs": [],
-		"name": "FLIPperBNBUnit",
+		"name": "Cellars",
 		"outputs": [
 			{
-				"internalType": "uint256",
+				"internalType": "address",
 				"name": "",
-				"type": "uint256"
+				"type": "address"
 			}
 		],
 		"stateMutability": "view",
@@ -145,6 +164,32 @@
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "LPTperBNBUnit",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "Marketing",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
 			}
 		],
 		"stateMutability": "view",
@@ -186,22 +231,34 @@
 	},
 	{
 		"inputs": [],
-		"name": "Vault",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
+		"name": "__primarySetup",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "owner",
+				"name": "_Cellars",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_wLPT",
+				"type": "address"
+			}
+		],
+		"name": "__secondarySetup",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "tokenOwner",
 				"type": "address"
 			},
 			{
@@ -272,7 +329,7 @@
 				"type": "uint256"
 			}
 		],
-		"name": "burnFromFLIP",
+		"name": "burnFromLPT",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -429,6 +486,19 @@
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "getOwner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "address",
@@ -482,13 +552,6 @@
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "initialSetup",
-		"outputs": [],
-		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -551,6 +614,19 @@
 	},
 	{
 		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "pancakeFactory",
 		"outputs": [
 			{
@@ -564,7 +640,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "pancakeFlip",
+		"name": "pancakeLPT",
 		"outputs": [
 			{
 				"internalType": "address",
@@ -589,19 +665,8 @@
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_Vault",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "_wFLIP",
-				"type": "address"
-			}
-		],
-		"name": "secondarySetup",
+		"inputs": [],
+		"name": "renounceOwnership",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -640,12 +705,12 @@
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "_ratioBase100",
-				"type": "uint256"
+				"internalType": "address",
+				"name": "_Cellars",
+				"type": "address"
 			}
 		],
-		"name": "setFLIPBurnRatio",
+		"name": "setCellars",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -664,6 +729,19 @@
 			}
 		],
 		"name": "setGovernanceLevel",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_ratioBase100",
+				"type": "uint256"
+			}
+		],
+		"name": "setLPTBurnRatio",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -690,11 +768,11 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "_pancakeFlip",
+				"name": "_pancakeLPT",
 				"type": "address"
 			}
 		],
-		"name": "setPancakeFlip",
+		"name": "setPancakeLPT",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -715,12 +793,12 @@
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "_Vault",
-				"type": "address"
+				"internalType": "uint256",
+				"name": "_delayDays",
+				"type": "uint256"
 			}
 		],
-		"name": "setVault",
+		"name": "setUnWrapLockTime",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -733,7 +811,7 @@
 				"type": "address"
 			}
 		],
-		"name": "setwFLIP",
+		"name": "setwLPT",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -792,7 +870,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "totalFLIPTokensMinted",
+		"name": "totalLPTTokensMinted",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -870,26 +948,26 @@
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [],
-		"name": "viewFLIP",
+		"name": "viewCellars",
 		"outputs": [
 			{
 				"internalType": "address",
 				"name": "",
 				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "viewFLIPBurnRatio",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -916,7 +994,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "viewVault",
+		"name": "viewLPT",
 		"outputs": [
 			{
 				"internalType": "address",
@@ -929,7 +1007,20 @@
 	},
 	{
 		"inputs": [],
-		"name": "viewwWrappedFLIP",
+		"name": "viewLPTBurnRatio",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "viewWrappedLPT",
 		"outputs": [
 			{
 				"internalType": "address",
@@ -942,7 +1033,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "wFLIP",
+		"name": "wLPT",
 		"outputs": [
 			{
 				"internalType": "address",

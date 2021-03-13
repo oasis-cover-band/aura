@@ -14,7 +14,7 @@ import { inOutAnimations } from '../animations';
 export class FarmsComponent implements OnInit {
 
   farms = this.web3.poolInfo;
-  vault = this.web3.vault;
+  vault = this.web3.cellar;
   project = this.projectService.project;
   allPools = true;
   masterPools = false;

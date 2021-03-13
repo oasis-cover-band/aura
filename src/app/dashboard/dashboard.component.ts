@@ -13,10 +13,10 @@ export class DashboardComponent implements OnInit {
 
   exchange = this.web3.exchange;
   token = this.web3.token;
-  vault = this.web3.vault;
+  vault = this.web3.cellar;
   project = this.projectService.project;
-  priceInUSD = this.web3.apyCalculator.aura.priceInUSD;
-  priceInNetworkCurrency = this.web3.apyCalculator.aura.priceInNetworkCurrency;
+  priceInUSD = this.web3.apyCalculator.grapes.priceInUSD;
+  priceInNetworkCurrency = this.web3.apyCalculator.grapes.priceInNetworkCurrency;
   constructor(
     private web3: Web3Service,
     private projectService: ProjectService

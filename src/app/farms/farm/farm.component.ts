@@ -42,11 +42,17 @@ export class FarmComponent implements OnInit {
 
   deposit(): void {
     const value = Number(Number(this.inputEle.nativeElement.value).toFixed(5));
+    if (value === 0) {
+      return;
+    }
     this.web3.deposit(this.pid, value);
   }
 
   withdraw(): void {
     const value = Number(Number(this.inputEle.nativeElement.value).toFixed(5));
+    if (value === 0) {
+      return;
+    }
     this.web3.withdraw(this.pid, value);
   }
 

@@ -3,12 +3,12 @@ import Web3 from 'web3';
 import { BehaviorSubject } from 'rxjs';
 import { NotificationsService } from './notifications.service';
 import { ProjectService } from '../static-info-services/project.service';
-const auraAbi = require('../../assets/abi/auraabi.json');
-const stableCoinAbi = require('../../assets/abi/auraabi.json');
-const wrappedNetworkCurrencyAbi = require('../../assets/abi/auraabi.json');
-const auraLPAbi = require('../../assets/abi/auraabi.json');
-const auraWLPAbi = require('../../assets/abi/aurawrapabi.json');
-const auraVaultAbi = require('../../assets/abi/auravaultabi.json');
+const grapesAbi = require('../../assets/abi/grapesabi.json');
+const stableCoinAbi = require('../../assets/abi/grapesabi.json');
+const wrappedNetworkCurrencyAbi = require('../../assets/abi/grapesabi.json');
+const grapesLPAbi = require('../../assets/abi/grapesabi.json');
+const grapesWLPAbi = require('../../assets/abi/grapeswineabi.json');
+const grapesCellarAbi = require('../../assets/abi/grapescellarabi.json');
 const exchangeAbi = require('../../assets/abi/exchangeabi.json');
 declare const window: any;
 // tslint:disable:max-line-length
@@ -20,11 +20,11 @@ export class Web3Service {
 
   web3: Web3;
 
-  auraContract;
-  auraContractAddress = this.projectService.project.contracts.tokenAddress;
+  grapesContract;
+  grapesContractAddress = this.projectService.project.contracts.tokenAddress;
 
-  auraVaultContractAddress = this.projectService.project.contracts.vaultAddress;
-  auraVaultContract;
+  grapesCellarContractAddress = this.projectService.project.contracts.cellarAddress;
+  grapesCellarContract;
 
   stableCoinContractAddress = this.projectService.project.contracts.stableCoinAddress;
   stableCoinContract;
@@ -39,7 +39,7 @@ export class Web3Service {
   wrappedNetworkCurrencyContract;
 
   stableCoinWrappedNetworkCurrencyPairAddress = new BehaviorSubject('');
-  auraWrappedNetworkCurrencyPairAddress = new BehaviorSubject('');
+  grapesWrappedNetworkCurrencyPairAddress = new BehaviorSubject('');
 
   // USED TO STOP GATHERING INFORMATION FROM BLOCKCHAIN
   exitInterval = undefined;
@@ -58,7 +58,7 @@ export class Web3Service {
   // USER VARIABLES
   user = {
     address: new BehaviorSubject(''),
-    auraBalance: new BehaviorSubject(0),
+    grapesBalance: new BehaviorSubject(0),
     bnbBalance: new BehaviorSubject(0),
     lpBalance: new BehaviorSubject(0),
     wLPBalance: new BehaviorSubject(0),
@@ -107,18 +107,18 @@ export class Web3Service {
     ended: new BehaviorSubject(0),
     duration: new BehaviorSubject(0),
     calculatedEnd: new BehaviorSubject(0),
-    FLIPperBNBUnit: new BehaviorSubject(0),
+    LPTperBNBUnit: new BehaviorSubject(0),
     individualCap: new BehaviorSubject(0),
     initialSupply: new BehaviorSubject(0),
-    totalFLIPMinted: new BehaviorSubject(0),
+    totalLPTMinted: new BehaviorSubject(0),
     totalBNBContributed: new BehaviorSubject(0),
-    FLIPBurnRatio: new BehaviorSubject(0),
+    LPTBurnRatio: new BehaviorSubject(0),
     depositButton: new BehaviorSubject(0),
     claimButton: new BehaviorSubject(0),
     createLiquidityButton: new BehaviorSubject(0)
   };
   // VAULT VARIABLES
-  vault = {
+  cellar = {
     cumulativeRewardsSinceStart: new BehaviorSubject(0),
     averageFeesPerBlockSinceStart: new BehaviorSubject(0),
     averageFeesPerBlockEpoch: new BehaviorSubject(0),
@@ -129,7 +129,6 @@ export class Web3Service {
   // POOL TOKENS VARIABLES
   poolInfo = [
     {
-      name: 'WBNB-AURA', // MAKE IT GET FROM token.name()
       token: {
         name: new BehaviorSubject(''),
         address: new BehaviorSubject(''),
@@ -147,7 +146,7 @@ export class Web3Service {
       withdrawButton: new BehaviorSubject(0),
       tokenApproval: new BehaviorSubject(0),
       tokenRewards: new BehaviorSubject(0),
-      pendingAura: new BehaviorSubject(0),
+      pendingGrapes: new BehaviorSubject(0),
       userPoolInfo: new BehaviorSubject({
         amount: 0,
         rewardPaid: 0
@@ -156,9 +155,9 @@ export class Web3Service {
         poolName: '',
         stakedToken: '',
         allocPoint: 0,
-        accAURAPerShare: 0,
+        accGRAPESPerShare: 0,
         VIPpool: false,
-        withdrawable: false
+        partialWithdraw: false
       }),
       pairInfo: {
         pairAddress: new BehaviorSubject(''),
@@ -170,14 +169,14 @@ export class Web3Service {
   ];
   // APY CALCULATOR VARIABLES
   apyCalculator = {
-    aura: {
+    grapes: {
       priceInUSD: new BehaviorSubject(0),
       priceInNetworkCurrency: new BehaviorSubject(0),
       pairBalance: new BehaviorSubject(0)
     },
     networkCurrency: {
       price: new BehaviorSubject(0),
-      pairBalanceAura: new BehaviorSubject(0),
+      pairBalanceGrapes: new BehaviorSubject(0),
       pairBalanceStableCoin: new BehaviorSubject(0),
     },
     stableCoin: {
@@ -212,11 +211,11 @@ export class Web3Service {
   }
 
   async getPrices(): Promise<any> {
-    return await this.getAuraNetworkCurrencyPairAddress().then(async afterAuraNetworkCurrencyPairAddress => {
+    return await this.getGrapesNetworkCurrencyPairAddress().then(async afterGrapesNetworkCurrencyPairAddress => {
       await this.getStableCoinNetworkCurrencyPairAddress().then(async afterStableCoinNetworkCurrencyPairAddress => {
         await this.getNetworkCurrencyPrice().then(async afterNetworkCurrencyPrice => {
-          await this.getAuraPriceInNetworkCurrency().then(async afterAuraPriceInNetworkCurrency => {
-            await this.getAuraPriceInUSD().then(async afterAuraPriceInUSD => {
+          await this.getGrapesPriceInNetworkCurrency().then(async afterGrapesPriceInNetworkCurrency => {
+            await this.getGrapesPriceInUSD().then(async afterGrapesPriceInUSD => {
 
             });
           });
@@ -225,9 +224,9 @@ export class Web3Service {
     });
   }
 
-  async getAuraNetworkCurrencyPairAddress(): Promise<any> {
-    return await this.exchangeFactoryContract.methods.getPair(this.auraContractAddress, this.wrappedNetworkCurrencyContractAddress).call().then(async result => {
-      await this.auraWrappedNetworkCurrencyPairAddress.next(result);
+  async getGrapesNetworkCurrencyPairAddress(): Promise<any> {
+    return await this.exchangeFactoryContract.methods.getPair(this.grapesContractAddress, this.wrappedNetworkCurrencyContractAddress).call().then(async result => {
+      await this.grapesWrappedNetworkCurrencyPairAddress.next(result);
     });
   }
 
@@ -247,18 +246,18 @@ export class Web3Service {
     });
   }
 
-  async getAuraPriceInNetworkCurrency(): Promise<any> {
-    return await this.auraContract.methods.balanceOf(this.auraWrappedNetworkCurrencyPairAddress.getValue()).call().then(async resultAura => {
-      await this.apyCalculator.aura.pairBalance.next(resultAura);
-      await this.wrappedNetworkCurrencyContract.methods.balanceOf(this.auraWrappedNetworkCurrencyPairAddress.getValue()).call().then(async resultNetwork => {
-        await this.apyCalculator.networkCurrency.pairBalanceAura.next(resultNetwork);
-        await this.apyCalculator.aura.priceInNetworkCurrency.next(this.apyCalculator.aura.pairBalance.getValue() / this.apyCalculator.networkCurrency.pairBalanceAura.getValue());
+  async getGrapesPriceInNetworkCurrency(): Promise<any> {
+    return await this.grapesContract.methods.balanceOf(this.grapesWrappedNetworkCurrencyPairAddress.getValue()).call().then(async resultGrapes => {
+      await this.apyCalculator.grapes.pairBalance.next(resultGrapes);
+      await this.wrappedNetworkCurrencyContract.methods.balanceOf(this.grapesWrappedNetworkCurrencyPairAddress.getValue()).call().then(async resultNetwork => {
+        await this.apyCalculator.networkCurrency.pairBalanceGrapes.next(resultNetwork);
+        await this.apyCalculator.grapes.priceInNetworkCurrency.next(this.apyCalculator.grapes.pairBalance.getValue() / this.apyCalculator.networkCurrency.pairBalanceGrapes.getValue());
       });
     });
   }
 
-  async getAuraPriceInUSD(): Promise<any> {
-    return await this.apyCalculator.aura.priceInUSD.next(this.apyCalculator.aura.priceInNetworkCurrency.getValue() * this.apyCalculator.networkCurrency.price.getValue());
+  async getGrapesPriceInUSD(): Promise<any> {
+    return await this.apyCalculator.grapes.priceInUSD.next(this.apyCalculator.grapes.priceInNetworkCurrency.getValue() * this.apyCalculator.networkCurrency.price.getValue());
   }
 
   connectWallet(): void {
@@ -287,7 +286,7 @@ export class Web3Service {
 
   clearUser(): void {
     this.user.address.next('');
-    this.user.auraBalance.next(0);
+    this.user.grapesBalance.next(0);
     this.user.bnbBalance.next(0);
     this.user.lpBalance.next(0);
     this.user.wLPBalance.next(0);
@@ -352,7 +351,7 @@ export class Web3Service {
     await this.getPoolTokenSymbol(poolId);
     await this.getPoolTokenApproval(poolId);
     // await this.getPoolTokenPrices(poolId);
-    // await this.getPoolTokenVaultBalance(poolId);
+    // await this.getPoolTokenCellarBalance(poolId);
   }
 
   async getUserBalance(poolId: number): Promise<any> {
@@ -380,7 +379,7 @@ export class Web3Service {
   }
 
   async getPoolTokenApproval(poolId: number): Promise<any> {
-    return await this.poolInfo[poolId].token.contract.methods.allowance(this.user.address.getValue(), this.auraVaultContractAddress).call().then(result => {
+    return await this.poolInfo[poolId].token.contract.methods.allowance(this.user.address.getValue(), this.grapesCellarContractAddress).call().then(result => {
       this.poolInfo[poolId].tokenApproval.next(result);
     });
   }
@@ -395,8 +394,8 @@ export class Web3Service {
     });
   }
 
-  async getPoolTokenVaultBalance(poolId: number): Promise<any> {
-    return await this.poolInfo[poolId].token.contract.methods.balanceOf(this.auraVaultContractAddress).call().then(async result => {
+  async getPoolTokenCellarBalance(poolId: number): Promise<any> {
+    return await this.poolInfo[poolId].token.contract.methods.balanceOf(this.grapesCellarContractAddress).call().then(async result => {
       await this.poolInfo[poolId].poolTokenBalance.next(result);
       await this.poolInfo[poolId].tvl.next((this.poolInfo[poolId].poolTokenBalance.getValue() / 1e18) * this.poolInfo[poolId].priceInUSD.getValue());
     });
@@ -424,7 +423,7 @@ export class Web3Service {
 
   async approve(poolId: number): Promise<any> {
     this.poolInfo[poolId].depositButton.next(4);
-    return await this.poolInfo[poolId].token.contract.methods.approve(this.auraVaultContractAddress, BigInt(999999999999999999999999)).send({ from: this.user.address.getValue() })
+    return await this.poolInfo[poolId].token.contract.methods.approve(this.grapesCellarContractAddress, BigInt(999999999999999999999999)).send({ from: this.user.address.getValue() })
       .on('transactionHash', (transactionHash) => {
       })
       .on('confirmation', (confirmation) => {
@@ -435,7 +434,7 @@ export class Web3Service {
         this.notificationsService.notify({
           title: 'Approve Successful',
           icon: 'alarm',
-          text: 'You have successfully approved your tokens to pool ' + this.poolInfo[poolId].name + '.',
+          text: 'You have successfully approved your tokens to the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
           date: new Date()
         });
         setTimeout(() => {
@@ -447,7 +446,7 @@ export class Web3Service {
         this.notificationsService.notify({
           title: 'Approve Error',
           icon: 'alarm',
-          text: 'There was an error approving your tokens to pool ' + this.poolInfo[poolId].name + '.',
+          text: 'There was an error approving your tokens to the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
           date: new Date()
         });
         setTimeout(() => {
@@ -459,7 +458,7 @@ export class Web3Service {
     this.poolInfo[poolId].depositButton.next(1);
     if (BigInt(this.poolInfo[poolId].tokenApproval.getValue()) < 1) {
       return await this.approve(poolId).then(async result => {
-        await this.auraVaultContract.methods.deposit(
+        await this.grapesCellarContract.methods.deposit(
           poolId,
           BigInt(Math.floor(amount * 1e18))
         )
@@ -483,7 +482,7 @@ export class Web3Service {
           });
       });
     } else {
-      return await this.auraVaultContract.methods.deposit(
+      return await this.grapesCellarContract.methods.deposit(
         poolId,
         BigInt(Math.floor(amount * 1e18))
       )
@@ -498,7 +497,7 @@ export class Web3Service {
           this.notificationsService.notify({
             title: 'Pool Deposit',
             icon: 'alarm',
-            text: 'You have successfully deposited to pool ' + this.poolInfo[poolId].name + '.',
+            text: 'You have successfully deposited to the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
             date: new Date()
           });
           setTimeout(() => {
@@ -510,7 +509,7 @@ export class Web3Service {
           this.notificationsService.notify({
             title: 'Deposit Error',
             icon: 'alarm',
-            text: 'There was an error depositing to pool ' + this.poolInfo[poolId].name + '.',
+            text: 'There was an error depositing to the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
             date: new Date()
           });
           setTimeout(() => {
@@ -522,7 +521,7 @@ export class Web3Service {
 
   async withdraw(poolId: number, amount: number): Promise<any> {
     this.poolInfo[poolId].withdrawButton.next(1);
-    return await this.auraVaultContract.methods.withdraw(
+    return await this.grapesCellarContract.methods.withdraw(
       poolId,
       BigInt(Math.floor(amount * 1e18))
     ).send({ from: this.user.address.getValue() })
@@ -536,7 +535,7 @@ export class Web3Service {
         this.notificationsService.notify({
           title: 'Pool Withdraw',
           icon: 'alarm',
-          text: 'You have successfully withdrawn from pool ' + this.poolInfo[poolId].name + '.',
+          text: 'You have successfully withdrawn from the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
           date: new Date()
         });
         setTimeout(() => {
@@ -548,7 +547,7 @@ export class Web3Service {
         this.notificationsService.notify({
           title: 'Withdraw Error',
           icon: 'alarm',
-          text: 'There was an error withdrawing from pool ' + this.poolInfo[poolId].name + '.',
+          text: 'There was an error withdrawing from the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
           date: new Date()
         });
         setTimeout(() => {
@@ -559,7 +558,7 @@ export class Web3Service {
 
   async claim(poolId: number): Promise<any> {
     this.poolInfo[poolId].claimButton.next(1);
-    return await this.auraVaultContract.methods.withdraw(
+    return await this.grapesCellarContract.methods.withdraw(
       poolId,
       0
     )
@@ -574,7 +573,7 @@ export class Web3Service {
         this.notificationsService.notify({
           title: 'Pool Deposit',
           icon: 'alarm',
-          text: 'You have successfully claimed from pool ' + this.poolInfo[poolId].name + '.',
+          text: 'You have successfully claimed from the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
           date: new Date()
         });
         setTimeout(() => {
@@ -586,7 +585,7 @@ export class Web3Service {
         this.notificationsService.notify({
           title: 'Claim Error',
           icon: 'alarm',
-          text: 'There was an error claiming from pool ' + this.poolInfo[poolId].name + '.',
+          text: 'There was an error claiming from the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
           date: new Date()
         });
         setTimeout(() => {
@@ -596,33 +595,33 @@ export class Web3Service {
   }
 
   async getCumulativeRewardsSinceStart(): Promise<any> {
-    return await this.auraVaultContract.methods.cumulativeRewardsSinceStart().call().then(result => {
+    return await this.grapesCellarContract.methods.cumulativeRewardsSinceStart().call().then(result => {
       console.dir(result);
-      this.vault.cumulativeRewardsSinceStart.next(result);
+      this.cellar.cumulativeRewardsSinceStart.next(result);
     });
   }
 
   async getAverageFeesPerBlockSinceStart(): Promise<any> {
-    return await this.auraVaultContract.methods.averageFeesPerBlockSinceStart().call().then(result => {
-      this.vault.averageFeesPerBlockSinceStart.next(result);
+    return await this.grapesCellarContract.methods.averageFeesPerBlockSinceStart().call().then(result => {
+      this.cellar.averageFeesPerBlockSinceStart.next(result);
     });
   }
 
   async getAverageFeesPerBlockEpoch(): Promise<any> {
-    return await this.auraVaultContract.methods.averageFeesPerBlockEpoch().call().then(result => {
-      this.vault.averageFeesPerBlockEpoch.next(result);
+    return await this.grapesCellarContract.methods.averageFeesPerBlockEpoch().call().then(result => {
+      this.cellar.averageFeesPerBlockEpoch.next(result);
     });
   }
 
   async getRewardsInThisEpoch(): Promise<any> {
-    return await this.auraVaultContract.methods.rewardsInThisEpoch().call().then(result => {
-      this.vault.rewardsInThisEpoch.next(result);
+    return await this.grapesCellarContract.methods.rewardsInThisEpoch().call().then(result => {
+      this.cellar.rewardsInThisEpoch.next(result);
     });
   }
 
   async getEpoch(): Promise<any> {
-    return await this.auraVaultContract.methods.epoch().call().then(result => {
-      this.vault.epoch.next(result);
+    return await this.grapesCellarContract.methods.epoch().call().then(result => {
+      this.cellar.epoch.next(result);
     });
   }
 
@@ -630,7 +629,7 @@ export class Web3Service {
 
   async getUserInfo(): Promise<any> {
     this.getUserBNBBalance();
-    this.getUserAuraBalance();
+    this.getUserGrapesBalance();
   }
 
   async getAllPoolInfo(): Promise<any> {
@@ -644,8 +643,8 @@ export class Web3Service {
   }
 
   async getPoolLength(): Promise<any> {
-    return await this.auraVaultContract.methods.poolLength().call().then(result => {
-      this.vault.length.next(result);
+    return await this.grapesCellarContract.methods.poolLength().call().then(result => {
+      this.cellar.length.next(result);
     });
   }
 
@@ -654,24 +653,24 @@ export class Web3Service {
       return;
     }
     this.getUserPoolInfo(poolId);
-    this.getPendingAura(poolId);
+    this.getPendingGrapes(poolId);
     this.getPoolInfo(poolId);
   }
 
   async getUserPoolInfo(poolId: number): Promise<any> {
-    return await this.auraVaultContract.methods.userInfo(poolId, this.user.address.getValue()).call().then(result => {
+    return await this.grapesCellarContract.methods.userInfo(poolId, this.user.address.getValue()).call().then(result => {
       this.poolInfo[poolId].userPoolInfo.next(result);
     });
   }
 
-  async getPendingAura(poolId: number): Promise<any> {
-    return await this.auraVaultContract.methods.pendingAURA(poolId, this.user.address.getValue()).call().then(result => {
-      this.poolInfo[poolId].pendingAura.next(result);
+  async getPendingGrapes(poolId: number): Promise<any> {
+    return await this.grapesCellarContract.methods.pendingGRAPES(poolId, this.user.address.getValue()).call().then(result => {
+      this.poolInfo[poolId].pendingGrapes.next(result);
     });
   }
 
   async getPoolInfo(poolId: number): Promise<any> {
-    return await this.auraVaultContract.methods.poolInfo(poolId).call().then(result => {
+    return await this.grapesCellarContract.methods.poolInfo(poolId).call().then(result => {
       this.poolInfo[poolId].poolInfo.next(result);
     });
   }
@@ -679,7 +678,7 @@ export class Web3Service {
   // LGE VALUES
   async getLGEInfo(): Promise<any> {
     this.getBNBContributed();
-    this.getFLIPPerBNBUnit();
+    this.getLPTperBNBUnit();
     this.getTotalBNBContributed();
     this.getLGEEnd();
     this.getLGEStart();
@@ -687,64 +686,64 @@ export class Web3Service {
     this.getLGEDuration();
     this.getIndividualCap();
     this.getInitialSupply();
-    this.getTotalFLIPMinted();
+    this.getTotalLPTMinted();
   }
   async getBNBContributed(): Promise<any> {
-    return await this.auraContract.methods.BNBContributed(this.user.address.getValue()).call().then(async result => {
+    return await this.grapesContract.methods.BNBContributed(this.user.address.getValue()).call().then(async result => {
       this.lge.user.contribution.next(result);
     });
   }
-  async getFLIPPerBNBUnit(): Promise<any> {
-    return await this.auraContract.methods.FLIPperBNBUnit().call().then(async result => {
-      this.lge.FLIPperBNBUnit.next(result);
+  async getLPTperBNBUnit(): Promise<any> {
+    return await this.grapesContract.methods.LPTperBNBUnit().call().then(async result => {
+      this.lge.LPTperBNBUnit.next(result);
     });
   }
   async getLGEEnd(): Promise<any> {
-    return await this.auraContract.methods.LGECompleted_Timestamp().call().then(async result => {
+    return await this.grapesContract.methods.LGECompleted_Timestamp().call().then(async result => {
       this.lge.ended.next(result);
     });
   }
   async getLGEStart(): Promise<any> {
-    return await this.auraContract.methods.contractStart_Timestamp().call().then(async result => {
+    return await this.grapesContract.methods.contractStart_Timestamp().call().then(async result => {
       this.lge.started.next(result);
     });
   }
   async getLGECalculatedEnd(): Promise<any> {
-    return await this.auraContract.methods.contractStart_Timestamp().call().then(async result => {
-      this.auraContract.methods.contributionPhase().call().then(async resultZ => {
+    return await this.grapesContract.methods.contractStart_Timestamp().call().then(async result => {
+      this.grapesContract.methods.contributionPhase().call().then(async resultZ => {
         this.lge.calculatedEnd.next(Number(result) + Number(resultZ));
       });
     });
   }
   async getLGEDuration(): Promise<any> {
-    return await this.auraContract.methods.contributionPhase().call().then(async result => {
+    return await this.grapesContract.methods.contributionPhase().call().then(async result => {
       this.lge.duration.next(result);
     });
   }
   async getIndividualCap(): Promise<any> {
-    return await this.auraContract.methods.individualCap().call().then(async result => {
+    return await this.grapesContract.methods.individualCap().call().then(async result => {
       this.lge.individualCap.next(result);
     });
   }
   async getInitialSupply(): Promise<any> {
-    return await this.auraContract.methods.initialSupply().call().then(async result => {
+    return await this.grapesContract.methods.initialSupply().call().then(async result => {
       this.lge.initialSupply.next(result);
     });
   }
-  async getTotalFLIPMinted(): Promise<any> {
-    return await this.auraContract.methods.totalFLIPTokensMinted().call().then(async result => {
-      this.lge.totalFLIPMinted.next(result);
+  async getTotalLPTMinted(): Promise<any> {
+    return await this.grapesContract.methods.totalLPTTokensMinted().call().then(async result => {
+      this.lge.totalLPTMinted.next(result);
     });
   }
   async getTotalBNBContributed(): Promise<any> {
-    return await this.auraContract.methods.totalBNBContributed().call().then(async result => {
+    return await this.grapesContract.methods.totalBNBContributed().call().then(async result => {
       this.lge.totalBNBContributed.next(result);
     });
   }
 
   async createLiquidity(): Promise<any> {
     this.lge.createLiquidityButton.next(1);
-    return await this.auraContract.methods.POOL_CreateLiquidity(
+    return await this.grapesContract.methods.POOL_CreateLiquidity(
     ).send({ from: this.user.address.getValue() })
       .on('transactionHash', (transactionHash) => {
       })
@@ -779,7 +778,7 @@ export class Web3Service {
 
   async claimLGE(): Promise<any> {
     this.lge.claimButton.next(1);
-    return await this.auraContract.methods.USER_ClaimWrappedLiquidity(
+    return await this.grapesContract.methods.USER_ClaimWrappedLiquidity(
     ).send({ from: this.user.address.getValue() })
       .on('transactionHash', (transactionHash) => {
       })
@@ -814,12 +813,12 @@ export class Web3Service {
 
   async depositLGE(amount: number, tos: boolean): Promise<any> {
     this.lge.depositButton.next(1);
-    return await this.auraContract.methods.USER_PledgeLiquidity(
+    return await this.grapesContract.methods.USER_PledgeLiquidity(
       tos
     ).send({
       from: this.user.address.getValue(),
-      to: this.auraContract,
-      value: BigInt(Math.floor(amount * 1e18))
+      to: this.grapesContract,
+      value: Math.floor(amount * 1e18)
     })
       .on('transactionHash', (transactionHash) => {
       })
@@ -854,8 +853,8 @@ export class Web3Service {
   }
 
   async setContracts(): Promise<any> {
-    return await this.setAuraContract().then(async setAuraResult => {
-      await this.setVaultContract().then(async setVaultResult => {
+    return await this.setGrapesContract().then(async setGrapesResult => {
+      await this.setCellarContract().then(async setCellarResult => {
         await this.getPoolLength().then(async getPoolLengthResult => {
           await this.getAllPoolInfo().then(async getAllPoolInfoResult => {
             await this.setPoolTokenContracts().then(async setPoolTokenContractsResult => {
@@ -883,10 +882,9 @@ export class Web3Service {
   }
 
   async setPoolTokenContracts(): Promise<any> {
-    this.poolInfo.length = this.vault.length.getValue();
+    this.poolInfo.length = this.cellar.length.getValue();
     for (let index = 0; index < this.poolInfo.length; index++) {
       this.poolInfo[index] = {
-        name: 'WBNB-AURA', // MAKE IT GET FROM token.name()
         token: {
           name: new BehaviorSubject(''),
           address: new BehaviorSubject(''),
@@ -904,7 +902,7 @@ export class Web3Service {
         withdrawButton: new BehaviorSubject(0),
         tokenApproval: new BehaviorSubject(0),
         tokenRewards: new BehaviorSubject(0),
-        pendingAura: new BehaviorSubject(0),
+        pendingGrapes: new BehaviorSubject(0),
         userPoolInfo: new BehaviorSubject({
           amount: 0,
           rewardPaid: 0
@@ -913,9 +911,9 @@ export class Web3Service {
           poolName: '',
           stakedToken: '',
           allocPoint: 0,
-          accAURAPerShare: 0,
+          accGRAPESPerShare: 0,
           VIPpool: false,
-          withdrawable: false
+          partialWithdraw: false
         }),
         pairInfo: {
           pairAddress: new BehaviorSubject(''),
@@ -928,7 +926,7 @@ export class Web3Service {
   }
 
   async setContract(poolId: number): Promise<any> {
-    if (this.poolInfo[poolId].poolInfo.getValue().stakedToken === this.auraContractAddress) {
+    if (this.poolInfo[poolId].poolInfo.getValue().stakedToken === this.grapesContractAddress) {
       this.token.poolId.next(poolId);
     }
     if (this.poolInfo[poolId].poolInfo.getValue().stakedToken === this.liquidityToken.wLPAddress.getValue()) {
@@ -938,7 +936,7 @@ export class Web3Service {
       this.liquidityToken.lpPoolId.next(poolId);
     }
     await this.poolInfo[poolId].token.address.next(this.poolInfo[poolId].poolInfo.getValue().stakedToken);
-    return this.poolInfo[poolId].token.contract = await new this.web3.eth.Contract(auraAbi, this.poolInfo[poolId].poolInfo.getValue().stakedToken);
+    return this.poolInfo[poolId].token.contract = await new this.web3.eth.Contract(grapesAbi, this.poolInfo[poolId].poolInfo.getValue().stakedToken);
   }
 
   async getLPContracts(): Promise<any> {
@@ -956,8 +954,8 @@ export class Web3Service {
     return await this.setExchangeFactoryContract();
   }
 
-  async setAuraContract(): Promise<any> {
-    return this.auraContract = await new this.web3.eth.Contract(auraAbi, this.auraContractAddress);
+  async setGrapesContract(): Promise<any> {
+    return this.grapesContract = await new this.web3.eth.Contract(grapesAbi, this.grapesContractAddress);
   }
   async setStableCoinContract(): Promise<any> {
     return this.stableCoinContract = await new this.web3.eth.Contract(stableCoinAbi, this.stableCoinContractAddress);
@@ -969,28 +967,28 @@ export class Web3Service {
     return this.exchangeFactoryContract = await new this.web3.eth.Contract(exchangeAbi, this.exchangeFactoryContractAddress);
   }
 
-  async setVaultContract(): Promise<any> {
-    return this.auraVaultContract = await new this.web3.eth.Contract(auraVaultAbi, this.auraVaultContractAddress);
+  async setCellarContract(): Promise<any> {
+    return this.grapesCellarContract = await new this.web3.eth.Contract(grapesCellarAbi, this.grapesCellarContractAddress);
   }
 
   async getLPContract(): Promise<any> {
-    return await this.auraContract.methods.viewFLIP().call().then(result => {
+    return await this.grapesContract.methods.viewLPT().call().then(result => {
       this.liquidityToken.lpAddress.next(result);
     });
   }
 
   async setLPContract(): Promise<any> {
-    return this.liquidityToken.lpContract = await new this.web3.eth.Contract(auraLPAbi, this.liquidityToken.lpAddress.getValue());
+    return this.liquidityToken.lpContract = await new this.web3.eth.Contract(grapesLPAbi, this.liquidityToken.lpAddress.getValue());
   }
 
   async getWLPContract(): Promise<any> {
-    return await this.auraContract.methods.wFLIP().call().then(result => {
+    return await this.grapesContract.methods.viewWrappedLPT().call().then(result => {
       this.liquidityToken.wLPAddress.next(result);
     });
   }
 
   async setWLPContract(): Promise<any> {
-    return this.liquidityToken.wLPContract = await new this.web3.eth.Contract(auraWLPAbi, this.liquidityToken.wLPAddress.getValue());
+    return this.liquidityToken.wLPContract = await new this.web3.eth.Contract(grapesWLPAbi, this.liquidityToken.wLPAddress.getValue());
   }
 
   // ================== //
@@ -1002,9 +1000,9 @@ export class Web3Service {
       });
   }
 
-  async getUserAuraBalance(): Promise<any> {
-      return await this.auraContract.methods.balanceOf(this.user.address.getValue()).call().then(async result => {
-        this.user.auraBalance.next(result);
+  async getUserGrapesBalance(): Promise<any> {
+      return await this.grapesContract.methods.balanceOf(this.user.address.getValue()).call().then(async result => {
+        this.user.grapesBalance.next(result);
       });
   }
 
@@ -1021,37 +1019,37 @@ export class Web3Service {
     this.getTokenSellFee();
   }
   async getTokenName(): Promise<any> {
-    return await this.auraContract.methods.name().call().then(async result => {
+    return await this.grapesContract.methods.name().call().then(async result => {
       this.token.name.next(result);
     });
   }
   async getTokenSymbol(): Promise<any> {
-    return await this.auraContract.methods.symbol().call().then(async result => {
+    return await this.grapesContract.methods.symbol().call().then(async result => {
       this.token.symbol.next(result);
     });
   }
   async getTokenDecimals(): Promise<any> {
-    return await this.auraContract.methods.decimals().call().then(async result => {
+    return await this.grapesContract.methods.decimals().call().then(async result => {
       this.token.decimals.next(result);
     });
   }
   async getTokenTotalSupply(): Promise<any> {
-    return await this.auraContract.methods.totalSupply().call().then(async result => {
+    return await this.grapesContract.methods.totalSupply().call().then(async result => {
       this.token.totalSupply.next(result);
     });
   }
   async getTokenBuyFee(): Promise<any> {
-    return await this.auraContract.methods.buyFee().call().then(async result => {
+    return await this.grapesContract.methods.buyFee().call().then(async result => {
       this.token.buyFee.next(result);
     });
   }
   async getTokenSellFee(): Promise<any> {
-    return await this.auraContract.methods.sellFee().call().then(async result => {
+    return await this.grapesContract.methods.sellFee().call().then(async result => {
       this.token.sellFee.next(result);
     });
   }
   async getTokenCirculatingSupply(): Promise<any> {
-    return await this.token.circulatingSupply.next((this.token.totalSupply.getValue() - this.apyCalculator.networkCurrency.pairBalanceAura.getValue()) - this.poolInfo[this.token.poolId.getValue()].poolTokenBalance.getValue());
+    return await this.token.circulatingSupply.next((this.token.totalSupply.getValue() - this.apyCalculator.networkCurrency.pairBalanceGrapes.getValue()) - this.poolInfo[this.token.poolId.getValue()].poolTokenBalance.getValue());
   }
 
   // ================== //
@@ -1231,7 +1229,7 @@ export class Web3Service {
     this.wrapper.wrapButton.next(1);
     if (BigInt(this.wrapper.wrapAllowance.getValue()) < 1) {
       return await this.approveWrapperWrap().then(async result => {
-        await this.liquidityToken.wLPContract.methods.wrapFLIP(
+        await this.liquidityToken.wLPContract.methods.wrapLPT(
           BigInt(Math.floor(amount * 1e18))
         ).send({
           from: this.user.address.getValue(),
@@ -1264,7 +1262,7 @@ export class Web3Service {
           });
       });
     } else {
-    return await this.liquidityToken.wLPContract.methods.wrapFLIP(
+    return await this.liquidityToken.wLPContract.methods.wrapLPT(
       BigInt(Math.floor(amount * 1e18))
     ).send({
       from: this.user.address.getValue(),
@@ -1306,7 +1304,7 @@ export class Web3Service {
     this.wrapper.unwrapButton.next(1);
     if (BigInt(this.wrapper.unwrapAllowance.getValue()) < 1) {
       return await this.approveWrapperUnwrap().then(async result => {
-        await this.liquidityToken.wLPContract.methods.unWrapFLIP(
+        await this.liquidityToken.wLPContract.methods.unWrapLPT(
           BigInt(Math.floor(amount * 1e18))
         ).send({
           from: this.user.address.getValue(),
@@ -1343,7 +1341,7 @@ export class Web3Service {
           });
       });
     } else {
-    return await this.liquidityToken.wLPContract.methods.unWrapFLIP(
+    return await this.liquidityToken.wLPContract.methods.unWrapLPT(
       BigInt(Math.floor(amount * 1e18))
     ).send({
       from: this.user.address.getValue(),

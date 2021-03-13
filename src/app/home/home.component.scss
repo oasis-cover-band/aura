@@ -5,11 +5,12 @@
     justify-content: space-around;
     align-content: center;
     grid-template-columns: 200px 1fr;
-    @media (max-width:500px) {
+    @media (max-width:800px) {
         
     grid-template-rows: max-content max-content;
     grid-template-columns: 1fr;
     justify-items:start;
+    }
     app-logo {
         justify-self:center;
         min-width:200px;
@@ -24,7 +25,6 @@
                 height:200px;
             }
         }
-    }
     }
     div.wrapper {
         align-self:center;
