@@ -1,4 +1,7 @@
 <section class="wrapper naked">
+    <app-dashboard-chart id="chart" *ngIf="(exchange.dayData | async) !== 0" [data]="(exchange.dayData | async)">
+
+    </app-dashboard-chart>
     <section class="wrapper-inner naked" id="volume">
         <h5 id="stat-line-00-header" class="header">Volume</h5>
         <div class="big-container" id="stat-line-00">

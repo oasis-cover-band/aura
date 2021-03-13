@@ -47,7 +47,7 @@ export class Web3Service {
   // EXTERNAL
   // // EXCHANGE VARIABLES
   exchange = {
-    dayData: new BehaviorSubject({}),
+    dayData: new BehaviorSubject(0),
     price: new BehaviorSubject(0),
     priceUSD: new BehaviorSubject(0),
     volume:  new BehaviorSubject(0),
@@ -597,7 +597,6 @@ export class Web3Service {
 
   async getCumulativeRewardsSinceStart(): Promise<any> {
     return await this.grapesCellarContract.methods.cumulativeRewardsSinceStart().call().then(result => {
-      console.dir(result);
       this.cellar.cumulativeRewardsSinceStart.next(result);
     });
   }

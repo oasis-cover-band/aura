@@ -1,0 +1,22 @@
+@import '../../theme.scss';
+:host {
+    border-radius:8px;
+    max-width:100%;
+    display:grid;
+    background:$black;
+    grid-template-areas:
+    '. . .'
+    '. chart .'
+    '. . .';
+    grid-template-columns: 10px 1fr 10px;
+    grid-template-rows: 10px 1fr 10px;
+    div {
+        grid-area:chart;
+        max-width:100%;
+    }
+    ::ng-deep {
+        .highcharts-background {
+            background:red;
+        }
+    }
+}

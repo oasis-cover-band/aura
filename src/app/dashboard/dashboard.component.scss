@@ -19,13 +19,17 @@
         display:grid;
         grid-template-areas:
         '. . .'
+        '. chart .'
         '. volume .'
         '. rewards .'
         '. tokenomics .'
         '. empty .'
         '. . .';
         grid-template-columns: 20px 1fr 20px;
-        grid-template-rows: 10px max-content max-content max-content 300px 10px;
+        grid-template-rows: 10px max-content max-content max-content max-content 300px 10px;
+        app-dashboard-chart {
+            grid-area:chart;
+        }
         #tokenomics {
             grid-area:tokenomics;
         }

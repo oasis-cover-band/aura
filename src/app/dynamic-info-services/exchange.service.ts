@@ -45,8 +45,6 @@ export class ExchangeService {
         `,
       })
       .valueChanges.subscribe((result: any) => {
-        // console.dir(result);
-        console.dir(result.data.token);
         if (result.data.pair !== null) {
           this.web3.exchange.dayData.next(result.data.token.tokenDayData);
           this.web3.exchange.volume.next(Number(result.data.token.pairBase[0].volumeToken0));

@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit {
   priceInNetworkCurrency = this.web3.apyCalculator.grapes.priceInNetworkCurrency;
   constructor(
     private web3: Web3Service,
-    private projectService: ProjectService
+    private projectService: ProjectService,
   ) { }
 
   ngOnInit(): void {
