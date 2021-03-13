@@ -1,6 +1,6 @@
 <section class="wrapper">
     <span class="large-header" id="name">
-        <h3>{{(token.name | async)}} LGE</h3>
+        <h3>{{project.name}} LGE</h3>
     </span>
     <span class="large-header" id="price">
         <label class="value" *ngIf="(data.LPTperBNBUnit | async) > 0 && (data.LPTperBNBUnit | async) as LPTperBNBUnit;">{{LPTperBNBUnit / 1e18 | number}} {{project.lpTokenName}} per 1 {{project.networkCurrency}}</label>

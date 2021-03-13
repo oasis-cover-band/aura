@@ -7,10 +7,10 @@ import { Injectable } from '@angular/core';
 export class ProjectService {
   project = {
     contracts: {
-      tokenAddress: '0x25A99d1e1A08c9211e9B1Add162aA529d92e0C93',
-      cellarAddress: '0x0C87adc5490103c27Be85Ab090dabeC86919aEf8',
+      tokenAddress: '0x75f0A4Ffc05B0363aA0133027E369b34574b6061',
+      cellarAddress: '0x2bb73652Ce5986B2DdaA4a0574f894E5482910ab',
       stableCoinAddress: '0xA6e59Dc48E2799912e4e5CCdb6e6918Bf0F6e4f7',
-      wrappedNetworkCurrencyAddress: '0xA6e59Dc48E2799912e4e5CCdb6e6918Bf0F6e4f7',
+      wrappedNetworkCurrencyAddress: '0xA6e59Dc48E2799912e4e5CCdb6e6918Bf0F6e4f7', // WBNB
       exchangeFactoryAddress: '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f', // ETH MAINNET
       exchangeRouterAddress: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D', // ETH MAINNET
     },
@@ -29,8 +29,8 @@ export class ProjectService {
     // blockExplorerAddress: 'https://bscscan.com', // BSC MAINNET
     exchangeAddress: 'https://exchange.pancakeswap.finance/', // BSC MAINNET + BSC TESTNET
     socials: {
-      telegram: 'https://t.me/auraprotocol',
-      medium: 'https://auraprotocol.medium.com',
+      telegram: 'https://t.me/vineyardBSC',
+      medium: 'https://vineyardBSC.medium.com',
       github: 'https://t.me/auragroup',
     }
   };

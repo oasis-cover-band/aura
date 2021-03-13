@@ -4,6 +4,7 @@ import { Web3Service } from 'src/app/dynamic-info-services/web3.service';
 import { ProjectService } from 'src/app/static-info-services/project.service';
 import { Router } from '@angular/router';
 import { inOutAnimations } from 'src/app/animations';
+import { NotificationsService } from 'src/app/dynamic-info-services/notifications.service';
 
 @Component({
   selector: 'app-farm',
@@ -30,7 +31,8 @@ export class FarmComponent implements OnInit {
   constructor(
     private web3: Web3Service,
     private projectService: ProjectService,
-    private router: Router
+    private router: Router,
+    private notificationsService: NotificationsService
   ) { }
 
   ngOnInit(): void {
@@ -43,6 +45,16 @@ export class FarmComponent implements OnInit {
   deposit(): void {
     const value = Number(Number(this.inputEle.nativeElement.value).toFixed(5));
     if (value === 0) {
+      this.web3.poolInfo[this.pid].depositButton.next(3);
+      this.notificationsService.notify({
+        title: 'Deposit Error',
+        icon: 'alarm',
+        text: 'There was an error depositing your tokens to the pool named ' + this.data.poolInfo.getValue().poolName + '.',
+        date: new Date()
+      });
+      setTimeout(() => {
+        this.web3.poolInfo[this.pid].depositButton.next(0);
+      }, 2500);
       return;
     }
     this.web3.deposit(this.pid, value);
@@ -51,6 +63,16 @@ export class FarmComponent implements OnInit {
   withdraw(): void {
     const value = Number(Number(this.inputEle.nativeElement.value).toFixed(5));
     if (value === 0) {
+      this.web3.poolInfo[this.pid].withdrawButton.next(3);
+      this.notificationsService.notify({
+        title: 'Withdraw Error',
+        icon: 'alarm',
+        text: 'There was an error withdrawing your tokens from the pool named ' + this.data.poolInfo.getValue().poolName + '.',
+        date: new Date()
+      });
+      setTimeout(() => {
+        this.web3.poolInfo[this.pid].withdrawButton.next(0);
+      }, 2500);
       return;
     }
     this.web3.withdraw(this.pid, value);

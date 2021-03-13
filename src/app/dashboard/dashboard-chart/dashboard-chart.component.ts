@@ -46,7 +46,8 @@ chart = undefined;
           style: {
             color: '#fefefe'
           }
-        }
+        },
+        type: 'logarithmic'
       },
       legend: {
         itemStyle: {
@@ -61,31 +62,36 @@ chart = undefined;
           name: 'Daily Volume (' + this.projectService.project.networkCurrency + ')',
           data: [Number(this.data[6].dailyVolumeETH), Number(this.data[5].dailyVolumeETH), Number(this.data[4].dailyVolumeETH),
           Number(this.data[3].dailyVolumeETH), Number(this.data[2].dailyVolumeETH), Number(this.data[1].dailyVolumeETH), Number(this.data[0].dailyVolumeETH)],
-          type: 'column'
+          type: 'column',
+          color: '#72B7D6'
         },
         {
           name: 'Daily Volume (USD)',
           data: [Number(this.data[6].dailyVolumeUSD), Number(this.data[5].dailyVolumeUSD), Number(this.data[4].dailyVolumeUSD),
           Number(this.data[3].dailyVolumeUSD), Number(this.data[2].dailyVolumeUSD), Number(this.data[1].dailyVolumeUSD), Number(this.data[0].dailyVolumeUSD)],
-          type: 'column'
+          type: 'column',
+          color: '#3cbb3c'
         },
         {
           name: 'Daily Volume (' + this.projectService.project.tokenName + ')',
           data: [Number(this.data[6].dailyVolumeToken), Number(this.data[5].dailyVolumeToken), Number(this.data[4].dailyVolumeToken),
           Number(this.data[3].dailyVolumeToken), Number(this.data[2].dailyVolumeToken), Number(this.data[1].dailyVolumeToken), Number(this.data[0].dailyVolumeToken)],
-          type: 'column'
+          type: 'column',
+          color: '#5c2a92ff'
         },
         {
           name: this.projectService.project.tokenName + ' Price (USD)',
           data: [Number(this.data[6].priceUSD), Number(this.data[5].priceUSD), Number(this.data[4].priceUSD),
           Number(this.data[3].priceUSD), Number(this.data[2].priceUSD), Number(this.data[1].priceUSD), Number(this.data[0].priceUSD)],
-          type: 'column'
+          type: 'spline',
+          color: '#278027'
         },
         {
           name: this.projectService.project.tokenName + ' Liquidity (USD)',
           data: [Number(this.data[6].totalLiquidityUSD), Number(this.data[5].totalLiquidityUSD), Number(this.data[4].totalLiquidityUSD),
           Number(this.data[3].totalLiquidityUSD), Number(this.data[2].totalLiquidityUSD), Number(this.data[1].totalLiquidityUSD), Number(this.data[0].totalLiquidityUSD)],
-          type: 'column'
+          type: 'line',
+          color: '#52fc52'
         },
       ]
     });
