@@ -13,18 +13,6 @@
     }
     app-logo {
         justify-self:center;
-        min-width:200px;
-        min-height:200px;
-        ::ng-deep {
-            img {
-                min-width:200px;
-                min-height:200px;
-                max-width:200px;
-                max-height:200px;
-                width:200px;
-                height:200px;
-            }
-        }
     }
     div.wrapper {
         align-self:center;
@@ -44,5 +32,6 @@
     }
     h5 {
         font-size:1rem;
+        font-weight:100;
     }
 }

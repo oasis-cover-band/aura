@@ -17,6 +17,9 @@ export class ProjectService {
     name: 'Vineyard',
     tokenName: '🍇',
     lpTokenName: '🍷',
+    tokenFullName: 'GRAPES',
+    lpTokenFullName: 'WINE',
+    exchangeLPTokenName: 'CAKE',
     vaultName: 'Cellar',
     networkCurrency: 'BNB',
     networkName: 'Binance Smart Chain',
@@ -42,6 +45,25 @@ export class ProjectService {
     date: new Date()
   },
   {
+  title: `What are ` + this.project.tokenFullName + `?`,
+  icon: 'accessibility',
+  text: `` + this.project.tokenName + ` is a deflationary protocol token that serves as a reward for farmers and stakers using the inflationless ` + this.project.tokenName + ` ` + this.project.vaultName +
+  `.`,
+  date: new Date()
+},
+{
+title: `What is ` + this.project.lpTokenFullName + `?`,
+icon: 'accessibility',
+text: `` + this.project.lpTokenName + ` is a wrapping token that contains a 1:1 ratio of ` + this.project.exchangeLPTokenName +
+` LP tokens.
+
+  ` + this.project.lpTokenName + ` has an unwrapping timer, meaning once it has been wrapped, it can't be unwrapped for a specific amount of time.
+
+  There is a fee for unwrapping your ` + this.project.lpTokenName + `. This fee is offset if you plan on farming for some time, due to ` + this.project.lpTokenName + ` pools providing higher yields than ` + this.project.exchangeLPTokenName +
+` LP token pools.`,
+date: new Date()
+},
+  {
   title: `How does ` + this.project.name + ` make everyone money?`,
   icon: 'monetization_on',
   text: `` + this.project.name + ` provides token holders with an inflationless method of earning rewards for placing their tokens in the ` + this.project.tokenName + ` ` + this.project.vaultName +  `.
@@ -54,17 +76,17 @@ export class ProjectService {
   {
   title: `What is a price floor? How does it work?`,
   icon: 'layers',
-  text: `We are introducing the concept of unwrapping wrapped ` + this.project.tokenName + `-W` + this.project.networkCurrency + ` ` + this.project.lpTokenName + ` liquidity tokens.
+  text: `We are introducing the concept of unwrapping wrapped ` + this.project.tokenName + `-W` + this.project.networkCurrency + ` ` + this.project.exchangeLPTokenName + ` LP (` + this.project.lpTokenName + `)
 
   A fee is taken from the tokens being unwrapped, this fee is permanently locked, creating an ever increasing price floor.
 
-  This fee that gets permanently locked, resulting in a price floor, increases the price of ` + this.project.tokenName + ` consistently over time.`,
+  This fee that gets permanently locked, resulting in a price floor, increases the value of ` + this.project.tokenName + ` consistently over time.`,
   date: new Date()
   },
   {
   title: `What is farming? How does it work?`,
   icon: 'agriculture',
-  text: `For example: ` + this.project.tokenName + ` holders, or ` + this.project.tokenName + `-W` + this.project.networkCurrency + ` ` + this.project.lpTokenName + ` liquidity providers may provide their tokens to the ` + this.project.tokenName + ` ` + this.project.vaultName +  `, in a process known as "farming", or "staking".
+  text: `For example: ` + this.project.tokenName + ` holders, ` + this.project.tokenName + `-W` + this.project.networkCurrency + ` ` + this.project.exchangeLPTokenName + ` liquidity providers, or ` + this.project.lpTokenName + ` holders may provide their tokens to the ` + this.project.tokenName + ` ` + this.project.vaultName +  `, in a process known as "farming", or "staking".
 
   These "farmers" and "stakers" are then rewarded for locking up their tokens. Their tokens are not permanently locked. They earn rewards for every second their tokens are placed in the ` + this.project.tokenName + ` ` + this.project.vaultName +  `.
 
@@ -98,7 +120,7 @@ title: `Who is behind ` + this.project.name + `?`,
 icon: 'adb',
 text: `We are a team of successful mobile developers, web developers, software engineers, traders and mathematicians who have been in the cryptocurrency space since 2015. We are forming a brand around ` + this.project.name + `, with plans to continue developing fairly launched, safe and profitable projects to contribute to ` + this.project.name + `.
 
-The majority of our team wishes to remain anonymous due to not owning their Intellectual Property Rights. This means that their respective companies would own any code they are to write.`,
+  The majority of our team wishes to remain anonymous due to not owning their Intellectual Property Rights. This means that their respective companies would own any code they are to write.`,
 date: new Date()
 },
 {
@@ -106,7 +128,7 @@ title: `What is next for the ` + this.project.name + ` team?`,
 icon: 'sports_kabaddi',
 text: `Our primary focus is and will always be ` + this.project.name + `. We will be developing fairly launched projects to contribute to ` + this.project.name + `'s volume and to expand on it's use cases.
 
-Holders and farmers of ` + this.project.tokenName + ` will be able to participate in any launch before everyone else, in addition to benefitting the most from the platform.`,
+  Holders and farmers of ` + this.project.tokenName + ` will be able to participate in any launch before everyone else, in addition to benefitting the most from the platform.`,
 date: new Date()
 }
 ];

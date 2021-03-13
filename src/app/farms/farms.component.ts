@@ -14,7 +14,7 @@ import { inOutAnimations } from '../animations';
 export class FarmsComponent implements OnInit {
 
   farms = this.web3.poolInfo;
-  vault = this.web3.cellar;
+  cellar = this.web3.cellar;
   project = this.projectService.project;
   allPools = true;
   masterPools = false;
@@ -22,7 +22,7 @@ export class FarmsComponent implements OnInit {
   vipPools = false;
   firstVipPool = new BehaviorSubject(0);
   firstSlice = new BehaviorSubject(0);
-  lastSlice = new BehaviorSubject(this.farms.length);
+  lastSlice = new BehaviorSubject(this.cellar.length.getValue());
   constructor(
     private web3: Web3Service,
     private projectService: ProjectService
@@ -65,7 +65,7 @@ export class FarmsComponent implements OnInit {
 
   setToAll(): void {
     this.firstSlice.next(0);
-    this.lastSlice.next(this.farms.length);
+    this.lastSlice.next(this.cellar.length.getValue());
   }
 
   setToMaster(): void {
@@ -80,7 +80,7 @@ export class FarmsComponent implements OnInit {
 
   setToVip(): void {
     this.firstSlice.next(this.firstVipPool.getValue());
-    this.lastSlice.next(this.farms.length);
+    this.lastSlice.next(this.cellar.length.getValue());
   }
 
   searchForFirstVipPool(): void {

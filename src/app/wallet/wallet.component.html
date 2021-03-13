@@ -25,7 +25,7 @@
             </span>
         </div>
     </section>
-    <section class="balance" id="bnb" *ngIf="showingPoolTokensStyle && (user.bnbBalance | async) as bnbBalance;else greyed" [@inOutAnimations]>
+    <section class="balance" id="bnb" *ngIf="(user.address | async) !== '' && showingPoolTokensStyle && (user.bnbBalance | async) as bnbBalance;else greyed" [@inOutAnimations]>
         <div id="address">
             <span>
                 {{project.networkCurrency}}
@@ -38,21 +38,23 @@
         </div>
     </section>
     <!-- <section class="balance pool-balance" *ngFor="let poolItem of poolInfo | slice: 3;">-->
-    <section class="balance pool-balance" *ngFor="let poolItem of poolInfo;">
-        <div id="address" *ngIf="(poolItem.token.symbol | async) as tokenSymbol;else greyeda">
-            <span>
-                {{tokenSymbol | slice:0:4}}
-            </span>
-        </div>
-        <div id="balance" *ngIf="(poolItem.userBalance | async) as userBalance;else greyedn">
-            <span>
-                <!-- {{(poolItem.token.name | async)}} -->
-                {{((userBalance / 1e18) | number:'1.2-2')}}
-            </span>
-        </div>
-        <ng-template class="greyed-bar balance" #greyeda><div class="greyed-bar balance" id="address" [@inOutAnimations]></div></ng-template>
-        <ng-template class="greyed-bar balance" #greyedn><div class="greyed-bar balance" id="balance" [@inOutAnimations]></div></ng-template>
-    </section>
+    <ng-container  *ngFor="let poolItem of poolInfo;">
+        <section class="balance pool-balance" *ngIf="(user.address | async) !== ''">
+            <div id="address" *ngIf="(poolItem.token.symbol | async) as tokenSymbol;else greyeda">
+                <span>
+                    {{tokenSymbol | slice:0:4}}
+                </span>
+            </div>
+            <div id="balance" *ngIf="(poolItem.userBalance | async) as userBalance;else greyedn">
+                <span>
+                    <!-- {{(poolItem.token.name | async)}} -->
+                    {{((userBalance / 1e18) | number:'1.2-2')}}
+                </span>
+            </div>
+            <ng-template class="greyed-bar balance" #greyeda><div class="greyed-bar balance" id="address" [@inOutAnimations]></div></ng-template>
+            <ng-template class="greyed-bar balance" #greyedn><div class="greyed-bar balance" id="balance" [@inOutAnimations]></div></ng-template>
+        </section>
+    </ng-container>
     <section class="balance pool-balance-switch" (click)="showPoolTokens()" *ngIf="(user.address | async) && !showingPoolTokensStyle" [@inOutAnimations]>
         <div id="address">
             <span class="shiny">

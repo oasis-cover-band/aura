@@ -2,21 +2,21 @@
     <div class="medium-container split small" id="misc-0">
         <span class="medium-header small">
             <label class="title">Rewards Since Start:</label>
-            <label class="value">{{((vault.cumulativeRewardsSinceStart | async) + (vault.rewardsInThisEpoch | async)) /1e18 | number}} {{project.tokenName}}</label>
+            <label class="value">{{((cellar.cumulativeRewardsSinceStart | async) + (cellar.rewardsInThisEpoch | async)) /1e18 | number}} {{project.tokenName}}</label>
         </span>
         <span class="medium-header small">
             <label class="title"># of Pools:</label>
-            <label class="value">{{(vault.length | async) | number}}</label>
+            <label class="value">{{(cellar.length | async) | number}}</label>
         </span>
     </div>
     <div class="medium-container split small" id="misc-1">
         <span class="medium-header small">
             <label class="title">Rewards This Epoch:</label>
-            <label class="value">{{(vault.rewardsInThisEpoch | async) /1e18 | number}} {{project.tokenName}}</label>
+            <label class="value">{{(cellar.rewardsInThisEpoch | async) /1e18 | number}} {{project.tokenName}}</label>
         </span>
         <span class="medium-header small">
             <label class="title">Average Fees Per Block This Epoch:</label>
-            <label class="value">{{(vault.averageFeesPerBlockEpoch | async) / 1e18 | number}}  {{project.tokenName}}</label>
+            <label class="value">{{(cellar.averageFeesPerBlockEpoch | async) / 1e18 | number}}  {{project.tokenName}}</label>
         </span>
     </div>
 </section>

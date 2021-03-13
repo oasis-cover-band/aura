@@ -42,11 +42,11 @@
     <div class="small-container" id="misc" *ngIf="showingMore" [@inOutAnimations]>
         <span class="small-header value" *ngIf="(data.userBalance | async) as userBalance;else greyed">
             <label class="title">Balance</label>
-            <label class="value small"><b>{{userBalance / 1e18 | number}}</b> <small>{{(data.token.symbol | async)}}</small></label>
+            <label class="value small"><b>{{userBalance / 1e18 | number}}</b> <small>{{(data.token.symbol | async | slice:0:4)}}</small></label>
         </span>
         <span class="small-header value" *ngIf="(data.userPoolInfo | async) as userPoolInfo;else greyed">
             <label class="title">Deposits</label>
-            <label class="value small"><b>{{userPoolInfo.amount / 1e18 | number}}</b> <small>{{(data.token.symbol | async)}}</small></label>
+            <label class="value small"><b>{{userPoolInfo.amount / 1e18 | number}}</b> <small>{{(data.token.symbol | async | slice:0:4)}}</small></label>
         </span>
         <span class="small-header value" *ngIf="(data.pendingGrapes | async) as pendingGrapes;else greyed">
             <label class="title">Rewards</label>

@@ -189,6 +189,7 @@ export class Web3Service {
     private notificationsService: NotificationsService,
     private projectService: ProjectService
   ) {
+    this.connectWallet();
   }
 
   async getInfo(): Promise<any> {
