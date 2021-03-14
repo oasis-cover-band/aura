@@ -62,6 +62,7 @@ export class Web3Service {
     bnbBalance: new BehaviorSubject(0),
     lpBalance: new BehaviorSubject(0),
     wLPBalance: new BehaviorSubject(0),
+    chainId: new BehaviorSubject(0),
   };
   // TOKEN VARIABLES
   token = {
@@ -192,24 +193,38 @@ export class Web3Service {
     this.connectWallet();
   }
 
-  async getInfo(): Promise<any> {
-    if (this.user.address.getValue() === '') {
-      return;
-    }
-    this.getTokenInfo();
-    this.getUserInfo();
-    this.getLGEInfo();
-    this.getWrapperApprovals();
-    await this.getLPTokensInfo();
-    // await this.getPrices();
-    await this.getAllPoolInfo().then(afterGetAllPoolInfo => {
-      this.poolInfo.forEach(async (element, index) => {
-        await this.setContract(index).then(async afterSetting => {
-          await this.getPoolTokenContractInfo(index);
-        });
-      });
+  async getChainId(): Promise<any> {
+    this.web3.eth.getChainId().then(result => {
+      this.user.chainId.next(result);
     });
   }
+
+  async getInfo(): Promise<any> {
+    if (this.user.address.getValue() === '') {
+      this.logout();
+      return;
+    }
+    this.getChainId();
+    this.getTokenInfo();
+    this.getUserInfo();
+    if (this.liquidityToken.wLPAddress.getValue() !== '0x0000000000000000000000000000000000000000') { // IF LGE HAS STARTED
+      await this.getLGEInfo();
+      await this.getWrapperApprovals();
+      await this.getLPTokensInfo();
+      if (this.lge.LPTperBNBUnit.getValue() !== 0 && this.lge.LPTperBNBUnit.getValue() !== '0') { // IF LGE HAS FINISHED
+        console.dir(this.lge.LPTperBNBUnit.getValue());
+        await this.getPrices();
+      }
+      await this.getAllPoolInfo().then(afterGetAllPoolInfo => {
+        this.poolInfo.forEach(async (element, index) => {
+          await this.setContract(index).then(async afterSetting => {
+            await this.getPoolTokenContractInfo(index);
+          });
+        });
+      });
+    }
+  }
+  
 
   async getPrices(): Promise<any> {
     return await this.getGrapesNetworkCurrencyPairAddress().then(async afterGrapesNetworkCurrencyPairAddress => {
@@ -303,6 +318,7 @@ export class Web3Service {
     if (!this.web3.givenProvider && !this.web3.currentProvider) {
       this.web3 = new Web3(this.projectService.project.rpcNetwork);
     }
+    this.getChainId();
     await this.setContracts();
   }
 

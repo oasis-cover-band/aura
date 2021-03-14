@@ -25,6 +25,7 @@ export class SaleComponent implements OnInit {
   now = this.nowService.now;
   current = new Date().getTime();
   project = this.projectService.project;
+  wLPAddress = this.web3.liquidityToken.wLPAddress;
   constructor(
     private web3: Web3Service,
     private projectService: ProjectService,

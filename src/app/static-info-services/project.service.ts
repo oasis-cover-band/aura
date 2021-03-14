@@ -7,12 +7,14 @@ import { Injectable } from '@angular/core';
 export class ProjectService {
   project = {
     contracts: {
-      tokenAddress: '0x75f0A4Ffc05B0363aA0133027E369b34574b6061',
-      cellarAddress: '0x2bb73652Ce5986B2DdaA4a0574f894E5482910ab',
+      tokenAddress: '0x25A99d1e1A08c9211e9B1Add162aA529d92e0C93',
+      cellarAddress: '0x0C87adc5490103c27Be85Ab090dabeC86919aEf8',
       stableCoinAddress: '0xA6e59Dc48E2799912e4e5CCdb6e6918Bf0F6e4f7',
-      wrappedNetworkCurrencyAddress: '0xA6e59Dc48E2799912e4e5CCdb6e6918Bf0F6e4f7', // WBNB
-      exchangeFactoryAddress: '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f', // ETH MAINNET
-      exchangeRouterAddress: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D', // ETH MAINNET
+      wrappedNetworkCurrencyAddress: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', // WBNB
+      exchangeFactoryAddress: '0xBCfCcbde45cE874adCB698cC183deBcF17952812', // BSC MAINNET
+      // exchangeFactoryAddress: '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f', // ETH MAINNET
+      exchangeRouterAddress: '0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F', // BSC MAINNET
+      // exchangeRouterAddress: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D', // ETH MAINNET
     },
     name: 'Vineyard',
     tokenName: '🍇',
@@ -22,8 +24,11 @@ export class ProjectService {
     exchangeLPTokenName: 'CAKE',
     vaultName: 'Cellar',
     networkCurrency: 'BNB',
+    // chainId: 97, // BSC TESTNET
+    chainId: 56, // BSC MAINNET
     networkName: 'Binance Smart Chain',
-    rpcNetwork: 'https://data-seed-prebsc-2-s3.binance.org:8545/', // BSC TESTNET
+    rpcNetwork: 'https://bsc-dataseed1.defibit.io/', // BSC MAINNET
+    // rpcNetwork: 'https://data-seed-prebsc-2-s3.binance.org:8545/', // BSC TESTNET
     blockExplorer: 'BscScan',
     blockExplorerAddress: 'https://testnet.bscscan.com', // BSC TESTNET
     // blockExplorerAddress: 'https://bscscan.com', // BSC MAINNET

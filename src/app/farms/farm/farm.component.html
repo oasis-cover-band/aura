@@ -1,9 +1,8 @@
-<section class="wrapper" *ngIf="data" [ngClass]="{'super-apy': (data.poolInfo | async).allocPoint > 10000}">
+<section class="wrapper" *ngIf="data" [ngClass]="{'super-apy': (data.poolInfo | async).allocPoint > 10000, 'vip-pool': (data.poolInfo | async).VIPpool === true}">
     <div class="medium-container inverse naked" id="name">
         <span class="large-header" *ngIf="(data.poolInfo | async) as poolInfo;else greyed">
-            <!-- <h3 *ngIf="poolInfo.poolName.length <= 15">{{poolInfo.poolName}}</h3>
-            <h3 *ngIf="poolInfo.poolName.length > 15 && poolInfo.poolName.length <= 25" class="small">{{poolInfo.poolName}}</h3> -->
-            <h3 *ngIf="poolInfo.poolName.length <= 25" class="small">{{poolInfo.poolName}}</h3>
+            <h3 *ngIf="poolInfo.poolName.length <= 15">{{poolInfo.poolName}}</h3>
+            <h3 *ngIf="poolInfo.poolName.length > 15 && poolInfo.poolName.length <= 25" class="small">{{poolInfo.poolName}}</h3>
             <h3 *ngIf="poolInfo.poolName.length > 25" class="extra-small">{{poolInfo.poolName}}</h3>
         </span>
         <span class="small-container" *ngIf="(data.token.address | async) as tokenAddress;else greyed">
@@ -39,7 +38,7 @@
         </span>
         <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
     </div>
-    <div class="small-container" id="misc" *ngIf="showingMore" [@inOutAnimations]>
+    <div class="small-container" id="misc" [@inOutAnimations]>
         <span class="small-header value" *ngIf="(data.userBalance | async) as userBalance;else greyed">
             <label class="title">Balance</label>
             <label class="value small"><b>{{userBalance / 1e18 | number}}</b> <small>{{(data.token.symbol | async | slice:0:4)}}</small></label>

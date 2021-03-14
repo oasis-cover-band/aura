@@ -1,4 +1,4 @@
-<section class="wrapper">
+<section class="wrapper" *ngIf="(liquidityToken.wLPAddress | async) !== '0x0000000000000000000000000000000000000000'">
     <div class="wrapping-item" id="wbnb">
         <div (click)="bringWrap()" class="medium-container up-under naked" id="wrap" [ngClass]="{'selected': mode.wBNB.wrap === true}">
             <span class="medium-header"
@@ -61,4 +61,12 @@
     
     </div>
     <div class="empty"></div>
+</section>
+
+<section class="wrapper empty" *ngIf="(liquidityToken.wLPAddress | async) === '0x0000000000000000000000000000000000000000'">
+        <!-- STARTS GREATER THAN A DAY -->
+        <p>
+            LGE announcement coming soon.
+            <br><br>
+        </p>
 </section>

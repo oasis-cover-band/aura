@@ -96,5 +96,13 @@
                 }
             }
         }
+        &.empty {
+            grid-template-areas: 'ps';
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr;
+            p {
+                grid-area:ps;
+            }
+        }
     }
 }

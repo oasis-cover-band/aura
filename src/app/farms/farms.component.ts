@@ -74,11 +74,13 @@ export class FarmsComponent implements OnInit {
   }
 
   setToNetwork(): void {
+    this.searchForFirstVipPool();
     this.firstSlice.next(3); // ALWAYS 3 MASTER POOLS, TOKEN, TOKEN-NETWORK_CURRENCY LQIUIDITY, AND WRAPPED TOKEN-NETWORK_CURRENCY LQIUIDITY
     this.lastSlice.next(this.firstVipPool.getValue());
   }
 
   setToVip(): void {
+    this.searchForFirstVipPool();
     this.firstSlice.next(this.firstVipPool.getValue());
     this.lastSlice.next(this.cellar.length.getValue());
   }

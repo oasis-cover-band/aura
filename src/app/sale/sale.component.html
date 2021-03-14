@@ -1,4 +1,4 @@
-<section class="wrapper">
+<section class="wrapper" *ngIf="(wLPAddress | async) !== '0x0000000000000000000000000000000000000000'">
     <span class="large-header" id="name">
         <h3>{{project.name}} LGE</h3>
     </span>
@@ -47,12 +47,12 @@
         </span>
         <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
     </div>
-    <span class="input" id="input" *ngIf="(data.LPTperBNBUnit | async) < 1">
+    <span class="input" id="input" *ngIf="(data.LPTperBNBUnit | async) < 1 && (wLPAddress | async) !== '0x0000000000000000000000000000000000000000' && (((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 > 0">
         <input [placeholder]="inputPlaceholder" #inputEle/>
     </span>
     <span class="large-header" id="buttons" *ngIf="(data.user.contribution | async) as contribution;else greyedButtons" [@inOutAnimations]>
         <span class="button" id="deposit"
-        *ngIf="(((data.started | async) * 1000) - (now | async)) < 0 && (data.LPTperBNBUnit | async) < 1">
+        *ngIf="(((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 > 0 && (((data.started | async) * 1000) - (now | async)) < 0 && (data.LPTperBNBUnit | async) < 1 && (wLPAddress | async) !== '0x0000000000000000000000000000000000000000'">
             <button [ngClass]="{
                 'working' : (data.depositButton | async) === 1 || (data.depositButton | async) === 4,
                 'failed' : (data.depositButton | async) === 3,
@@ -97,7 +97,7 @@
     <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
     <ng-template class="greyed-bar" #greyedButtons><div class="greyed-bar grey-button" [@inOutAnimations]></div></ng-template>
 </section>
-<section class="misc">
+<section class="misc" *ngIf="(wLPAddress | async) !== '0x0000000000000000000000000000000000000000'">
     <i class="material-icons">alarm</i>
     <!-- STARTS GREATER THAN A DAY -->
     <p *ngIf="(((data.started | async) * 1000) - (now | async)) / 1000 > 86400">
@@ -190,5 +190,11 @@
             <label class="value">{{((data.calculatedEnd | async) * 1000) - (now | async)}}</label>
         </span>
     </div> -->
+</section>
+<section class="misc empty" *ngIf="(wLPAddress | async) === '0x0000000000000000000000000000000000000000'">
+    <!-- STARTS GREATER THAN A DAY -->
+        <br><br>
+        LGE announcement coming soon.
+        <br><br>
 </section>
 <div class="empty"></div>
