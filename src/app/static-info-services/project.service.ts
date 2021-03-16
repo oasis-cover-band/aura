@@ -8,7 +8,7 @@ export class ProjectService {
   project = {
     contracts: {
       tokenAddress: '0x145eAC3576739a034dfae34656155d7C96Cac6B4',
-      cellarAddress: '0xF01E07Bb026dbe34e2fb86C954Bf8F7A8Aca0Ce4',
+      cellarAddress: '0x4Ea9990A3D8E5288D8A1360F1718964140737F60',
       stableCoinAddress: '0xe9e7cea3dedca5984780bafc599bd69add087d56', // BSC (BUSD) MAINNET
       wrappedNetworkCurrencyAddress: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', // BSC (WBNB) MAINNET
       exchangeFactoryAddress: '0xBCfCcbde45cE874adCB698cC183deBcF17952812', // BSC (PANCAKESWAP) MAINNET

@@ -42,6 +42,7 @@
                 <label *ngIf="(wrapButton | async) === 3">Failed</label>
                 <label *ngIf="(wrapButton | async) === 4">Approving</label>
                 <label *ngIf="(wrapButton | async) === 5">Approved</label>
+                <label *ngIf="(wrapButton | async) === 10">Confirm/Reject</label>
             </button>
             <button [ngClass]="{
                 'working' : (unwrapButton | async) === 1 || (unwrapButton | async) === 4,
@@ -56,6 +57,7 @@
                 <label *ngIf="(unwrapButton | async) === 3">Failed</label>
                 <label *ngIf="(unwrapButton | async) === 4">Approving</label>
                 <label *ngIf="(unwrapButton | async) === 5">Approved</label>
+                <label *ngIf="(unwrapButton | async) === 10">Confirm/Reject</label>
             </button>
         </span>
     

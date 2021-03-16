@@ -62,6 +62,8 @@
                 <label *ngIf="(data.depositButton | async) === 3">Failed</label>
                 <label *ngIf="(data.depositButton | async) === 4">Approving</label>
                 <label *ngIf="(data.depositButton | async) === 5">Approved</label>
+                <label *ngIf="(data.depositButton | async) === 10">Confirm/Reject</label>
+                
             </button>
         </span>
         <span class="button" id="claim"
@@ -76,6 +78,7 @@
                 <label *ngIf="(data.claimButton | async) === 1">Claiming</label>
                 <label *ngIf="(data.claimButton | async) === 2">Claimed</label>
                 <label *ngIf="(data.claimButton | async) === 3">Failed</label>
+                <label *ngIf="(data.claimButton | async) === 10">Confirm/Reject</label>
             </button>
         </span>
     </span>
@@ -126,6 +129,7 @@
         <label *ngIf="(data.createLiquidityButton | async) === 1">Ending</label>
         <label *ngIf="(data.createLiquidityButton | async) === 2">Ended</label>
         <label *ngIf="(data.createLiquidityButton | async) === 3">Failed</label>
+        <label *ngIf="(data.createLiquidityButton | async) === 10">Confirm/Reject</label>
         </button>
         <br><br>
         The LGE has raised {{((data.totalBNBContributed | async) / 1e18) | number:'1.2-2'}} {{project.networkCurrency}}.

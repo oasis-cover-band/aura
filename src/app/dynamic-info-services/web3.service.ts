@@ -224,7 +224,7 @@ export class Web3Service {
       });
     }
   }
-  
+
 
   async getPrices(): Promise<any> {
     return await this.getGrapesNetworkCurrencyPairAddress().then(async afterGrapesNetworkCurrencyPairAddress => {
@@ -453,9 +453,10 @@ export class Web3Service {
   }
 
   async approve(poolId: number): Promise<any> {
-    this.poolInfo[poolId].depositButton.next(4);
+    this.poolInfo[poolId].depositButton.next(10);
     return await this.poolInfo[poolId].token.contract.methods.approve(this.grapesCellarContractAddress, BigInt(999999999999999999999999)).send({ from: this.user.address.getValue() })
       .on('transactionHash', (transactionHash) => {
+        this.poolInfo[poolId].depositButton.next(4);
       })
       .on('confirmation', (confirmation) => {
         if (confirmation) {
@@ -463,9 +464,9 @@ export class Web3Service {
       }).on('receipt', (receipt) => {
         this.poolInfo[poolId].depositButton.next(5);
         this.notificationsService.notify({
-          title: 'Approve Successful',
+          title: '' + this.poolInfo[poolId].token.symbol.getValue() + ' Approved',
           icon: 'alarm',
-          text: 'You have successfully approved your tokens to the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
+          text: 'You have successfully approved your ' + this.poolInfo[poolId].token.symbol.getValue() + ' tokens to the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
           date: new Date()
         });
         setTimeout(() => {
@@ -475,9 +476,9 @@ export class Web3Service {
       .on('error', (error) => {
         this.poolInfo[poolId].depositButton.next(3);
         this.notificationsService.notify({
-          title: 'Approve Error',
+          title: 'Approval Error',
           icon: 'alarm',
-          text: 'There was an error approving your tokens to the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
+          text: 'There was an error approving your ' + this.poolInfo[poolId].token.symbol.getValue() + ' tokens to the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
           date: new Date()
         });
         setTimeout(() => {
@@ -495,21 +496,34 @@ export class Web3Service {
         )
           .send({ from: this.user.address.getValue() })
           .on('transactionHash', (transactionHash) => {
+            this.poolInfo[poolId].depositButton.next(1);
           })
           .on('confirmation', (confirmation) => {
             if (confirmation) {
-              this.poolInfo[poolId].depositButton.next(2);
-              setTimeout(() => {
-                this.poolInfo[poolId].depositButton.next(0);
-              }, 2500);
             }
           }).on('receipt', (receipt) => {
-          })
-          .on('error', (error) => {
-            this.poolInfo[poolId].depositButton.next(3);
+            this.poolInfo[poolId].depositButton.next(2);
+            this.notificationsService.notify({
+              title: 'Deposited to ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '',
+              icon: 'alarm',
+              text: 'You have successfully deposited your ' + this.poolInfo[poolId].token.symbol.getValue() + ' tokens to the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
+              date: new Date()
+            });
             setTimeout(() => {
               this.poolInfo[poolId].depositButton.next(0);
             }, 2500);
+          })
+          .on('error', (error) => {
+          this.poolInfo[poolId].depositButton.next(3);
+          this.notificationsService.notify({
+            title: '' + this.poolInfo[poolId].poolInfo.getValue().poolName + ' Deposit Error',
+            icon: 'alarm',
+            text: 'There was an error depositing your ' + this.poolInfo[poolId].token.symbol.getValue() + ' tokens to the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
+            date: new Date()
+          });
+          setTimeout(() => {
+            this.poolInfo[poolId].depositButton.next(0);
+          }, 2500);
           });
       });
     } else {
@@ -527,9 +541,9 @@ export class Web3Service {
         }).on('receipt', (receipt) => {
           this.poolInfo[poolId].depositButton.next(2);
           this.notificationsService.notify({
-            title: 'Pool Deposit',
+            title: 'Deposited to ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '',
             icon: 'alarm',
-            text: 'You have successfully deposited to the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
+            text: 'You have successfully deposited your ' + this.poolInfo[poolId].token.symbol.getValue() + ' tokens to the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
             date: new Date()
           });
           setTimeout(() => {
@@ -539,9 +553,9 @@ export class Web3Service {
         .on('error', (error) => {
           this.poolInfo[poolId].depositButton.next(3);
           this.notificationsService.notify({
-            title: 'Deposit Error',
+            title: '' + this.poolInfo[poolId].poolInfo.getValue().poolName + ' Deposit Error',
             icon: 'alarm',
-            text: 'There was an error depositing to the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
+            text: 'There was an error depositing your ' + this.poolInfo[poolId].token.symbol.getValue() + ' tokens to the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
             date: new Date()
           });
           setTimeout(() => {
@@ -552,12 +566,13 @@ export class Web3Service {
   }
 
   async withdraw(poolId: number, amount: number): Promise<any> {
-    this.poolInfo[poolId].withdrawButton.next(1);
+    this.poolInfo[poolId].withdrawButton.next(10);
     return await this.grapesCellarContract.methods.withdraw(
       poolId,
       BigInt(Math.floor(amount * 1e18))
     ).send({ from: this.user.address.getValue() })
       .on('transactionHash', (transactionHash) => {
+        this.poolInfo[poolId].withdrawButton.next(1);
       })
       .on('confirmation', (confirmation) => {
         if (confirmation) {
@@ -565,9 +580,9 @@ export class Web3Service {
       }).on('receipt', (receipt) => {
         this.poolInfo[poolId].withdrawButton.next(2);
         this.notificationsService.notify({
-          title: 'Pool Withdraw',
+          title: '' + this.poolInfo[poolId].poolInfo.getValue().poolName + ' Withdrawl',
           icon: 'alarm',
-          text: 'You have successfully withdrawn from the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
+          text: 'You have successfully withdrawn your ' + this.poolInfo[poolId].token.symbol.getValue() + ' tokens from the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
           date: new Date()
         });
         setTimeout(() => {
@@ -577,9 +592,9 @@ export class Web3Service {
       .on('error', (error) => {
         this.poolInfo[poolId].withdrawButton.next(3);
         this.notificationsService.notify({
-          title: 'Withdraw Error',
+          title: '' + this.poolInfo[poolId].poolInfo.getValue().poolName + ' Withdrawl Error',
           icon: 'alarm',
-          text: 'There was an error withdrawing from the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
+          text: 'There was an error withdrawing your ' + this.poolInfo[poolId].token.symbol.getValue() + ' tokens from the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
           date: new Date()
         });
         setTimeout(() => {
@@ -589,12 +604,13 @@ export class Web3Service {
   }
 
   async withdrawAll(poolId: number, amount: number): Promise<any> {
-    this.poolInfo[poolId].withdrawButton.next(1);
+    this.poolInfo[poolId].withdrawButton.next(10);
     return await this.grapesCellarContract.methods.withdraw(
       poolId,
       BigInt(amount)
     ).send({ from: this.user.address.getValue() })
       .on('transactionHash', (transactionHash) => {
+        this.poolInfo[poolId].withdrawButton.next(1);
       })
       .on('confirmation', (confirmation) => {
         if (confirmation) {
@@ -602,9 +618,9 @@ export class Web3Service {
       }).on('receipt', (receipt) => {
         this.poolInfo[poolId].withdrawButton.next(2);
         this.notificationsService.notify({
-          title: 'Pool Withdraw',
+          title: '' + this.poolInfo[poolId].poolInfo.getValue().poolName + ' Withdrawl',
           icon: 'alarm',
-          text: 'You have successfully withdrawn from the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
+          text: 'You have successfully withdrawn your ' + this.poolInfo[poolId].token.symbol.getValue() + ' tokens from the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
           date: new Date()
         });
         setTimeout(() => {
@@ -614,9 +630,9 @@ export class Web3Service {
       .on('error', (error) => {
         this.poolInfo[poolId].withdrawButton.next(3);
         this.notificationsService.notify({
-          title: 'Withdraw Error',
+          title: '' + this.poolInfo[poolId].poolInfo.getValue().poolName + ' Withdrawl Error',
           icon: 'alarm',
-          text: 'There was an error withdrawing from the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
+          text: 'There was an error withdrawing your ' + this.poolInfo[poolId].token.symbol.getValue() + ' tokens from the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
           date: new Date()
         });
         setTimeout(() => {
@@ -626,13 +642,14 @@ export class Web3Service {
   }
 
   async claim(poolId: number): Promise<any> {
-    this.poolInfo[poolId].claimButton.next(1);
+    this.poolInfo[poolId].claimButton.next(10);
     return await this.grapesCellarContract.methods.withdraw(
       poolId,
       0
     )
       .send({ from: this.user.address.getValue() })
       .on('transactionHash', (transactionHash) => {
+        this.poolInfo[poolId].claimButton.next(1);
       })
       .on('confirmation', (confirmation) => {
         if (confirmation) {
@@ -640,9 +657,9 @@ export class Web3Service {
       }).on('receipt', (receipt) => {
         this.poolInfo[poolId].claimButton.next(2);
         this.notificationsService.notify({
-          title: 'Pool Deposit',
+          title: '' + this.poolInfo[poolId].poolInfo.getValue().poolName + ' Rewards Claimed',
           icon: 'alarm',
-          text: 'You have successfully claimed from the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
+          text: 'You have successfully claimed your ' + this.projectService.project.tokenName + ' rewards from the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
           date: new Date()
         });
         setTimeout(() => {
@@ -652,9 +669,46 @@ export class Web3Service {
       .on('error', (error) => {
         this.poolInfo[poolId].claimButton.next(3);
         this.notificationsService.notify({
-          title: 'Claim Error',
+          title: '' + this.poolInfo[poolId].poolInfo.getValue().poolName + ' Claim Error',
           icon: 'alarm',
-          text: 'There was an error claiming from the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
+          text: 'There was an error claiming your ' + this.projectService.project.tokenName + ' rewards from the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
+          date: new Date()
+        });
+        setTimeout(() => {
+          this.poolInfo[poolId].claimButton.next(0);
+        }, 2500);
+      });
+  }
+  async claimAll(poolId: number, amount: number): Promise<any> {
+    this.poolInfo[poolId].claimButton.next(10);
+    return await this.grapesCellarContract.methods.withdraw(
+      poolId,
+      BigInt(amount)
+    ).send({ from: this.user.address.getValue() })
+      .on('transactionHash', (transactionHash) => {
+        this.poolInfo[poolId].claimButton.next(1);
+      })
+      .on('confirmation', (confirmation) => {
+        if (confirmation) {
+        }
+      }).on('receipt', (receipt) => {
+        this.poolInfo[poolId].claimButton.next(2);
+        this.notificationsService.notify({
+          title: '' + this.poolInfo[poolId].poolInfo.getValue().poolName + ' Rewards Claimed',
+          icon: 'alarm',
+          text: 'You have successfully claimed your ' + this.projectService.project.tokenName + ' rewards from the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
+          date: new Date()
+        });
+        setTimeout(() => {
+          this.poolInfo[poolId].claimButton.next(0);
+        }, 2500);
+      })
+      .on('error', (error) => {
+        this.poolInfo[poolId].claimButton.next(3);
+        this.notificationsService.notify({
+          title: '' + this.poolInfo[poolId].poolInfo.getValue().poolName + ' Claim Error',
+          icon: 'alarm',
+          text: 'There was an error claiming your ' + this.projectService.project.tokenName + ' rewards from the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
           date: new Date()
         });
         setTimeout(() => {
@@ -819,10 +873,11 @@ export class Web3Service {
   }
 
   async createLiquidity(): Promise<any> {
-    this.lge.createLiquidityButton.next(1);
+    this.lge.createLiquidityButton.next(10);
     return await this.grapesContract.methods.POOL_CreateLiquidity(
     ).send({ from: this.user.address.getValue() })
       .on('transactionHash', (transactionHash) => {
+        this.lge.createLiquidityButton.next(1);
       })
       .on('confirmation', (confirmation) => {
         if (confirmation) {
@@ -832,7 +887,7 @@ export class Web3Service {
         this.notificationsService.notify({
           title: 'LGE Liquidity Created',
           icon: 'alarm',
-          text: 'Congratulations! You have successfully launched the project.',
+          text: 'Congratulations! You have successfully launched ' + this.projectService.project.name + '.',
           date: new Date()
         });
         setTimeout(() => {
@@ -854,10 +909,11 @@ export class Web3Service {
   }
 
   async claimLGE(): Promise<any> {
-    this.lge.claimButton.next(1);
+    this.lge.claimButton.next(10);
     return await this.grapesContract.methods.USER_ClaimWrappedLiquidity(
     ).send({ from: this.user.address.getValue() })
       .on('transactionHash', (transactionHash) => {
+        this.lge.claimButton.next(1);
       })
       .on('confirmation', (confirmation) => {
         if (confirmation) {
@@ -865,9 +921,9 @@ export class Web3Service {
       }).on('receipt', (receipt) => {
         this.lge.claimButton.next(2);
         this.notificationsService.notify({
-          title: 'LGE Claim',
+          title: 'Tokens Received from LGE',
           icon: 'alarm',
-          text: 'Your LGE claim has been proccessed successfully.',
+          text: 'You have received your LGE ' + this.liquidityToken.wLPSymbol.getValue() + ' tokens. Check your balance.',
           date: new Date()
         });
         setTimeout(() => {
@@ -879,7 +935,7 @@ export class Web3Service {
         this.notificationsService.notify({
           title: 'LGE Error',
           icon: 'alarm',
-          text: 'There was an error claiming your LGE contribution.',
+          text: 'There was an error claiming your LGE ' + this.liquidityToken.wLPSymbol.getValue() + ' tokens.',
           date: new Date()
         });
         setTimeout(() => {
@@ -889,7 +945,7 @@ export class Web3Service {
   }
 
   async depositLGE(amount: number, tos: boolean): Promise<any> {
-    this.lge.depositButton.next(1);
+    this.lge.depositButton.next(10);
     return await this.grapesContract.methods.USER_PledgeLiquidity(
       tos
     ).send({
@@ -898,6 +954,7 @@ export class Web3Service {
       value: Math.floor(amount * 1e18)
     })
       .on('transactionHash', (transactionHash) => {
+        this.lge.depositButton.next(1);
       })
       .on('confirmation', (confirmation) => {
         if (confirmation) {
@@ -905,9 +962,9 @@ export class Web3Service {
       }).on('receipt', (receipt) => {
         this.lge.depositButton.next(2);
         this.notificationsService.notify({
-          title: 'LGE Deposit',
+          title: '' + this.projectService.project.networkCurrency + ' Deposited to LGE',
           icon: 'alarm',
-          text: 'Your LGE deposit has been received successfully.',
+          text: 'Your ' + this.projectService.project.networkCurrency + ' LGE contribution has been received successfully.',
           date: new Date()
         });
         setTimeout(() => {
@@ -919,7 +976,7 @@ export class Web3Service {
         this.notificationsService.notify({
           title: 'LGE Error',
           icon: 'alarm',
-          text: 'There was an error receiving your LGE deposit.',
+          text: 'There was an error receiving your ' + this.projectService.project.networkCurrency + ' LGE deposit.',
           date: new Date()
         });
         this.lge.depositButton.next(3);
@@ -956,136 +1013,6 @@ export class Web3Service {
   stopGatheringInfo(): void {
     clearInterval(this.exitInterval);
     this.exitInterval = undefined;
-  }
-
-  async setPoolTokenContracts(): Promise<any> {
-    this.poolInfo.length = this.cellar.length.getValue();
-    for (let index = 0; index < this.poolInfo.length; index++) {
-      this.poolInfo[index] = {
-        token: {
-          name: new BehaviorSubject(''),
-          address: new BehaviorSubject(''),
-          contract: undefined,
-          decimals: new BehaviorSubject(0),
-          symbol: new BehaviorSubject(''),
-        },
-        ape: new BehaviorSubject(30),
-        tvl: new BehaviorSubject(4200000),
-        poolTokenBalance: new BehaviorSubject(0),
-        priceInUSD: new BehaviorSubject(0),
-        priceInNetworkCurrency: new BehaviorSubject(0),
-        claimButton: new BehaviorSubject(0),
-        depositButton: new BehaviorSubject(0),
-        withdrawButton: new BehaviorSubject(0),
-        tokenApproval: new BehaviorSubject(0),
-        tokenRewards: new BehaviorSubject(0),
-        pendingGrapes: new BehaviorSubject(0),
-        userPoolInfo: new BehaviorSubject({
-          amount: 0,
-          rewardPaid: 0
-        }),
-        poolInfo: new BehaviorSubject({
-          poolName: '',
-          stakedToken: '',
-          allocPoint: 0,
-          accGRAPESPerShare: 0,
-          VIPpool: false,
-          partialWithdraw: false
-        }),
-        pairInfo: {
-          pairAddress: new BehaviorSubject(''),
-          networkCurrencyPairBalance: new BehaviorSubject(0),
-          tokenPairBalance: new BehaviorSubject(0)
-        },
-        userBalance: new BehaviorSubject(0)
-      };
-    }
-  }
-
-  async setContract(poolId: number): Promise<any> {
-    if (this.poolInfo[poolId].poolInfo.getValue().stakedToken === this.grapesContractAddress) {
-      this.token.poolId.next(poolId);
-    }
-    if (this.poolInfo[poolId].poolInfo.getValue().stakedToken === this.liquidityToken.wLPAddress.getValue()) {
-      this.liquidityToken.wLPPoolId.next(poolId);
-    }
-    if (this.poolInfo[poolId].poolInfo.getValue().stakedToken === this.liquidityToken.lpAddress.getValue()) {
-      this.liquidityToken.lpPoolId.next(poolId);
-    }
-    await this.poolInfo[poolId].token.address.next(this.poolInfo[poolId].poolInfo.getValue().stakedToken);
-    return this.poolInfo[poolId].token.contract = await new this.web3.eth.Contract(grapesAbi, this.poolInfo[poolId].poolInfo.getValue().stakedToken);
-  }
-
-  async getLPContracts(): Promise<any> {
-    await this.getLPContract();
-    return await this.getWLPContract();
-  }
-
-  async setLPContracts(): Promise<any> {
-    await this.setLPContract();
-    return await this.setWLPContract();
-  }
-  async setSecondaryContracts(): Promise<any> {
-    await this.setStableCoinContract();
-    await this.setWrappedNetworkCurrencyContract();
-    return await this.setExchangeFactoryContract();
-  }
-
-  async setGrapesContract(): Promise<any> {
-    return this.grapesContract = await new this.web3.eth.Contract(grapesAbi, this.grapesContractAddress);
-  }
-  async setStableCoinContract(): Promise<any> {
-    return this.stableCoinContract = await new this.web3.eth.Contract(stableCoinAbi, this.stableCoinContractAddress);
-  }
-  async setWrappedNetworkCurrencyContract(): Promise<any> {
-    return this.wrappedNetworkCurrencyContract = await new this.web3.eth.Contract(wrappedNetworkCurrencyAbi, this.wrappedNetworkCurrencyContractAddress);
-  }
-  async setExchangeFactoryContract(): Promise<any> {
-    return this.exchangeFactoryContract = await new this.web3.eth.Contract(exchangeAbi, this.exchangeFactoryContractAddress);
-  }
-
-  async setCellarContract(): Promise<any> {
-    return this.grapesCellarContract = await new this.web3.eth.Contract(grapesCellarAbi, this.grapesCellarContractAddress);
-  }
-
-  async getLPContract(): Promise<any> {
-    return await this.grapesContract.methods.viewLPT().call().then(result => {
-      this.liquidityToken.lpAddress.next(result);
-    });
-  }
-
-  async setLPContract(): Promise<any> {
-    if (this.liquidityToken.lpAddress.getValue() !== '0x0000000000000000000000000000000000000000') { // IF LGE HAS STARTED
-    return this.liquidityToken.lpContract = await new this.web3.eth.Contract(grapesLPAbi, this.liquidityToken.lpAddress.getValue());
-    } else {
-          const clearedInterval = setInterval(async () => {
-            this.getLPContract();
-            if (this.liquidityToken.lpAddress.getValue() !== '0x0000000000000000000000000000000000000000') { // IF LGE HAS STARTED
-            this.liquidityToken.lpContract = await new this.web3.eth.Contract(grapesLPAbi, this.liquidityToken.lpAddress.getValue());
-            return clearInterval(clearedInterval);
-            }
-          }, 5000);
-    }
-  }
-
-  async getWLPContract(): Promise<any> {
-    return await this.grapesContract.methods.viewWrappedLPT().call().then(result => {
-      this.liquidityToken.wLPAddress.next(result);
-    });
-  }
-
-  async setWLPContract(): Promise<any> {
-    if (this.liquidityToken.wLPAddress.getValue() !== '0x0000000000000000000000000000000000000000') { // IF LGE HAS STARTED
-    return this.liquidityToken.wLPContract = await new this.web3.eth.Contract(grapesWLPAbi, this.liquidityToken.wLPAddress.getValue());
-    } else {
-          const clearedInterval = setInterval(async () => {
-            this.getWLPContract();
-            if (this.liquidityToken.wLPAddress.getValue() !== '0x0000000000000000000000000000000000000000') { // IF LGE HAS STARTED
-            this.liquidityToken.wLPContract = await new this.web3.eth.Contract(grapesWLPAbi, this.liquidityToken.wLPAddress.getValue());
-            return clearInterval(clearedInterval);
-            }
-          }, 5000);
-    }
   }
 
   // ================== //
@@ -1256,9 +1183,10 @@ export class Web3Service {
   }
 
   async approveWrapperWrap(): Promise<any> {
-    this.wrapper.wrapButton.next(4);
+    this.wrapper.wrapButton.next(10);
     return await this.liquidityToken.lpContract.methods.approve(this.liquidityToken.wLPAddress.getValue(), BigInt(999999999999999999999999)).send({ from: this.user.address.getValue() })
       .on('transactionHash', (transactionHash) => {
+        this.wrapper.wrapButton.next(4);
       })
       .on('confirmation', (confirmation) => {
         if (confirmation) {
@@ -1266,9 +1194,9 @@ export class Web3Service {
       }).on('receipt', (receipt) => {
         this.wrapper.wrapButton.next(5);
         this.notificationsService.notify({
-          title: 'Approve Successful',
+          title: '' + this.liquidityToken.lpSymbol.getValue() + ' Approved to Wrapper',
           icon: 'alarm',
-          text: 'You have successfully approved your LP okens to the wrapper.',
+          text: 'You have successfully approved your ' + this.liquidityToken.lpSymbol.getValue() + ' LP tokens to the wrapper.',
           date: new Date()
         });
         setTimeout(() => {
@@ -1278,9 +1206,9 @@ export class Web3Service {
       .on('error', (error) => {
         this.wrapper.wrapButton.next(3);
         this.notificationsService.notify({
-          title: 'Approve Error',
+          title: '' + this.liquidityToken.lpSymbol.getValue() + ' Wrapper Approval Error',
           icon: 'alarm',
-          text: 'There was an error approving your LP tokens to the wrapper.',
+          text: 'There was an error approving your ' + this.liquidityToken.lpSymbol.getValue() + ' LP tokens to the wrapper.',
           date: new Date()
         });
         setTimeout(() => {
@@ -1289,9 +1217,10 @@ export class Web3Service {
       });
   }
   async approveWrapperUnwrap(): Promise<any> {
-    this.wrapper.unwrapButton.next(4);
+    this.wrapper.unwrapButton.next(10);
     return await this.liquidityToken.wLPContract.methods.approve(this.liquidityToken.wLPAddress.getValue(), BigInt(999999999999999999999999)).send({ from: this.user.address.getValue() })
       .on('transactionHash', (transactionHash) => {
+        this.wrapper.unwrapButton.next(4);
       })
       .on('confirmation', (confirmation) => {
         if (confirmation) {
@@ -1299,9 +1228,9 @@ export class Web3Service {
       }).on('receipt', (receipt) => {
         this.wrapper.unwrapButton.next(5);
         this.notificationsService.notify({
-          title: 'Approve Successful',
+          title: '' + this.liquidityToken.wLPSymbol.getValue() + ' Approved to Unwrapper',
           icon: 'alarm',
-          text: 'You have successfully approved your wrapped LP tokens to the wrapper.',
+          text: 'You have successfully approved your wrapped ' + this.liquidityToken.wLPSymbol.getValue() + ' LP tokens to the wrapper.',
           date: new Date()
         });
         setTimeout(() => {
@@ -1311,9 +1240,9 @@ export class Web3Service {
       .on('error', (error) => {
         this.wrapper.unwrapButton.next(3);
         this.notificationsService.notify({
-          title: 'Approve Error',
+          title: '' + this.liquidityToken.wLPSymbol.getValue() + ' Unwrapper Approval Error',
           icon: 'alarm',
-          text: 'There was an error approving your wrapped LP tokens to the wrapper.',
+          text: 'There was an error approving your wrapped ' + this.liquidityToken.wLPSymbol.getValue() + ' LP tokens to the wrapper.',
           date: new Date()
         });
         setTimeout(() => {
@@ -1323,7 +1252,7 @@ export class Web3Service {
   }
 
   async wrapFlip(amount: number): Promise<any> {
-    this.wrapper.wrapButton.next(1);
+    this.wrapper.wrapButton.next(10);
     if (BigInt(this.wrapper.wrapAllowance.getValue()) < 1) {
       return await this.approveWrapperWrap().then(async result => {
         await this.liquidityToken.wLPContract.methods.wrapLPT(
@@ -1332,6 +1261,7 @@ export class Web3Service {
           from: this.user.address.getValue(),
         })
           .on('transactionHash', (transactionHash) => {
+            this.wrapper.wrapButton.next(1);
           })
           .on('confirmation', (confirmation) => {
             if (confirmation) {
@@ -1339,9 +1269,9 @@ export class Web3Service {
           }).on('receipt', (receipt) => {
             this.wrapper.wrapButton.next(2);
             this.notificationsService.notify({
-              title: 'Wrap Successful',
+              title: '' + this.liquidityToken.lpSymbol.getValue() + 'Wrap Successful',
               icon: 'alarm',
-              text: 'Your LP tokens have been wrapped successfully.',
+              text: 'Your ' + this.liquidityToken.lpSymbol.getValue() + ' LP tokens have been wrapped successfully.',
               date: new Date()
             });
             setTimeout(() => {
@@ -1351,9 +1281,9 @@ export class Web3Service {
           .on('error', (error) => {
             this.wrapper.wrapButton.next(2);
             this.notificationsService.notify({
-              title: 'Wrap Error',
+              title: '' + this.liquidityToken.lpSymbol.getValue() + 'Wrap Error',
               icon: 'alarm',
-              text: 'There was an error wrapping your LP tokens.',
+              text: 'There was an error wrapping your ' + this.liquidityToken.lpSymbol.getValue() + ' LP tokens.',
               date: new Date()
             });
           });
@@ -1365,6 +1295,7 @@ export class Web3Service {
       from: this.user.address.getValue(),
     })
       .on('transactionHash', (transactionHash) => {
+        this.wrapper.wrapButton.next(1);
       })
       .on('confirmation', (confirmation) => {
         if (confirmation) {
@@ -1372,9 +1303,9 @@ export class Web3Service {
       }).on('receipt', (receipt) => {
         this.wrapper.wrapButton.next(2);
         this.notificationsService.notify({
-          title: 'Wrap Successful',
+          title: '' + this.liquidityToken.lpSymbol.getValue() + 'Wrap Successful',
           icon: 'alarm',
-          text: 'Your LP tokens have been wrapped successfully.',
+          text: 'Your ' + this.liquidityToken.lpSymbol.getValue() + ' LP tokens have been wrapped successfully.',
           date: new Date()
         });
         setTimeout(() => {
@@ -1384,9 +1315,9 @@ export class Web3Service {
       .on('error', (error) => {
         this.wrapper.wrapButton.next(2);
         this.notificationsService.notify({
-          title: 'Wrap Error',
+          title: '' + this.liquidityToken.lpSymbol.getValue() + 'Unwrap Error',
           icon: 'alarm',
-          text: 'There was an error wrapping your LP tokens.',
+          text: 'There was an error wrapping your ' + this.liquidityToken.lpSymbol.getValue() + ' LP tokens.',
           date: new Date()
         });
         this.wrapper.wrapButton.next(3);
@@ -1398,7 +1329,7 @@ export class Web3Service {
   }
 
   async unwrapFlip(amount: number): Promise<any> {
-    this.wrapper.unwrapButton.next(1);
+    this.wrapper.unwrapButton.next(10);
     if (BigInt(this.wrapper.unwrapAllowance.getValue()) < 1) {
       return await this.approveWrapperUnwrap().then(async result => {
         await this.liquidityToken.wLPContract.methods.unWrapLPT(
@@ -1407,6 +1338,7 @@ export class Web3Service {
           from: this.user.address.getValue(),
         })
           .on('transactionHash', (transactionHash) => {
+            this.wrapper.unwrapButton.next(1);
           })
           .on('confirmation', (confirmation) => {
             if (confirmation) {
@@ -1414,9 +1346,9 @@ export class Web3Service {
           }).on('receipt', (receipt) => {
             this.wrapper.unwrapButton.next(2);
             this.notificationsService.notify({
-              title: 'Unwrap Successful',
+              title: '' + this.liquidityToken.wLPSymbol.getValue() + 'Unwrap Successful',
               icon: 'alarm',
-              text: 'Your LP tokens have been unwrapped successfully.',
+              text: 'Your ' + this.liquidityToken.wLPSymbol.getValue() + ' wrapped LP tokens have been unwrapped successfully.',
               date: new Date()
             });
             setTimeout(() => {
@@ -1426,9 +1358,9 @@ export class Web3Service {
           .on('error', (error) => {
             this.wrapper.unwrapButton.next(2);
             this.notificationsService.notify({
-              title: 'Unwrap Error',
+              title: '' + this.liquidityToken.wLPSymbol.getValue() + 'Unwrap Error',
               icon: 'alarm',
-              text: 'There was an error unwrapping your LP tokens.',
+              text: 'There was an error unwrapping your ' + this.liquidityToken.wLPSymbol.getValue() + ' wrapped LP tokens.',
               date: new Date()
             });
             this.wrapper.unwrapButton.next(3);
@@ -1444,6 +1376,7 @@ export class Web3Service {
       from: this.user.address.getValue(),
     })
       .on('transactionHash', (transactionHash) => {
+        this.wrapper.unwrapButton.next(1);
       })
       .on('confirmation', (confirmation) => {
         if (confirmation) {
@@ -1451,9 +1384,9 @@ export class Web3Service {
       }).on('receipt', (receipt) => {
         this.wrapper.unwrapButton.next(2);
         this.notificationsService.notify({
-          title: 'Unwrap Successful',
+          title: '' + this.liquidityToken.wLPSymbol.getValue() + 'Unwrap Successful',
           icon: 'alarm',
-          text: 'Your LP tokens have been unwrapped successfully.',
+          text: 'Your ' + this.liquidityToken.wLPSymbol.getValue() + ' wrapped LP tokens have been unwrapped successfully.',
           date: new Date()
         });
         setTimeout(() => {
@@ -1463,9 +1396,9 @@ export class Web3Service {
       .on('error', (error) => {
         this.wrapper.unwrapButton.next(2);
         this.notificationsService.notify({
-          title: 'Unwrap Error',
+          title: '' + this.liquidityToken.wLPSymbol.getValue() + 'Unwrap Error',
           icon: 'alarm',
-          text: 'There was an error unwrapping your LP tokens.',
+          text: 'There was an error unwrapping your ' + this.liquidityToken.wLPSymbol.getValue() + ' wrapped LP tokens.',
           date: new Date()
         });
         this.wrapper.unwrapButton.next(3);
@@ -1475,4 +1408,138 @@ export class Web3Service {
       });
     }
   }
+
+  // ================== //
+  // CONTRACTS          //
+  // ================== //
+  async setPoolTokenContracts(): Promise<any> {
+    this.poolInfo.length = this.cellar.length.getValue();
+    for (let index = 0; index < this.poolInfo.length; index++) {
+      this.poolInfo[index] = {
+        token: {
+          name: new BehaviorSubject(''),
+          address: new BehaviorSubject(''),
+          contract: undefined,
+          decimals: new BehaviorSubject(0),
+          symbol: new BehaviorSubject(''),
+        },
+        ape: new BehaviorSubject(30),
+        tvl: new BehaviorSubject(4200000),
+        poolTokenBalance: new BehaviorSubject(0),
+        priceInUSD: new BehaviorSubject(0),
+        priceInNetworkCurrency: new BehaviorSubject(0),
+        claimButton: new BehaviorSubject(0),
+        depositButton: new BehaviorSubject(0),
+        withdrawButton: new BehaviorSubject(0),
+        tokenApproval: new BehaviorSubject(0),
+        tokenRewards: new BehaviorSubject(0),
+        pendingGrapes: new BehaviorSubject(0),
+        userPoolInfo: new BehaviorSubject({
+          amount: 0,
+          rewardPaid: 0
+        }),
+        poolInfo: new BehaviorSubject({
+          poolName: '',
+          stakedToken: '',
+          allocPoint: 0,
+          accGRAPESPerShare: 0,
+          VIPpool: false,
+          partialWithdraw: false
+        }),
+        pairInfo: {
+          pairAddress: new BehaviorSubject(''),
+          networkCurrencyPairBalance: new BehaviorSubject(0),
+          tokenPairBalance: new BehaviorSubject(0)
+        },
+        userBalance: new BehaviorSubject(0)
+      };
+    }
+  }
+
+  async setContract(poolId: number): Promise<any> {
+    if (this.poolInfo[poolId].poolInfo.getValue().stakedToken === this.grapesContractAddress) {
+      this.token.poolId.next(poolId);
+    }
+    if (this.poolInfo[poolId].poolInfo.getValue().stakedToken === this.liquidityToken.wLPAddress.getValue()) {
+      this.liquidityToken.wLPPoolId.next(poolId);
+    }
+    if (this.poolInfo[poolId].poolInfo.getValue().stakedToken === this.liquidityToken.lpAddress.getValue()) {
+      this.liquidityToken.lpPoolId.next(poolId);
+    }
+    await this.poolInfo[poolId].token.address.next(this.poolInfo[poolId].poolInfo.getValue().stakedToken);
+    return this.poolInfo[poolId].token.contract = await new this.web3.eth.Contract(grapesAbi, this.poolInfo[poolId].poolInfo.getValue().stakedToken);
+  }
+
+  async getLPContracts(): Promise<any> {
+    await this.getLPContract();
+    return await this.getWLPContract();
+  }
+
+  async setLPContracts(): Promise<any> {
+    await this.setLPContract();
+    return await this.setWLPContract();
+  }
+  async setSecondaryContracts(): Promise<any> {
+    await this.setStableCoinContract();
+    await this.setWrappedNetworkCurrencyContract();
+    return await this.setExchangeFactoryContract();
+  }
+
+  async setGrapesContract(): Promise<any> {
+    return this.grapesContract = await new this.web3.eth.Contract(grapesAbi, this.grapesContractAddress);
+  }
+  async setStableCoinContract(): Promise<any> {
+    return this.stableCoinContract = await new this.web3.eth.Contract(stableCoinAbi, this.stableCoinContractAddress);
+  }
+  async setWrappedNetworkCurrencyContract(): Promise<any> {
+    return this.wrappedNetworkCurrencyContract = await new this.web3.eth.Contract(wrappedNetworkCurrencyAbi, this.wrappedNetworkCurrencyContractAddress);
+  }
+  async setExchangeFactoryContract(): Promise<any> {
+    return this.exchangeFactoryContract = await new this.web3.eth.Contract(exchangeAbi, this.exchangeFactoryContractAddress);
+  }
+
+  async setCellarContract(): Promise<any> {
+    return this.grapesCellarContract = await new this.web3.eth.Contract(grapesCellarAbi, this.grapesCellarContractAddress);
+  }
+
+  async getLPContract(): Promise<any> {
+    return await this.grapesContract.methods.viewLPT().call().then(result => {
+      this.liquidityToken.lpAddress.next(result);
+    });
+  }
+
+  async setLPContract(): Promise<any> {
+    if (this.liquidityToken.lpAddress.getValue() !== '0x0000000000000000000000000000000000000000') { // IF LGE HAS STARTED
+    return this.liquidityToken.lpContract = await new this.web3.eth.Contract(grapesLPAbi, this.liquidityToken.lpAddress.getValue());
+    } else {
+          const clearedInterval = setInterval(async () => {
+            this.getLPContract();
+            if (this.liquidityToken.lpAddress.getValue() !== '0x0000000000000000000000000000000000000000') { // IF LGE HAS STARTED
+            this.liquidityToken.lpContract = await new this.web3.eth.Contract(grapesLPAbi, this.liquidityToken.lpAddress.getValue());
+            return clearInterval(clearedInterval);
+            }
+          }, 5000);
+    }
+  }
+
+  async getWLPContract(): Promise<any> {
+    return await this.grapesContract.methods.viewWrappedLPT().call().then(result => {
+      this.liquidityToken.wLPAddress.next(result);
+    });
+  }
+
+  async setWLPContract(): Promise<any> {
+    if (this.liquidityToken.wLPAddress.getValue() !== '0x0000000000000000000000000000000000000000') { // IF LGE HAS STARTED
+    return this.liquidityToken.wLPContract = await new this.web3.eth.Contract(grapesWLPAbi, this.liquidityToken.wLPAddress.getValue());
+    } else {
+          const clearedInterval = setInterval(async () => {
+            this.getWLPContract();
+            if (this.liquidityToken.wLPAddress.getValue() !== '0x0000000000000000000000000000000000000000') { // IF LGE HAS STARTED
+            this.liquidityToken.wLPContract = await new this.web3.eth.Contract(grapesWLPAbi, this.liquidityToken.wLPAddress.getValue());
+            return clearInterval(clearedInterval);
+            }
+          }, 5000);
+    }
+  }
+
 }

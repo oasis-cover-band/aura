@@ -74,7 +74,7 @@
                 <label *ngIf="(data.depositButton | async) === 3">Failed</label>
                 <label *ngIf="(data.depositButton | async) === 4">Approving</label>
                 <label *ngIf="(data.depositButton | async) === 5">Approved</label>
-                <label *ngIf="(data.depositButton | async) === 10">Confirm Transaction</label>
+                <label *ngIf="(data.depositButton | async) === 10">Confirm/Reject</label>
             </button>
         </span>
         <span class="button" id="withdraw" *ngIf="(data.userBalance | async) as userBalance;else greyed" >
@@ -88,6 +88,7 @@
                 <label *ngIf="(data.withdrawButton | async) === 1">Withdrawing</label>
                 <label *ngIf="(data.withdrawButton | async) === 2">Withdrawn</label>
                 <label *ngIf="(data.withdrawButton | async) === 3">Failed</label>
+                <label *ngIf="(data.withdrawButton | async) === 10">Confirm/Reject</label>
             </button>
             <button [ngClass]="{
                 'working' : (data.withdrawButton | async) === 1,
@@ -99,6 +100,7 @@
                 <label *ngIf="(data.withdrawButton | async) === 1">Withdrawing</label>
                 <label *ngIf="(data.withdrawButton | async) === 2">Withdrawn</label>
                 <label *ngIf="(data.withdrawButton | async) === 3">Failed</label>
+                <label *ngIf="(data.withdrawButton | async) === 10">Confirm/Reject</label>
             </button>
         </span>
         <span class="button" id="claim" *ngIf="(data.userBalance | async) as userBalance;else greyed" >
@@ -112,6 +114,7 @@
                 <label *ngIf="(data.claimButton | async) === 1">Claiming</label>
                 <label *ngIf="(data.claimButton | async) === 2">Claimed</label>
                 <label *ngIf="(data.claimButton | async) === 3">Failed</label>
+                <label *ngIf="(data.claimButton | async) === 10">Confirm/Reject</label>
             </button>
             <button [ngClass]="{
                 'working' : (data.claimButton | async) === 1,
@@ -123,6 +126,7 @@
                 <label *ngIf="(data.claimButton | async) === 1">Claiming</label>
                 <label *ngIf="(data.claimButton | async) === 2">Claimed</label>
                 <label *ngIf="(data.claimButton | async) === 3">Failed</label>
+                <label *ngIf="(data.claimButton | async) === 10">Confirm/Reject</label>
             </button>
         </span>
         <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
