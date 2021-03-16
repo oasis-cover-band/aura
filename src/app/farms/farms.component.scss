@@ -12,7 +12,7 @@
     section.wrapper, section.top-bar, section.pools-selector {
         display:grid;
         align-content:start;
-        grid-template-columns:1fr 1fr;
+        grid-template-columns:49.5% 49.5%;
         column-gap:10px;
         @media (max-width:1100px) {
             grid-template-rows:1fr;

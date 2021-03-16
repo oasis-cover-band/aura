@@ -38,21 +38,21 @@ trigger(
         query(
             ':enter',
             [
-                style({opacity: 0, transform: 'scaleY(0)', fontSize: '0px'}),
+                style({opacity: 0}),
             ],
             { optional: true }
             ),
         query(
             ':leave',
             [
-                animate('0.55s ease-in-out', style({opacity: 0, transform: 'scaleY(0)', fontSize: '0px'})),
+                animate('0.25s ease-in-out', style({opacity: 0})),
             ],
             { optional: true }
             ),
         query(
             ':enter',
             [
-              animate('0.55s ease-in-out', style({opacity: 1, transform: 'scaleY(1)', fontSize: 'initial'})),
+              animate('1s ease-out', style({opacity: 1})),
             ],
             { optional: true }
             )

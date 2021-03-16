@@ -9,7 +9,7 @@ import { inOutAnimations } from '../animations';
   styleUrls: ['./dashboard.component.scss'],
   animations: [ inOutAnimations ]
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
 
   exchange = this.web3.exchange;
   token = this.web3.token;
@@ -21,8 +21,5 @@ export class DashboardComponent implements OnInit {
     private web3: Web3Service,
     private projectService: ProjectService,
   ) { }
-
-  ngOnInit(): void {
-  }
 
 }

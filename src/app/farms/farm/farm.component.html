@@ -29,9 +29,11 @@
         <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
     </div>
     <div class="medium-container split naked" id="apy">
-        <span class="medium-header" *ngIf="(data.apy | async) as apy;else greyed">
-            <label class="title">APY:</label>
-            <label class="value">{{apy | number}}%</label>
+        <span class="medium-header" *ngIf="(data.ape | async) as ape;else greyed" id="ape">
+            <label class="title">APE:</label>
+            <label class="value" [ngClass]="{
+             'small': ape > 10000000   
+            }">{{ape | number}}%</label>
         </span>
         <span class="medium-header" *ngIf="(data.poolInfo | async) as poolInfo;else greyed">
             <label class="value">{{poolInfo.allocPoint | number}}x</label>

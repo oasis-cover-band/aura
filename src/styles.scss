@@ -113,8 +113,8 @@ a.icon {
         content:'Empty';
         position:absolute;
         top:0px;
-        right:-20px;
-        left:-20px;
+        right:-40px;
+        left:-40px;
         bottom:0px;
         color:$light;
         background:$black;
@@ -129,7 +129,7 @@ a.icon {
         pointer-events:none;
         min-width:100%;
         height:fit-content;
-        z-index:99999999;
+        z-index:999999999;
     }
     &:hover {
         &:after {

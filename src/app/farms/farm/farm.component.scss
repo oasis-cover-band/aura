@@ -8,10 +8,6 @@
     grid-template-columns: 10px 1fr 10px;
     grid-template-rows:10px 1fr 10px;
     position:relative;
-    transition:0.2s;
-    * {
-        transition:0.2s;
-    }
     section.wrapper {
         position:relative;
         height:fit-content;
@@ -108,7 +104,6 @@
             &#name {
                 grid-area:name;
                 align-self: end;
-                overflow:hidden;
             }
             &#info {
                 grid-area:info;
@@ -128,6 +123,19 @@
             }
             &#apy {
                 grid-area:apy;
+                grid-template-columns:1fr min-content;
+                span#ape {
+                    label.title {
+                        font-size:0.8rem;
+                    }
+                    label.value {
+                        font-size:1rem;
+                        overflow:hidden;
+                        text-overflow: ellipsis;
+                        &.small {
+                        }
+                    }
+                }
             }
             &#misc {
                 grid-area:misc;

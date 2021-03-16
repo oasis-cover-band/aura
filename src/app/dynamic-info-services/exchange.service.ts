@@ -10,7 +10,7 @@ import { Web3Service } from './web3.service';
 export class ExchangeService {
 
   networkCurrencyPriceUSD: BehaviorSubject<any> = this.web3.apyCalculator.networkCurrency.price;
-  // grapesContractAddress = this.web3.grapes.ContractAddress;
+  // grapesContractAddress = this.web3.grapesContractAddress;
   grapesContractAddress = '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82'; // TEST
   constructor(
     private apollo: Apollo,
@@ -45,7 +45,7 @@ export class ExchangeService {
         `,
       })
       .valueChanges.subscribe((result: any) => {
-        if (result.data.pair !== null) {
+        if (result.data.token !== null) {
           this.web3.exchange.dayData.next(result.data.token.tokenDayData);
           this.web3.exchange.volume.next(Number(result.data.token.pairBase[0].volumeToken0));
           this.web3.exchange.volumeNetworkCurrency.next(Number(result.data.token.pairBase[0].volumeToken1));

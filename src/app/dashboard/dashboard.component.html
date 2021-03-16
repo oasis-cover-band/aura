@@ -2,6 +2,9 @@
     <app-dashboard-chart id="chart" *ngIf="(exchange.dayData | async) !== 0" [data]="(exchange.dayData | async)">
 
     </app-dashboard-chart>
+    <section id="chart" *ngIf="(exchange.dayData | async) === 0">
+        Awaiting Exchange Data...
+    </section>
     <section class="wrapper-inner naked" id="volume">
         <h5 id="stat-line-00-header" class="header">Volume</h5>
         <div class="big-container" id="stat-line-00">
@@ -16,7 +19,7 @@
                     </span>
                     <span class="small-header value" *ngIf="(exchange.volumeUSD | async) as volumeUSD;else greyed" [@inOutAnimations]>
                         <label class="title">Total Volume <small>(in USD)</small></label>
-                        <label class="value small"><b>{{volumeUSD | number}}</b> <small>USD</small></label>
+                        <label class="value small"><b>{{volumeUSD | currency}}</b> <small>USD</small></label>
                     </span>
                     <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
             </div>
@@ -33,7 +36,7 @@
                 </span>
                 <span class="small-header value" *ngIf="(priceInUSD | async) as priceInUSD;else greyed" [@inOutAnimations]>
                     <label class="title">Total Rewards <small>(in USD)</small></label>
-                    <label class="value small"><b>{{(((vault.cumulativeRewardsSinceStart | async) + (vault.rewardsInThisEpoch | async)) / 1e18) * priceInUSD| number}}</b> <small>USD</small></label>
+                    <label class="value small"><b>{{(((vault.cumulativeRewardsSinceStart | async) + (vault.rewardsInThisEpoch | async)) / 1e18) * priceInUSD | currency}}</b> <small>USD</small></label>
                 </span>
                 <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
             </div>
@@ -45,11 +48,11 @@
             <div class="medium-container" id="marketcap">
             <span class="small-header value" *ngIf="(priceInUSD | async) as priceInUSD;else greyed" [@inOutAnimations]>
                         <label class="title">Marketcap <small>(total)</small></label>
-                        <label class="value small"><b>{{((token.totalSupply | async) / 1e18) * priceInUSD | number}}</b> <small>USD</small></label>
+                        <label class="value small"><b>{{((token.totalSupply | async) / 1e18) * priceInUSD | currency}}</b> <small>USD</small></label>
                     </span>
                     <span class="small-header value" *ngIf="(priceInUSD | async) as priceInUSD;else greyed" [@inOutAnimations]>
                         <label class="title">Marketcap <small>(circulating)</small></label>
-                        <label class="value small"><b>{{((token.totalSupply | async) / 1e18) * priceInUSD | number}}</b> <small>USD</small></label>
+                        <label class="value small"><b>{{((token.totalSupply | async) / 1e18) * priceInUSD | currency}}</b> <small>USD</small></label>
                     </span>
                     <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
             </div>
@@ -69,11 +72,11 @@
             <div class="medium-container" id="price">
                 <span class="small-header value" *ngIf="(priceInUSD | async) as priceInUSD;else greyed" [@inOutAnimations]>
                     <label class="title">Price <small>(in USD)</small></label>
-                    <label class="value small"><b>{{priceInUSD / 1e18 | number}}</b> <small>USD</small></label>
+                    <label class="value small"><b>{{priceInUSD / 1e18 | currency}}</b> <small>USD</small></label>
                 </span>
                 <span class="small-header value" *ngIf="(priceInNetworkCurrency | async) as priceInNetworkCurrency;else greyed" [@inOutAnimations]>
-                    <label class="title">price <small>(in {{project.networkCurrency}})</small></label>
-                    <label class="value small"><b>{{priceInNetworkCurrency / 1e18 | number}}</b> <small>{{project.networkCurrency}}</small></label>
+                    <label class="title">Price <small>(in W{{project.networkCurrency}})</small></label>
+                    <label class="value small"><b>{{priceInNetworkCurrency | number:'0.8-8'}}</b> <small>w{{project.networkCurrency}}</small></label>
                 </span>
                 <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
             </div>

@@ -125,7 +125,8 @@ export class Web3Service {
     averageFeesPerBlockEpoch: new BehaviorSubject(0),
     rewardsInThisEpoch: new BehaviorSubject(0),
     epoch: new BehaviorSubject(0),
-    length: new BehaviorSubject(0)
+    length: new BehaviorSubject(0),
+    totalPoolWeights: new BehaviorSubject(0),
   };
   // POOL TOKENS VARIABLES
   poolInfo = [
@@ -137,7 +138,7 @@ export class Web3Service {
         decimals: new BehaviorSubject(0),
         symbol: new BehaviorSubject(''),
       },
-      apy: new BehaviorSubject(30),
+      ape: new BehaviorSubject(30),
       tvl: new BehaviorSubject(42000000),
       poolTokenBalance: new BehaviorSubject(0),
       priceInUSD: new BehaviorSubject(0),
@@ -211,8 +212,7 @@ export class Web3Service {
       await this.getLGEInfo();
       await this.getWrapperApprovals();
       await this.getLPTokensInfo();
-      if (this.lge.LPTperBNBUnit.getValue() !== 0 && this.lge.LPTperBNBUnit.getValue() !== '0') { // IF LGE HAS FINISHED
-        console.dir(this.lge.LPTperBNBUnit.getValue());
+      if (this.lge.LPTperBNBUnit.getValue() !== 0 && this.lge.LPTperBNBUnit.getValue() !== Number('0')) { // IF LGE HAS FINISHED
         await this.getPrices();
       }
       await this.getAllPoolInfo().then(afterGetAllPoolInfo => {
@@ -267,7 +267,7 @@ export class Web3Service {
       await this.apyCalculator.grapes.pairBalance.next(resultGrapes);
       await this.wrappedNetworkCurrencyContract.methods.balanceOf(this.grapesWrappedNetworkCurrencyPairAddress.getValue()).call().then(async resultNetwork => {
         await this.apyCalculator.networkCurrency.pairBalanceGrapes.next(resultNetwork);
-        await this.apyCalculator.grapes.priceInNetworkCurrency.next(this.apyCalculator.grapes.pairBalance.getValue() / this.apyCalculator.networkCurrency.pairBalanceGrapes.getValue());
+        await this.apyCalculator.grapes.priceInNetworkCurrency.next(this.apyCalculator.networkCurrency.pairBalanceGrapes.getValue() / this.apyCalculator.grapes.pairBalance.getValue());
       });
     });
   }
@@ -367,8 +367,11 @@ export class Web3Service {
     await this.getPoolTokenDecimals(poolId);
     await this.getPoolTokenSymbol(poolId);
     await this.getPoolTokenApproval(poolId);
-    // await this.getPoolTokenPrices(poolId);
-    // await this.getPoolTokenCellarBalance(poolId);
+    if (this.apyCalculator.stableCoin.pairBalance.getValue() !== 0 && this.apyCalculator.networkCurrency.pairBalanceStableCoin.getValue() !== 0) {
+      await this.getAllPoolWeights();
+      await this.getPoolTokenPrices(poolId);
+      await this.getPoolTokenCellarBalance(poolId);
+    }
   }
 
   async getUserBalance(poolId: number): Promise<any> {
@@ -405,7 +408,6 @@ export class Web3Service {
     return await this.getPoolTokenNetworkCurrencyPairAddress(poolId).then(async afterPoolTokenNetworkCurrencyPairAddress => {
       await this.getPoolTokenPriceInNetworkCurrency(poolId, this.poolInfo[poolId].pairInfo.pairAddress.getValue()).then(async afterPoolTokenPriceInNetworkCurrency => {
         await this.getPoolTokenPriceInUSD(poolId).then(async afterPoolTokenPriceInUSD => {
-
         });
       });
     });
@@ -414,12 +416,23 @@ export class Web3Service {
   async getPoolTokenCellarBalance(poolId: number): Promise<any> {
     return await this.poolInfo[poolId].token.contract.methods.balanceOf(this.grapesCellarContractAddress).call().then(async result => {
       await this.poolInfo[poolId].poolTokenBalance.next(result);
-      await this.poolInfo[poolId].tvl.next((this.poolInfo[poolId].poolTokenBalance.getValue() / 1e18) * this.poolInfo[poolId].priceInUSD.getValue());
+      await this.poolInfo[poolId].tvl.next((this.poolInfo[poolId].poolTokenBalance.getValue() / 1e18) * (this.poolInfo[poolId].priceInUSD.getValue() / 1e18));
+      if (this.poolInfo[poolId].tvl.getValue() === 0) {
+        await this.poolInfo[poolId].tvl.next(1);
+      }
+      this.poolInfo[poolId].ape.next(
+
+        ((this.poolInfo[poolId].poolInfo.getValue().allocPoint / this.cellar.totalPoolWeights.getValue())
+        *
+        ((this.cellar.rewardsInThisEpoch.getValue() / 1e18) * this.apyCalculator.grapes.priceInUSD.getValue()))
+        /
+        this.poolInfo[poolId].tvl.getValue()
+      );
     });
   }
 
   async getPoolTokenNetworkCurrencyPairAddress(poolId: number): Promise<any> {
-    return await this.exchangeFactoryContract.methods.getPair(this.poolInfo[poolId].token.address, this.wrappedNetworkCurrencyContractAddress).call().then(async result => {
+    return await this.exchangeFactoryContract.methods.getPair(this.poolInfo[poolId].token.address.getValue(), this.wrappedNetworkCurrencyContractAddress).call().then(async result => {
       await this.poolInfo[poolId].pairInfo.pairAddress.next(result);
     });
   }
@@ -691,6 +704,15 @@ export class Web3Service {
     });
   }
 
+  async getAllPoolWeights(): Promise<any> {
+    this.cellar.totalPoolWeights.next(0);
+    let temp = Number(0);
+    return await this.poolInfo.forEach((pool, index) => {
+      temp += Number(pool.poolInfo.getValue().allocPoint);
+      this.cellar.totalPoolWeights.next(temp);
+    });
+  }
+
   // LGE VALUES
   async getLGEInfo(): Promise<any> {
     this.getBNBContributed();
@@ -908,7 +930,7 @@ export class Web3Service {
           decimals: new BehaviorSubject(0),
           symbol: new BehaviorSubject(''),
         },
-        apy: new BehaviorSubject(30),
+        ape: new BehaviorSubject(30),
         tvl: new BehaviorSubject(4200000),
         poolTokenBalance: new BehaviorSubject(0),
         priceInUSD: new BehaviorSubject(0),
