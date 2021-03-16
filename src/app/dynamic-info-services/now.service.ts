@@ -10,7 +10,7 @@ export class NowService {
   constructor() {
     setInterval(() => {
       this.now.next(new Date().getTime());
-    }, 5000);
+    }, 1000);
   }
 
 }

@@ -49,11 +49,12 @@ export class ExchangeService {
           this.web3.exchange.dayData.next(result.data.token.tokenDayData);
           this.web3.exchange.volume.next(Number(result.data.token.pairBase[0].volumeToken0));
           this.web3.exchange.volumeNetworkCurrency.next(Number(result.data.token.pairBase[0].volumeToken1));
+          // tslint:disable-next-line:max-line-length
           this.web3.exchange.volumeUSD.next(Number(Math.floor(result.data.token.pairBase[0].volumeToken1 * this.networkCurrencyPriceUSD.getValue())));
           this.web3.exchange.price.next(Number(result.data.token.derivedETH));
           this.web3.exchange.priceUSD.next(Number(result.data.token.derivedETH) * this.networkCurrencyPriceUSD.getValue());
         }
       });
-    }, 3000);
+    }, 10000);
   }
 }

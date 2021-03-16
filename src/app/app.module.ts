@@ -10,10 +10,12 @@ import { FooterModule } from './footer/footer.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { SystemNotificationModule } from './system-notification/system-notification.module';
 import { HttpClientModule } from '@angular/common/http';
+// import { RoundPipe } from './pipes/round.pipe';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    // RoundPipe
   ],
   imports: [
     BrowserModule,

@@ -59,7 +59,14 @@ chart = undefined;
       },
       series: [
         {
-          name: 'Daily Volume (' + this.projectService.project.networkCurrency + ')',
+          name: 'Daily Volume (' + this.projectService.project.tokenName + ')',
+          data: [Number(this.data[6].dailyVolumeToken), Number(this.data[5].dailyVolumeToken), Number(this.data[4].dailyVolumeToken),
+          Number(this.data[3].dailyVolumeToken), Number(this.data[2].dailyVolumeToken), Number(this.data[1].dailyVolumeToken), Number(this.data[0].dailyVolumeToken)],
+          type: 'column',
+          color: '#5c2a92ff'
+        },
+        {
+          name: 'Daily Volume (W' + this.projectService.project.networkCurrency + ')',
           data: [Number(this.data[6].dailyVolumeETH), Number(this.data[5].dailyVolumeETH), Number(this.data[4].dailyVolumeETH),
           Number(this.data[3].dailyVolumeETH), Number(this.data[2].dailyVolumeETH), Number(this.data[1].dailyVolumeETH), Number(this.data[0].dailyVolumeETH)],
           type: 'column',
@@ -71,13 +78,6 @@ chart = undefined;
           Number(this.data[3].dailyVolumeUSD), Number(this.data[2].dailyVolumeUSD), Number(this.data[1].dailyVolumeUSD), Number(this.data[0].dailyVolumeUSD)],
           type: 'column',
           color: '#3cbb3c'
-        },
-        {
-          name: 'Daily Volume (' + this.projectService.project.tokenName + ')',
-          data: [Number(this.data[6].dailyVolumeToken), Number(this.data[5].dailyVolumeToken), Number(this.data[4].dailyVolumeToken),
-          Number(this.data[3].dailyVolumeToken), Number(this.data[2].dailyVolumeToken), Number(this.data[1].dailyVolumeToken), Number(this.data[0].dailyVolumeToken)],
-          type: 'column',
-          color: '#5c2a92ff'
         },
         {
           name: this.projectService.project.tokenName + ' Price (USD)',

@@ -7,10 +7,10 @@ import { Injectable } from '@angular/core';
 export class ProjectService {
   project = {
     contracts: {
-      tokenAddress: '0xE499AC9778756250681B10423C5d0bFE7bF34b8F',
-      cellarAddress: '0x327a319478710A0D4446eb77AaE966A8Cc618Ca9',
-      stableCoinAddress: '0xe9e7cea3dedca5984780bafc599bd69add087d56', // BUSD
-      wrappedNetworkCurrencyAddress: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', // WBNB
+      tokenAddress: '0x145eAC3576739a034dfae34656155d7C96Cac6B4',
+      cellarAddress: '0xF01E07Bb026dbe34e2fb86C954Bf8F7A8Aca0Ce4',
+      stableCoinAddress: '0xe9e7cea3dedca5984780bafc599bd69add087d56', // BSC (BUSD) MAINNET
+      wrappedNetworkCurrencyAddress: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', // BSC (WBNB) MAINNET
       exchangeFactoryAddress: '0xBCfCcbde45cE874adCB698cC183deBcF17952812', // BSC (PANCAKESWAP) MAINNET
       // exchangeFactoryAddress: '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f', // ETH (UNISWAP) MAINNET
       exchangeRouterAddress: '0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F', // BSC (PANCAKESWAP) MAINNET

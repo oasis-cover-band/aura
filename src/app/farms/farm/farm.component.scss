@@ -133,6 +133,12 @@
                         overflow:hidden;
                         text-overflow: ellipsis;
                         &.small {
+                            font-size:0.8rem;
+                            font-weight:900;
+                        }
+                        &.extra-small {
+                            font-size:0.6rem;
+                            font-weight:900;
                         }
                     }
                 }
@@ -222,6 +228,15 @@
         }
         &.vip-pool {
             background:$primary-opaque;
+        }
+    }
+    section.disclaimer {
+        grid-area:wrapper;
+        display:grid;
+        row-gap:10px;
+        align-content:start;
+        h4 {
+            margin:none;
         }
     }
 }

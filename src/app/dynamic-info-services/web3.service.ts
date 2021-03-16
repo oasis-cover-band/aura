@@ -371,6 +371,7 @@ export class Web3Service {
       await this.getAllPoolWeights();
       await this.getPoolTokenPrices(poolId);
       await this.getPoolTokenCellarBalance(poolId);
+      await this.getTokenCirculatingSupply();
     }
   }
 
@@ -485,7 +486,7 @@ export class Web3Service {
       });
   }
   async deposit(poolId: number, amount: number): Promise<any> {
-    this.poolInfo[poolId].depositButton.next(1);
+    this.poolInfo[poolId].depositButton.next(10);
     if (BigInt(this.poolInfo[poolId].tokenApproval.getValue()) < 1) {
       return await this.approve(poolId).then(async result => {
         await this.grapesCellarContract.methods.deposit(
@@ -518,6 +519,7 @@ export class Web3Service {
       )
         .send({ from: this.user.address.getValue() })
         .on('transactionHash', (transactionHash) => {
+          this.poolInfo[poolId].depositButton.next(1);
         })
         .on('confirmation', (confirmation) => {
           if (confirmation) {
@@ -554,6 +556,43 @@ export class Web3Service {
     return await this.grapesCellarContract.methods.withdraw(
       poolId,
       BigInt(Math.floor(amount * 1e18))
+    ).send({ from: this.user.address.getValue() })
+      .on('transactionHash', (transactionHash) => {
+      })
+      .on('confirmation', (confirmation) => {
+        if (confirmation) {
+        }
+      }).on('receipt', (receipt) => {
+        this.poolInfo[poolId].withdrawButton.next(2);
+        this.notificationsService.notify({
+          title: 'Pool Withdraw',
+          icon: 'alarm',
+          text: 'You have successfully withdrawn from the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
+          date: new Date()
+        });
+        setTimeout(() => {
+          this.poolInfo[poolId].withdrawButton.next(0);
+        }, 2500);
+      })
+      .on('error', (error) => {
+        this.poolInfo[poolId].withdrawButton.next(3);
+        this.notificationsService.notify({
+          title: 'Withdraw Error',
+          icon: 'alarm',
+          text: 'There was an error withdrawing from the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
+          date: new Date()
+        });
+        setTimeout(() => {
+          this.poolInfo[poolId].withdrawButton.next(0);
+        }, 2500);
+      });
+  }
+
+  async withdrawAll(poolId: number, amount: number): Promise<any> {
+    this.poolInfo[poolId].withdrawButton.next(1);
+    return await this.grapesCellarContract.methods.withdraw(
+      poolId,
+      BigInt(amount)
     ).send({ from: this.user.address.getValue() })
       .on('transactionHash', (transactionHash) => {
       })
@@ -1016,7 +1055,17 @@ export class Web3Service {
   }
 
   async setLPContract(): Promise<any> {
+    if (this.liquidityToken.lpAddress.getValue() !== '0x0000000000000000000000000000000000000000') { // IF LGE HAS STARTED
     return this.liquidityToken.lpContract = await new this.web3.eth.Contract(grapesLPAbi, this.liquidityToken.lpAddress.getValue());
+    } else {
+          const clearedInterval = setInterval(async () => {
+            this.getLPContract();
+            if (this.liquidityToken.lpAddress.getValue() !== '0x0000000000000000000000000000000000000000') { // IF LGE HAS STARTED
+            this.liquidityToken.lpContract = await new this.web3.eth.Contract(grapesLPAbi, this.liquidityToken.lpAddress.getValue());
+            return clearInterval(clearedInterval);
+            }
+          }, 5000);
+    }
   }
 
   async getWLPContract(): Promise<any> {
@@ -1026,7 +1075,17 @@ export class Web3Service {
   }
 
   async setWLPContract(): Promise<any> {
+    if (this.liquidityToken.wLPAddress.getValue() !== '0x0000000000000000000000000000000000000000') { // IF LGE HAS STARTED
     return this.liquidityToken.wLPContract = await new this.web3.eth.Contract(grapesWLPAbi, this.liquidityToken.wLPAddress.getValue());
+    } else {
+          const clearedInterval = setInterval(async () => {
+            this.getWLPContract();
+            if (this.liquidityToken.wLPAddress.getValue() !== '0x0000000000000000000000000000000000000000') { // IF LGE HAS STARTED
+            this.liquidityToken.wLPContract = await new this.web3.eth.Contract(grapesWLPAbi, this.liquidityToken.wLPAddress.getValue());
+            return clearInterval(clearedInterval);
+            }
+          }, 5000);
+    }
   }
 
   // ================== //
@@ -1087,7 +1146,7 @@ export class Web3Service {
     });
   }
   async getTokenCirculatingSupply(): Promise<any> {
-    return await this.token.circulatingSupply.next((this.token.totalSupply.getValue() - this.apyCalculator.networkCurrency.pairBalanceGrapes.getValue()) - this.poolInfo[this.token.poolId.getValue()].poolTokenBalance.getValue());
+    return await this.token.circulatingSupply.next((this.token.totalSupply.getValue() - this.apyCalculator.grapes.pairBalance.getValue()) - this.poolInfo[this.token.poolId.getValue()].poolTokenBalance.getValue());
   }
 
   // ================== //

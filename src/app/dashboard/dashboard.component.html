@@ -62,7 +62,7 @@
                     <label class="title">Supply <small>(total)</small></label>
                     <label class="value small"><b>{{totalSupply / 1e18 | number}}</b> <small>{{project.tokenName}}</small></label>
                 </span>
-                <span class="small-header value" *ngIf="(token.totalSupply | async) as totalSupply;else greyed" [@inOutAnimations]>
+                <span class="small-header value" *ngIf="(token.circulatingSupply | async) as totalSupply;else greyed" [@inOutAnimations]>
                     <label class="title">Supply <small>(circulating)</small></label>
                     <label class="value small"><b>{{totalSupply / 1e18 | number}}</b> <small>{{project.tokenName}}</small></label>
                 </span>

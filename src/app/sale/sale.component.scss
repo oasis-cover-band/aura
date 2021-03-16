@@ -69,6 +69,7 @@
         }
     }
     section.misc {
+        min-width:100%;
         i {
             background: $light; /* Old browsers */
             background: -moz-linear-gradient(top,  $light 0%, $primary 100%); /* FF3.6-15 */

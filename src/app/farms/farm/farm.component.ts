@@ -26,6 +26,7 @@ export class FarmComponent implements OnInit {
   depositButton = this.web3.poolInfo[this.pid].depositButton;
   project = this.projectService.project;
   user = this.web3.user;
+  partialWithdrawDisclaimer = 0;
 
   showingMore = false;
   constructor(
@@ -78,14 +79,38 @@ export class FarmComponent implements OnInit {
     this.web3.withdraw(this.pid, value);
   }
 
+  withdrawAll(): void {
+    const value = Number(Number(this.data.userPoolInfo.getValue().amount));
+    this.web3.withdrawAll(this.pid, value);
+    this.partialWithdrawDisclaimer = 0;
+  }
+
+  partialWithdrawWaiver(claimOrWithdraw): void {
+    this.partialWithdrawDisclaimer = claimOrWithdraw;
+  }
+  cancelDisclaimer(): void {
+    this.partialWithdrawDisclaimer = 0;
+  }
+
   claim(): void {
     this.web3.claim(this.pid);
   }
+
+  claimAll(): void {
+    this.withdrawAll();
+  }
+  
   showMore(): void {
     this.showingMore = !this.showingMore;
   }
 
   goWrapper(): void {
     this.router.navigateByUrl('wrapper');
+  }
+  setMaxDeposit(): void {
+    this.inputEle.nativeElement.value = (String((this.data.userPoolInfo.getValue().amount / 1e18).toFixed(5)));
+  }
+  setMaxBalance(): void {
+    this.inputEle.nativeElement.value = (String((this.data.userBalance.getValue() / 1e18).toFixed(5)));
   }
 }
