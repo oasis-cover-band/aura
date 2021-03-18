@@ -44,12 +44,12 @@ export class WrapperComponent implements OnInit {
   }
 
   wrap(): void {
-    const value = Number(Number(this.inputEle.nativeElement.value).toFixed(5));
+    const value = Number(Number(this.inputEle.nativeElement.value));
     this.web3.wrapFlip(value);
   }
 
   unwrap(): void {
-    const value = Number(Number(this.inputEle.nativeElement.value).toFixed(5));
+    const value = Number(Number(this.inputEle.nativeElement.value));
     this.web3.unwrapFlip(value);
   }
 }

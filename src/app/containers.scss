@@ -105,9 +105,11 @@
                 text-align:left;
                 &.small {
                     font-size:2.2rem;
+                    line-height: 2.4rem;
                 }
                 &.extra-small {
                     font-size:1.4rem;
+                    line-height: 2.4rem;
                 }
                 background: $light; /* Old browsers */
                 background: -moz-linear-gradient(top,  $light 0%, $primary 100%); /* FF3.6-15 */
@@ -211,5 +213,8 @@
     }
     .naked, &.naked, *.naked {
         background:rgba(0,0,0,0)!important;
+    }
+    *.clickable {
+        cursor:pointer;
     }
   }

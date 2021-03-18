@@ -39,7 +39,7 @@ export class SaleComponent implements OnInit {
   }
 
   deposit(): void {
-    const value = Number(Number(this.inputEle.nativeElement.value).toFixed(5));
+    const value = Number(Number(this.inputEle.nativeElement.value));
     this.web3.depositLGE(value, true);
   }
 

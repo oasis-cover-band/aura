@@ -92,10 +92,10 @@
         The LGE
         <ng-container *ngIf="(((data.started | async) * 1000) - (now | async)) / 1000 > 0">
             starts in
-            {{((((data.started | async) * 1000) - (now | async)) / 1000 / 86400 | number:'1.1-1' | round)}} day<ng-container *ngIf="(((data.started | async) * 1000) - (now | async)) / 1000 / 86400 < 1 || (((data.started | async) * 1000) - (now | async)) / 1000 / 86400 > 2">s</ng-container>,
-            {{((((data.started | async) * 1000) - (now | async)) / 1000 % 86400 / 3600 | number:'1.1-1' | round)}} hour<ng-container *ngIf="(((data.started | async) * 1000) - (now | async)) / 1000 % 86400 / 3600 < 1 || (((data.started | async) * 1000) - (now | async)) / 1000 % 86400 / 3600 > 2">s</ng-container>,
-            {{((((data.started | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 / 60 | number:'1.1-1' | round)}} minute<ng-container *ngIf="(((data.started | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 / 60 < 1 || (((data.started | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 / 60 > 2 ">s</ng-container> and 
-            {{((((data.started | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 % 60 | number:'1.1-1' | round)}} second<ng-container *ngIf="(((data.started | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 % 60 < 1 || (((data.started | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 % 60 > 2">s</ng-container>,
+            {{((((data.started | async) * 1000) - (now | async)) / 1000 / 86400 | round)}} day<ng-container *ngIf="(((data.started | async) * 1000) - (now | async)) / 1000 / 86400 < 1 || (((data.started | async) * 1000) - (now | async)) / 1000 / 86400 > 2">s</ng-container>,
+            {{((((data.started | async) * 1000) - (now | async)) / 1000 % 86400 / 3600 | round)}} hour<ng-container *ngIf="(((data.started | async) * 1000) - (now | async)) / 1000 % 86400 / 3600 < 1 || (((data.started | async) * 1000) - (now | async)) / 1000 % 86400 / 3600 > 2">s</ng-container>,
+            {{((((data.started | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 / 60 | round)}} minute<ng-container *ngIf="(((data.started | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 / 60 < 1 || (((data.started | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 / 60 > 2 ">s</ng-container> and 
+            {{((((data.started | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 % 60 | round)}} second<ng-container *ngIf="(((data.started | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 % 60 < 1 || (((data.started | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 % 60 > 2">s</ng-container>,
         </ng-container>
         <ng-container *ngIf="(((data.started | async) * 1000) - (now | async)) / 1000 < 0">
             started on {{(((data.started | async) * 1000) | date:'long')}}
@@ -113,10 +113,10 @@
             </ng-container>
             <ng-container *ngIf="(((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 > 0">
             ends in 
-            {{((((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 / 86400 | number:'1.1-1' | round)}} day<ng-container *ngIf="(((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 / 86400 < 1 || (((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 / 86400 > 2">s</ng-container>,
-            {{((((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 % 86400 / 3600 | number:'1.1-1' | round)}} hour<ng-container *ngIf="(((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 % 86400 / 3600 < 1 || (((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 % 86400 / 3600 > 2">s</ng-container>,
-            {{((((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 / 60 | number:'1.1-1' | round)}} minute<ng-container *ngIf="(((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 / 60 < 1 || (((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 / 60 > 2">s</ng-container> and 
-            {{((((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 % 60 | number:'1.1-1' | round)}} second<ng-container *ngIf="(((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 % 60 < 1 || (((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 % 60 > 2">s</ng-container>.
+            {{((((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 / 86400 | round)}} day<ng-container *ngIf="(((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 / 86400 < 1 || (((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 / 86400 > 2">s</ng-container>,
+            {{((((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 % 86400 / 3600 | round)}} hour<ng-container *ngIf="(((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 % 86400 / 3600 < 1 || (((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 % 86400 / 3600 > 2">s</ng-container>,
+            {{((((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 / 60 | round)}} minute<ng-container *ngIf="(((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 / 60 < 1 || (((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 / 60 > 2">s</ng-container> and 
+            {{((((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 % 60 | round)}} second<ng-container *ngIf="(((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 % 60 < 1 || (((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 % 60 > 2">s</ng-container>.
         </ng-container>
         <button class="inverse" [ngClass]="{
             'working' : (data.createLiquidityButton | async) === 1,

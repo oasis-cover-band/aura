@@ -44,7 +44,7 @@ export class FarmComponent implements OnInit {
   }
 
   deposit(): void {
-    const value = Number(Number(this.inputEle.nativeElement.value).toFixed(5));
+    const value = Number(Number(this.inputEle.nativeElement.value));
     if (value === 0) {
       this.web3.poolInfo[this.pid].depositButton.next(3);
       this.notificationsService.notify({
@@ -62,7 +62,7 @@ export class FarmComponent implements OnInit {
   }
 
   withdraw(): void {
-    const value = Number(Number(this.inputEle.nativeElement.value).toFixed(5));
+    const value = Number(Number(this.inputEle.nativeElement.value));
     if (value === 0) {
       this.web3.poolInfo[this.pid].withdrawButton.next(3);
       this.notificationsService.notify({
@@ -97,7 +97,9 @@ export class FarmComponent implements OnInit {
   }
 
   claimAll(): void {
-    this.withdrawAll();
+    const value = Number(Number(this.data.userPoolInfo.getValue().amount));
+    this.web3.claimAll(this.pid, value);
+    this.partialWithdrawDisclaimer = 0;
   }
   
   showMore(): void {
@@ -108,9 +110,9 @@ export class FarmComponent implements OnInit {
     this.router.navigateByUrl('wrapper');
   }
   setMaxDeposit(): void {
-    this.inputEle.nativeElement.value = (String((this.data.userPoolInfo.getValue().amount / 1e18).toFixed(5)));
+    this.inputEle.nativeElement.value = ((this.data.userPoolInfo.getValue().amount / 1e18));
   }
   setMaxBalance(): void {
-    this.inputEle.nativeElement.value = (String((this.data.userBalance.getValue() / 1e18).toFixed(5)));
+    this.inputEle.nativeElement.value = ((this.data.userBalance.getValue() / 1e18));
   }
 }

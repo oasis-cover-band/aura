@@ -50,7 +50,7 @@ export class Web3Service {
     dayData: new BehaviorSubject(0),
     price: new BehaviorSubject(0),
     priceUSD: new BehaviorSubject(0),
-    volume:  new BehaviorSubject(0),
+    volume: new BehaviorSubject(0),
     volumeUSD: new BehaviorSubject(0),
     volumeNetworkCurrency: new BehaviorSubject(0),
   };
@@ -424,8 +424,8 @@ export class Web3Service {
       this.poolInfo[poolId].ape.next(
 
         ((this.poolInfo[poolId].poolInfo.getValue().allocPoint / this.cellar.totalPoolWeights.getValue())
-        *
-        ((this.cellar.rewardsInThisEpoch.getValue() / 1e18) * this.apyCalculator.grapes.priceInUSD.getValue()))
+          *
+          ((this.cellar.rewardsInThisEpoch.getValue() / 1e18) * this.apyCalculator.grapes.priceInUSD.getValue()))
         /
         this.poolInfo[poolId].tvl.getValue()
       );
@@ -470,7 +470,7 @@ export class Web3Service {
           date: new Date()
         });
         setTimeout(() => {
-          this.poolInfo[poolId].depositButton.next(1);
+          this.poolInfo[poolId].depositButton.next(10);
         }, 2500);
       })
       .on('error', (error) => {
@@ -514,16 +514,16 @@ export class Web3Service {
             }, 2500);
           })
           .on('error', (error) => {
-          this.poolInfo[poolId].depositButton.next(3);
-          this.notificationsService.notify({
-            title: '' + this.poolInfo[poolId].poolInfo.getValue().poolName + ' Deposit Error',
-            icon: 'alarm',
-            text: 'There was an error depositing your ' + this.poolInfo[poolId].token.symbol.getValue() + ' tokens to the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
-            date: new Date()
-          });
-          setTimeout(() => {
-            this.poolInfo[poolId].depositButton.next(0);
-          }, 2500);
+            this.poolInfo[poolId].depositButton.next(3);
+            this.notificationsService.notify({
+              title: '' + this.poolInfo[poolId].poolInfo.getValue().poolName + ' Deposit Error',
+              icon: 'alarm',
+              text: 'There was an error depositing your ' + this.poolInfo[poolId].token.symbol.getValue() + ' tokens to the pool named ' + this.poolInfo[poolId].poolInfo.getValue().poolName + '.',
+              date: new Date()
+            });
+            setTimeout(() => {
+              this.poolInfo[poolId].depositButton.next(0);
+            }, 2500);
           });
       });
     } else {
@@ -1019,15 +1019,15 @@ export class Web3Service {
   // USER BALANCES      //
   // ================== //
   async getUserBNBBalance(): Promise<any> {
-      return await this.web3.eth.getBalance(this.user.address.getValue()).then(async result => {
-        this.user.bnbBalance.next(Number(result));
-      });
+    return await this.web3.eth.getBalance(this.user.address.getValue()).then(async result => {
+      this.user.bnbBalance.next(Number(result));
+    });
   }
 
   async getUserGrapesBalance(): Promise<any> {
-      return await this.grapesContract.methods.balanceOf(this.user.address.getValue()).call().then(async result => {
-        this.user.grapesBalance.next(result);
-      });
+    return await this.grapesContract.methods.balanceOf(this.user.address.getValue()).call().then(async result => {
+      this.user.grapesBalance.next(result);
+    });
   }
 
   // ================== //
@@ -1200,7 +1200,7 @@ export class Web3Service {
           date: new Date()
         });
         setTimeout(() => {
-          this.wrapper.wrapButton.next(1);
+          this.wrapper.wrapButton.next(10);
         }, 2500);
       })
       .on('error', (error) => {
@@ -1234,7 +1234,7 @@ export class Web3Service {
           date: new Date()
         });
         setTimeout(() => {
-          this.wrapper.unwrapButton.next(1);
+          this.wrapper.unwrapButton.next(10);
         }, 2500);
       })
       .on('error', (error) => {
@@ -1289,42 +1289,42 @@ export class Web3Service {
           });
       });
     } else {
-    return await this.liquidityToken.wLPContract.methods.wrapLPT(
-      BigInt(Math.floor(amount * 1e18))
-    ).send({
-      from: this.user.address.getValue(),
-    })
-      .on('transactionHash', (transactionHash) => {
-        this.wrapper.wrapButton.next(1);
+      return await this.liquidityToken.wLPContract.methods.wrapLPT(
+        BigInt(Math.floor(amount * 1e18))
+      ).send({
+        from: this.user.address.getValue(),
       })
-      .on('confirmation', (confirmation) => {
-        if (confirmation) {
-        }
-      }).on('receipt', (receipt) => {
-        this.wrapper.wrapButton.next(2);
-        this.notificationsService.notify({
-          title: '' + this.liquidityToken.lpSymbol.getValue() + 'Wrap Successful',
-          icon: 'alarm',
-          text: 'Your ' + this.liquidityToken.lpSymbol.getValue() + ' LP tokens have been wrapped successfully.',
-          date: new Date()
+        .on('transactionHash', (transactionHash) => {
+          this.wrapper.wrapButton.next(1);
+        })
+        .on('confirmation', (confirmation) => {
+          if (confirmation) {
+          }
+        }).on('receipt', (receipt) => {
+          this.wrapper.wrapButton.next(2);
+          this.notificationsService.notify({
+            title: '' + this.liquidityToken.lpSymbol.getValue() + 'Wrap Successful',
+            icon: 'alarm',
+            text: 'Your ' + this.liquidityToken.lpSymbol.getValue() + ' LP tokens have been wrapped successfully.',
+            date: new Date()
+          });
+          setTimeout(() => {
+            this.wrapper.wrapButton.next(0);
+          }, 2500);
+        })
+        .on('error', (error) => {
+          this.wrapper.wrapButton.next(2);
+          this.notificationsService.notify({
+            title: '' + this.liquidityToken.lpSymbol.getValue() + 'Unwrap Error',
+            icon: 'alarm',
+            text: 'There was an error wrapping your ' + this.liquidityToken.lpSymbol.getValue() + ' LP tokens.',
+            date: new Date()
+          });
+          this.wrapper.wrapButton.next(3);
+          setTimeout(() => {
+            this.wrapper.wrapButton.next(0);
+          }, 2500);
         });
-        setTimeout(() => {
-          this.wrapper.wrapButton.next(0);
-        }, 2500);
-      })
-      .on('error', (error) => {
-        this.wrapper.wrapButton.next(2);
-        this.notificationsService.notify({
-          title: '' + this.liquidityToken.lpSymbol.getValue() + 'Unwrap Error',
-          icon: 'alarm',
-          text: 'There was an error wrapping your ' + this.liquidityToken.lpSymbol.getValue() + ' LP tokens.',
-          date: new Date()
-        });
-        this.wrapper.wrapButton.next(3);
-        setTimeout(() => {
-          this.wrapper.wrapButton.next(0);
-        }, 2500);
-      });
     }
   }
 
@@ -1370,42 +1370,42 @@ export class Web3Service {
           });
       });
     } else {
-    return await this.liquidityToken.wLPContract.methods.unWrapLPT(
-      BigInt(Math.floor(amount * 1e18))
-    ).send({
-      from: this.user.address.getValue(),
-    })
-      .on('transactionHash', (transactionHash) => {
-        this.wrapper.unwrapButton.next(1);
+      return await this.liquidityToken.wLPContract.methods.unWrapLPT(
+        BigInt(Math.floor(amount * 1e18))
+      ).send({
+        from: this.user.address.getValue(),
       })
-      .on('confirmation', (confirmation) => {
-        if (confirmation) {
-        }
-      }).on('receipt', (receipt) => {
-        this.wrapper.unwrapButton.next(2);
-        this.notificationsService.notify({
-          title: '' + this.liquidityToken.wLPSymbol.getValue() + 'Unwrap Successful',
-          icon: 'alarm',
-          text: 'Your ' + this.liquidityToken.wLPSymbol.getValue() + ' wrapped LP tokens have been unwrapped successfully.',
-          date: new Date()
+        .on('transactionHash', (transactionHash) => {
+          this.wrapper.unwrapButton.next(1);
+        })
+        .on('confirmation', (confirmation) => {
+          if (confirmation) {
+          }
+        }).on('receipt', (receipt) => {
+          this.wrapper.unwrapButton.next(2);
+          this.notificationsService.notify({
+            title: '' + this.liquidityToken.wLPSymbol.getValue() + 'Unwrap Successful',
+            icon: 'alarm',
+            text: 'Your ' + this.liquidityToken.wLPSymbol.getValue() + ' wrapped LP tokens have been unwrapped successfully.',
+            date: new Date()
+          });
+          setTimeout(() => {
+            this.wrapper.unwrapButton.next(0);
+          }, 2500);
+        })
+        .on('error', (error) => {
+          this.wrapper.unwrapButton.next(2);
+          this.notificationsService.notify({
+            title: '' + this.liquidityToken.wLPSymbol.getValue() + 'Unwrap Error',
+            icon: 'alarm',
+            text: 'There was an error unwrapping your ' + this.liquidityToken.wLPSymbol.getValue() + ' wrapped LP tokens.',
+            date: new Date()
+          });
+          this.wrapper.unwrapButton.next(3);
+          setTimeout(() => {
+            this.wrapper.unwrapButton.next(0);
+          }, 2500);
         });
-        setTimeout(() => {
-          this.wrapper.unwrapButton.next(0);
-        }, 2500);
-      })
-      .on('error', (error) => {
-        this.wrapper.unwrapButton.next(2);
-        this.notificationsService.notify({
-          title: '' + this.liquidityToken.wLPSymbol.getValue() + 'Unwrap Error',
-          icon: 'alarm',
-          text: 'There was an error unwrapping your ' + this.liquidityToken.wLPSymbol.getValue() + ' wrapped LP tokens.',
-          date: new Date()
-        });
-        this.wrapper.unwrapButton.next(3);
-        setTimeout(() => {
-          this.wrapper.unwrapButton.next(0);
-        }, 2500);
-      });
     }
   }
 
@@ -1510,15 +1510,15 @@ export class Web3Service {
 
   async setLPContract(): Promise<any> {
     if (this.liquidityToken.lpAddress.getValue() !== '0x0000000000000000000000000000000000000000') { // IF LGE HAS STARTED
-    return this.liquidityToken.lpContract = await new this.web3.eth.Contract(grapesLPAbi, this.liquidityToken.lpAddress.getValue());
+      return this.liquidityToken.lpContract = await new this.web3.eth.Contract(grapesLPAbi, this.liquidityToken.lpAddress.getValue());
     } else {
-          const clearedInterval = setInterval(async () => {
-            this.getLPContract();
-            if (this.liquidityToken.lpAddress.getValue() !== '0x0000000000000000000000000000000000000000') { // IF LGE HAS STARTED
-            this.liquidityToken.lpContract = await new this.web3.eth.Contract(grapesLPAbi, this.liquidityToken.lpAddress.getValue());
-            return clearInterval(clearedInterval);
-            }
-          }, 5000);
+      const clearedInterval = setInterval(async () => {
+        this.getLPContract();
+        if (this.liquidityToken.lpAddress.getValue() !== '0x0000000000000000000000000000000000000000') { // IF LGE HAS STARTED
+          this.liquidityToken.lpContract = await new this.web3.eth.Contract(grapesLPAbi, this.liquidityToken.lpAddress.getValue());
+          return clearInterval(clearedInterval);
+        }
+      }, 5000);
     }
   }
 
@@ -1530,15 +1530,15 @@ export class Web3Service {
 
   async setWLPContract(): Promise<any> {
     if (this.liquidityToken.wLPAddress.getValue() !== '0x0000000000000000000000000000000000000000') { // IF LGE HAS STARTED
-    return this.liquidityToken.wLPContract = await new this.web3.eth.Contract(grapesWLPAbi, this.liquidityToken.wLPAddress.getValue());
+      return this.liquidityToken.wLPContract = await new this.web3.eth.Contract(grapesWLPAbi, this.liquidityToken.wLPAddress.getValue());
     } else {
-          const clearedInterval = setInterval(async () => {
-            this.getWLPContract();
-            if (this.liquidityToken.wLPAddress.getValue() !== '0x0000000000000000000000000000000000000000') { // IF LGE HAS STARTED
-            this.liquidityToken.wLPContract = await new this.web3.eth.Contract(grapesWLPAbi, this.liquidityToken.wLPAddress.getValue());
-            return clearInterval(clearedInterval);
-            }
-          }, 5000);
+      const clearedInterval = setInterval(async () => {
+        this.getWLPContract();
+        if (this.liquidityToken.wLPAddress.getValue() !== '0x0000000000000000000000000000000000000000') { // IF LGE HAS STARTED
+          this.liquidityToken.wLPContract = await new this.web3.eth.Contract(grapesWLPAbi, this.liquidityToken.wLPAddress.getValue());
+          return clearInterval(clearedInterval);
+        }
+      }, 5000);
     }
   }
 

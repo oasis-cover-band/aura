@@ -16,13 +16,13 @@ export class FarmsComponent implements OnInit {
   farms = this.web3.poolInfo;
   cellar = this.web3.cellar;
   project = this.projectService.project;
-  allPools = true;
+  allPools = false;
   masterPools = false;
   networkPools = false;
   vipPools = false;
   firstVipPool = new BehaviorSubject(0);
   firstSlice = new BehaviorSubject(0);
-  lastSlice = new BehaviorSubject(this.cellar.length.getValue());
+  lastSlice = new BehaviorSubject(0);
   constructor(
     private web3: Web3Service,
     private projectService: ProjectService

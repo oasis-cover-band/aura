@@ -34,7 +34,15 @@
         <img id="vip-pools" src="../../assets/logos/pools/auraeos.svg"/>
     </div>
 </section>
-    <section class="wrapper">
-        <app-farm *ngFor="let farm of (farms | slice:(firstSlice | async):(lastSlice | async)); let index = index" [data]="farm" [pid]="index" [@inOutAnimations]></app-farm>
-        <div class="empty"></div>
-    </section>
+<section class="wrapper" [ngClass]="{
+    'hidden': allPools === false && masterPools === false && networkPools === false && vipPools === false
+}">
+    <app-farm *ngFor="let farm of (farms | slice:(firstSlice | async):(lastSlice | async)); let index = index" [data]="farm" [pid]="index" [@inOutAnimations]></app-farm>
+    <div class="hidden" *ngIf="
+    allPools === false && masterPools === false && networkPools === false && vipPools === false
+    ">
+        <div class="arrows"><i class="material-icons">arrow_upward</i><i class="material-icons">arrow_upward</i><i class="material-icons">arrow_upward</i><i class="material-icons">arrow_upward</i></div>
+        <h3>Select Farm Category</h3>
+    </div>
+    <div class="empty"></div>
+</section>
