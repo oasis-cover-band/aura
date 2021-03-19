@@ -98,13 +98,13 @@
             {{((((data.started | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 % 60 | round)}} second<ng-container *ngIf="(((data.started | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 % 60 < 1 || (((data.started | async) * 1000) - (now | async)) / 1000 % 86400 % 3600 % 60 > 2">s</ng-container>,
         </ng-container>
         <ng-container *ngIf="(((data.started | async) * 1000) - (now | async)) / 1000 < 0">
-            started on {{(((data.started | async) * 1000) | date:'long')}}
+            started on {{(((data.started | async) * 1000) | date:'medium')}}
         </ng-container>
             
             and
             <ng-container *ngIf="(((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 < 0 && LPTperBNBUnit > 0">
                 ended on 
-                {{((data.ended | async) * 1000) | date:'long'}}
+                {{((data.ended | async) * 1000) | date:'medium'}}
             </ng-container>
             <ng-container *ngIf="(((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 < 0 && LPTperBNBUnit < 1">
                 is awaiting to be launched. 
