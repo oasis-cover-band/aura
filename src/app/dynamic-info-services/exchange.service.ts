@@ -10,8 +10,7 @@ import { Web3Service } from './web3.service';
 export class ExchangeService {
 
   networkCurrencyPriceUSD: BehaviorSubject<any> = this.web3.apyCalculator.networkCurrency.price;
-  // grapesContractAddress = this.web3.grapesContractAddress;
-  grapesContractAddress = '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82'; // TEST
+  grapesContractAddress = this.web3.grapesContractAddress;
   constructor(
     private apollo: Apollo,
     private web3: Web3Service
