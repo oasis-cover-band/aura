@@ -27,7 +27,7 @@ export class ProjectService {
     chainId: 56, // BSC MAINNET
     // chainId: 97, // BSC TESTNET
     networkName: 'Binance Smart Chain', // BSC MAINNET + BSC TESTNET
-    rpcNetwork: 'https://bsc-dataseed4.defibit.io/', // BSC MAINNET
+    rpcNetwork: 'https://bsc-dataseed.binance.org/', // BSC MAINNET
     // rpcNetwork: 'https://data-seed-prebsc-2-s3.binance.org:8545/', // BSC TESTNET
     blockExplorer: 'BscScan', // BSC MAINNET + BSC TESTNET
     blockExplorerAddress: 'https://bscscan.com', // BSC MAINNET

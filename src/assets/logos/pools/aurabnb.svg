@@ -5,11 +5,35 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="750"
    height="750"
    viewBox="0 0 198.43749 198.43751"
    version="1.1"
-   id="svg8">
+   id="svg8"
+   sodipodi:docname="aurabnb.svg"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15, custom)">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1080"
+     id="namedview2771"
+     showgrid="false"
+     inkscape:zoom="0.57866667"
+     inkscape:cx="-216.03921"
+     inkscape:cy="674.24403"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg8" />
   <defs
      id="defs2">
     <linearGradient
@@ -37,68 +61,75 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
-     id="layer1"
-     transform="translate(-4.6769273,33.072914)">
-    <circle
-       style="fill:#2c2c2c;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:7.64378;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="path833"
-       cx="66.145836"
-       cy="66.145836"
-       r="52.582867" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:7;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="path835"
-       d="m 85.2327,84.425545 -19.086864,-2e-6 -19.086864,2e-6 9.543434,-16.529708 9.54343,-16.52971 9.54343,16.52971 z" />
-    <path
-       id="path837"
-       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#89daff;stroke-width:7;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 60.732422,70.269531 c -1.80599,3.131383 -3.616211,6.261632 -5.423828,9.392578 7.225911,0 14.451823,0 21.677734,0 -3.613281,-6.25651 -7.226562,-12.51302 -10.839844,-18.769531 -1.804687,3.125651 -3.609375,6.251302 -5.414062,9.376953 z" />
-  </g>
-  <g
-     transform="matrix(0.21961009,0,0,0.21961009,-3204.7293,-835.6614)"
-     id="g982">
-    <circle
-       cx="256"
-       cy="256"
-       r="256"
-       fill="url(#a)"
-       data-name="Ellipse 22-2"
-       id="circle968"
-       style="fill:url(#a)"
-       transform="translate(14960,4001)" />
+     id="g4284">
     <g
-       transform="translate(12886,402.909)"
-       id="g980">
-      <path
-         fill="#ffffff"
-         d="m 2264.252,3826.919 65.555,-65.528 65.582,65.582 38.123,-38.15 -103.705,-103.732 -103.7,103.7 z"
-         data-name="Path 323"
-         id="path970" />
-      <path
-         fill="#ffffff"
-         d="m 2161,3853.872 38.123,-38.15 38.15,38.15 -38.15,38.128 z"
-         data-name="Path 324"
-         id="path972" />
-      <path
-         fill="#ffffff"
-         d="m 2264.252,3880.8 65.556,65.556 65.582,-65.583 38.15,38.1 L 2329.834,4022.6 2226.1,3918.948 Z"
-         data-name="Path 325"
-         id="path974" />
-      <path
-         fill="#ffffff"
-         d="m 2422.263,3853.872 38.123,-38.15 38.15,38.123 -38.15,38.177 z"
-         data-name="Path 326"
-         id="path976" />
-      <path
-         fill="#ffffff"
-         d="m 2368.491,3853.846 -38.683,-38.71 -28.606,28.606 -3.306,3.279 -6.771,6.771 38.683,38.656 38.683,-38.576 z"
-         data-name="Path 327"
-         id="path978" />
+       transform="matrix(0.21961009,0,0,0.21961009,-3199.3698,-835.6614)"
+       id="g982">
+      <circle
+         cx="256"
+         cy="256"
+         r="256"
+         fill="url(#a)"
+         data-name="Ellipse 22-2"
+         id="circle968"
+         style="fill:url(#a)"
+         transform="translate(14960,4001)" />
+      <g
+         transform="translate(12886,402.909)"
+         id="g980">
+        <path
+           fill="#ffffff"
+           d="m 2264.252,3826.919 65.555,-65.528 65.582,65.582 38.123,-38.15 -103.705,-103.732 -103.7,103.7 z"
+           data-name="Path 323"
+           id="path970" />
+        <path
+           fill="#ffffff"
+           d="m 2161,3853.872 38.123,-38.15 38.15,38.15 -38.15,38.128 z"
+           data-name="Path 324"
+           id="path972" />
+        <path
+           fill="#ffffff"
+           d="m 2264.252,3880.8 65.556,65.556 65.582,-65.583 38.15,38.1 L 2329.834,4022.6 2226.1,3918.948 Z"
+           data-name="Path 325"
+           id="path974" />
+        <path
+           fill="#ffffff"
+           d="m 2422.263,3853.872 38.123,-38.15 38.15,38.123 -38.15,38.177 z"
+           data-name="Path 326"
+           id="path976" />
+        <path
+           fill="#ffffff"
+           d="m 2368.491,3853.846 -38.683,-38.71 -28.606,28.606 -3.306,3.279 -6.771,6.771 38.683,38.656 38.683,-38.576 z"
+           data-name="Path 327"
+           id="path978" />
+      </g>
+    </g>
+    <g
+       id="g2106"
+       transform="translate(-9.7410791,33.072914)">
+      <circle
+         style="fill:#2c2c2c;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:7.64378;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="path833-9"
+         cx="66.145836"
+         cy="66.145836"
+         r="52.582867" />
+      <g
+         id="g904"
+         transform="matrix(1.266826,0,0,1.266826,-17.649427,-16.391378)">
+        <path
+           style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:6.92884;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="path835-4"
+           d="m 47.253001,47.058878 9.446416,10e-7 9.446415,18.450626 9.446415,-18.450626 9.446416,-10e-7 -9.446418,16.361671 -9.446413,16.361672 -9.446413,-16.361672 z" />
+        <path
+           id="path837-1"
+           style="fill:#980042;fill-opacity:1;fill-rule:evenodd;stroke:#ed89ff;stroke-width:6.13529;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 71.504214,61.070985 c 1.787631,-3.09955 3.57945,-6.197978 5.368691,-9.297095 L 66.144223,54.501373 55.415542,51.77389 66.145191,70.352615 Z" />
+      </g>
     </g>
   </g>
 </svg>
