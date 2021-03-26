@@ -25,6 +25,7 @@ export class SaleComponent implements OnInit {
   now = this.nowService.now;
   current = new Date().getTime();
   project = this.projectService.project;
+  cancelled = this.projectService.cancelled;
   wLPAddress = this.web3.liquidityToken.wLPAddress;
   constructor(
     private web3: Web3Service,
@@ -50,5 +51,10 @@ export class SaleComponent implements OnInit {
   createLiquidity(): void {
     this.web3.createLiquidity();
   }
+
+  unpledgeLiquidity(): void {
+    this.web3.unpledgeLiquidity();
+  }
+
 
 }

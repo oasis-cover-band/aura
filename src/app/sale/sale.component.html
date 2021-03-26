@@ -44,12 +44,12 @@
         </span>
         <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
     </div>
-    <span class="input" id="input" *ngIf="(data.LPTperBNBUnit | async) < 1 && (wLPAddress | async) !== '0x0000000000000000000000000000000000000000' && (((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 > 0">
+    <span class="input" id="input" *ngIf="!cancelled && (data.LPTperBNBUnit | async) < 1 && (wLPAddress | async) !== '0x0000000000000000000000000000000000000000' && (((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 > 0">
         <input [placeholder]="inputPlaceholder" #inputEle/>
     </span>
     <span class="large-header" id="buttons" *ngIf="(data.user.contribution | async) as contribution;else greyedButtons" [@inOutAnimations]>
         <span class="button" id="deposit"
-        *ngIf="(((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 > 0 && (((data.started | async) * 1000) - (now | async)) < 0 && (data.LPTperBNBUnit | async) < 1 && (wLPAddress | async) !== '0x0000000000000000000000000000000000000000'">
+        *ngIf="!cancelled && (((data.calculatedEnd | async) * 1000) - (now | async)) / 1000 > 0 && (((data.started | async) * 1000) - (now | async)) < 0 && (data.LPTperBNBUnit | async) < 1 && (wLPAddress | async) !== '0x0000000000000000000000000000000000000000'">
             <button [ngClass]="{
                 'working' : (data.depositButton | async) === 1 || (data.depositButton | async) === 4,
                 'failed' : (data.depositButton | async) === 3,
@@ -67,7 +67,7 @@
             </button>
         </span>
         <span class="button" id="claim"
-        *ngIf="(((data.calculatedEnd | async) * 1000) - (now | async)) < 0 && (data.LPTperBNBUnit | async) > 1 && contribution > 1">
+        *ngIf="!cancelled && (((data.calculatedEnd | async) * 1000) - (now | async)) < 0 && (data.LPTperBNBUnit | async) > 1 && contribution > 1">
             <button [ngClass]="{
                 'working' : (data.claimButton | async) === 1,
                 'failed' : (data.claimButton | async) === 3,
@@ -82,10 +82,15 @@
             </button>
         </span>
     </span>
+    <span class="large-header" id="buttons" *ngIf="cancelled" [@inOutAnimations]>
+        <span class="button" id="deposit">
+            The LGE has been postponed. Please unpledge your {{project.networkCurrency}}.
+        </span>
+    </span>
     <ng-template class="greyed-bar" #greyed><div class="greyed-bar" [@inOutAnimations]></div></ng-template>
     <ng-template class="greyed-bar" #greyedButtons><div class="greyed-bar grey-button" [@inOutAnimations]></div></ng-template>
 </section>
-<section class="misc" *ngIf="(wLPAddress | async) !== '0x0000000000000000000000000000000000000000'">
+<section class="misc" *ngIf="(wLPAddress | async) !== '0x0000000000000000000000000000000000000000' && !cancelled">
     <i class="material-icons">alarm</i>
     <!-- STARTS GREATER THAN A DAY -->
     <p *ngIf="(data.LPTperBNBUnit | async) as LPTperBNBUnit;else greyed" [@inOutAnimations]>
@@ -136,6 +141,21 @@
         <br><br>
     </p>
     <ng-template class="greyed-bar" #greyed><div class="greyed-bar"></div></ng-template>
+</section>
+<section class="misc" *ngIf="(wLPAddress | async) !== '0x0000000000000000000000000000000000000000' && cancelled">
+    <button class="inverse" [ngClass]="{
+        'working' : (data.unpledgeLiqudityButton | async) === 1,
+        'failed' : (data.unpledgeLiqudityButton | async) === 3,
+        'success' : (data.unpledgeLiqudityButton | async) === 2
+    }"
+    style="min-width:250px"
+    (click)="unpledgeLiquidity()">
+    <label *ngIf="(data.unpledgeLiquidityButton | async) === 0">Unpledge {{project.networkCurrency}}</label>
+    <label *ngIf="(data.unpledgeLiquidityButton | async) === 1">Unpledging</label>
+    <label *ngIf="(data.unpledgeLiquidityButton | async) === 2">Unpledged</label>
+    <label *ngIf="(data.unpledgeLiquidityButton | async) === 3">Failed</label>
+    <label *ngIf="(data.unpledgeLiquidityButton | async) === 10">Confirm/Reject</label>
+    </button>
 </section>
 <section class="misc empty" *ngIf="(wLPAddress | async) === '0x0000000000000000000000000000000000000000'" [@inOutAnimations]>
     <!-- STARTS GREATER THAN A DAY -->

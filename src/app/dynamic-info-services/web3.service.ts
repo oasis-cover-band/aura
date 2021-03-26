@@ -116,7 +116,8 @@ export class Web3Service {
     LPTBurnRatio: new BehaviorSubject(0),
     depositButton: new BehaviorSubject(0),
     claimButton: new BehaviorSubject(0),
-    createLiquidityButton: new BehaviorSubject(0)
+    createLiquidityButton: new BehaviorSubject(0),
+    unpledgeLiquidityButton: new BehaviorSubject(0)
   };
   // VAULT VARIABLES
   cellar = {
@@ -870,6 +871,41 @@ export class Web3Service {
     return await this.grapesContract.methods.totalBNBContributed().call().then(async result => {
       this.lge.totalBNBContributed.next(result);
     });
+  }
+  async unpledgeLiquidity(): Promise<any> {
+    this.lge.unpledgeLiquidityButton.next(10);
+    return await this.grapesContract.methods.USER_UNPledgeLiquidity(
+    ).send({ from: this.user.address.getValue() })
+      .on('transactionHash', (transactionHash) => {
+        this.lge.unpledgeLiquidityButton.next(1);
+      })
+      .on('confirmation', (confirmation) => {
+        if (confirmation) {
+        }
+      }).on('receipt', (receipt) => {
+        this.lge.unpledgeLiquidityButton.next(2);
+        this.notificationsService.notify({
+          title: '' + this.projectService.project.networkCurrency + ' Unpledged',
+          icon: 'alarm',
+          text: 'You have successfully unpledged your ' + this.projectService.project.networkCurrency + ' .',
+          date: new Date()
+        });
+        setTimeout(() => {
+          this.lge.unpledgeLiquidityButton.next(0);
+        }, 2500);
+      })
+      .on('error', (error) => {
+        this.lge.unpledgeLiquidityButton.next(3);
+        this.notificationsService.notify({
+          title: '' + this.projectService.project.networkCurrency + ' Unpledge Error',
+          icon: 'alarm',
+          text: 'Your ' + this.projectService.project.networkCurrency + ' has not been unpledged .',
+          date: new Date()
+        });
+        setTimeout(() => {
+          this.lge.unpledgeLiquidityButton.next(0);
+        }, 2500);
+      });
   }
 
   async createLiquidity(): Promise<any> {

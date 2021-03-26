@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ProjectService {
+  cancelled = true;
   project = {
     contracts: {
       tokenAddress: '0x70D1240B21BeFe1118a7F0fCe40c6013DbFF81a2',
