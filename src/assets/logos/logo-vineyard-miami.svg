@@ -54,13 +54,13 @@
     </rdf:RDF>
   </metadata>
   <circle
-     style="fill:url(#linearGradient850);fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:7.64378;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     style="fill:url(#linearGradient850);fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:7.64378;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      id="path833"
      cx="66.145836"
      cy="66.145836"
      r="52.582867" />
   <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:10.4335;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:10.4335;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      id="path835"
      d="m 26.703887,53.878308 12.318816,-7.11227 26.210416,16.948691 -1.572788,-31.173231 12.318814,-7.112273 -4e-6,28.449084 3e-6,28.449082 -24.637625,-14.224544 z" />
   <path
@@ -78,7 +78,7 @@
        y="125.24654"
        style="stroke-width:0.264583" /></text>
   <path
-     style="fill:#ffffff;fill-opacity:1;stroke:#000012;stroke-width:6.34999992;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:6.34999992;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      d="M 78.122533,85.950444 91.586538,107.86859"
      id="path856" />
 </svg>

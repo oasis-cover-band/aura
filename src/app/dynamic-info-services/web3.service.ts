@@ -887,7 +887,7 @@ export class Web3Service {
         this.notificationsService.notify({
           title: '' + this.projectService.project.networkCurrency + ' Unpledged',
           icon: 'alarm',
-          text: 'You have successfully unpledged your ' + this.projectService.project.networkCurrency + ' .',
+          text: 'You have successfully unpledged your ' + this.projectService.project.networkCurrency + '.',
           date: new Date()
         });
         setTimeout(() => {
@@ -899,7 +899,7 @@ export class Web3Service {
         this.notificationsService.notify({
           title: '' + this.projectService.project.networkCurrency + ' Unpledge Error',
           icon: 'alarm',
-          text: 'Your ' + this.projectService.project.networkCurrency + ' has not been unpledged .',
+          text: 'Your ' + this.projectService.project.networkCurrency + ' has not been unpledged.',
           date: new Date()
         });
         setTimeout(() => {

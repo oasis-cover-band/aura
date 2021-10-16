@@ -25,7 +25,7 @@
             </span>
         </div>
     </section>
-    <section class="balance" id="bnb" *ngIf="(user.address | async) !== '' && showingPoolTokensStyle && (user.bnbBalance | async) as bnbBalance;else greyed" [@inOutAnimations]>
+    <section class="balance" id="bnb" *ngIf="(user.address | async) !== '' && showingPoolTokensStyle && (user.bnbBalance | async) as bnbBalance" [@inOutAnimations]>
         <div id="address">
             <span>
                 {{project.networkCurrency}}

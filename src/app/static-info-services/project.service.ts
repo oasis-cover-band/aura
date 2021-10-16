@@ -35,9 +35,9 @@ export class ProjectService {
     // blockExplorerAddress: 'https://testnet.bscscan.com', // BSC TESTNET
     exchangeAddress: 'https://exchange.pancakeswap.finance/', // BSC MAINNET + BSC TESTNET
     socials: {
-      telegram: 'https://t.me/vineyardBSC',
-      medium: 'https://vineyardBSC.medium.com',
-      github: 'https://t.me/auragroup',
+      telegram: '',
+      medium: '',
+      github: ''
     }
   };
   pageInformation = {
