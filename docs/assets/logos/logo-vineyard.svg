@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   width="500"
+   height="500"
+   viewBox="0 0 132.29166 132.29167"
+   version="1.1"
+   id="svg8">
+  <defs
+     id="defs2" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <circle
+     style="fill:#2c2c2c;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:7.64378;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     id="path833"
+     cx="66.145836"
+     cy="66.145836"
+     r="52.582867" />
+  <g
+     id="g904"
+     transform="matrix(1.266826,0,0,1.266826,-17.649427,-16.391378)">
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:6.92884;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path835"
+       d="m 47.253001,47.058878 9.446416,10e-7 9.446415,18.450626 9.446415,-18.450626 9.446416,-10e-7 -9.446418,16.361671 -9.446413,16.361672 -9.446413,-16.361672 z" />
+    <path
+       id="path837"
+       style="fill:#980042;fill-opacity:1;fill-rule:evenodd;stroke:#ed89ff;stroke-width:6.13529;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 71.504214,61.070985 c 1.787631,-3.09955 3.57945,-6.197978 5.368691,-9.297095 L 66.144223,54.501373 55.415542,51.77389 66.145191,70.352615 Z" />
+  </g>
+  <text
+     xml:space="preserve"
+     style="font-size:17.6389px;line-height:1.25;font-family:Cambria;-inkscape-font-specification:Cambria;letter-spacing:0px;word-spacing:0px;stroke-width:0.264583"
+     x="51.977318"
+     y="125.24654"
+     id="text864"><tspan
+       id="tspan862"
+       x="51.977318"
+       y="125.24654"
+       style="stroke-width:0.264583"></tspan></text>
+</svg>
