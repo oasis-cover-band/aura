@@ -3,13 +3,13 @@ import Web3 from 'web3';
 import { BehaviorSubject } from 'rxjs';
 import { NotificationsService } from './notifications.service';
 import { ProjectService } from '../static-info-services/project.service';
-const grapesAbi = require('../assets/abi/grapesabi.json');
-const stableCoinAbi = require('../assets/abi/grapesabi.json');
-const wrappedNetworkCurrencyAbi = require('../assets/abi/grapesabi.json');
-const grapesLPAbi = require('../assets/abi/grapesabi.json');
-const grapesWLPAbi = require('../assets/abi/grapeswineabi.json');
-const grapesCellarAbi = require('../assets/abi/grapescellarabi.json');
-const exchangeAbi = require('../assets/abi/exchangeabi.json');
+const grapesAbi = require('../../assets/abi/grapesabi.json');
+const stableCoinAbi = require('../../assets/abi/grapesabi.json');
+const wrappedNetworkCurrencyAbi = require('../../assets/abi/grapesabi.json');
+const grapesLPAbi = require('../../assets/abi/grapesabi.json');
+const grapesWLPAbi = require('../../assets/abi/grapeswineabi.json');
+const grapesCellarAbi = require('../../assets/abi/grapescellarabi.json');
+const exchangeAbi = require('../../assets/abi/exchangeabi.json');
 declare const window: any;
 // tslint:disable:max-line-length
 
